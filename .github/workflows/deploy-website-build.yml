@@ -1,8 +1,9 @@
 name: Deploy Website Build
 
 permissions:
-  contents: write
+  contents: read
   pages: write
+  id-token: write
 
 on:
   push:
