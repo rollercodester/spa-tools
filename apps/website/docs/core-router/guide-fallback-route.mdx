@@ -1,0 +1,68 @@
+---
+title: Fallback Route
+pagination_label: 'Core Router Guide: Fallback Route'
+pagination_next: core-router/guide-hash-autoscroll
+pagination_prev: core-router/guide-state-interpolation
+sidebar_label: Fallback Route
+slug: /core-router/guides/fallback-route
+---
+
+import { PackageCaption } from '@site/src/components';
+
+<PackageCaption packageName='@spa-tools/core-router' />
+
+# Fallback Route
+
+The `@spa-tools/core-router` allows one route to be specified as a fallback (a.k.a. default, home, 404, etc.) in the event
+that no routes match the current browser path. While you can certainly be diligent and maintain tight control over links
+and navigation in your app, you cannot control what the user directly enters in the browser URL bar.
+
+This is where the fallback route comes in handy, as it provides a way to gracefully handle invalid URLs in a manner that
+makes sense for your application.
+
+```js
+import { CoreRouter, routesFactory } from '@spa-tools/core-router';
+
+const createMyRoutes = routesFactory();
+
+// here we create two routes where one will act as our fallback route
+const myRoutes = createMyRoutes({
+  homeRoute: {
+    path: '/',
+  },
+  aboutRoute: {
+    path: '/about',
+  },
+});
+
+// here we create a new instance of the CoreRouter class and pass in
+// our routes object; we also pass in an object that implements the
+// router lifecycle callback onRouteChange so we can log outcomes
+const myRouter = CoreRouter.initialize(myRoutes, {
+  fallbackRoute: myRoutes.homeRoute,
+  onRouteChange: (routeChange) => {
+    // this is where we would perform any post-processing logic, which
+    // typically means rendering the requested route. How to do this
+    // ranges based on the UI framework being used, so here we simply
+    // log path info to the console.
+    //
+    // If you're using React or want to create an abstraction for a
+    // different rendering package/framework, you should definitely
+    // check out the Core React Router abstraction, which has the
+    // rendering logic sweetly baked in.
+    console.log(`TODO: Render the route: ${routeChange.route.path}`);
+  },
+});
+
+// first, we navigate to the home route
+myRouter.navigate(myRoutes.homeRoute);
+
+// second, we navigate to the about route
+myRouter.navigate(myRoutes.aboutRoute);
+
+// third, we navigate to an invalid route
+// and you should be able to verify that
+// the fallback route kicked in by checking
+// the console and your browser's URL
+myRouter.navigate({ path: '/invalid' });
+```

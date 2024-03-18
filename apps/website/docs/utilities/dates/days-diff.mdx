@@ -1,0 +1,41 @@
+---
+title: daysDiff
+pagination_label: 'Date Utilities: daysDiff'
+pagination_next: utilities/dates/is-future
+pagination_prev: utilities/dates/are-dates-equal
+sidebar_label: daysDiff
+slug: /utilities/dates/days-diff
+---
+
+import { PackageCaption } from '@site/src/components';
+
+<PackageCaption packageName='@spa-tools/utilities' />
+
+# daysDiff()
+
+The `daysDiff()` function calculates the number of days between two date values
+where values can be date object, timestamp integer, or date string.
+
+### Usage
+
+```ts
+import { daysDiff } from '@spa-tools/utilities';
+
+const date1 = new Date('2021-01-01');
+const date2 = '2021-01-10';
+
+const diff = daysDiff(date1, date2);
+console.log(diff);
+// --> 9
+```
+
+### Arguments
+
+| Name    | Type                       | Description                      |
+| ------- | -------------------------- | -------------------------------- |
+| `date1` | `string \| number \| Date` | The first date value to compare  |
+| `date2` | `string \| number \| Date` | The second date value to compare |
+
+### Returns
+
+`number` - The number of days between the two date values.

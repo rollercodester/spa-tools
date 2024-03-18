@@ -1,0 +1,91 @@
+---
+title: useDetectKeyDown
+pagination_label: 'Interaction Hooks: useDetectKeyDown'
+pagination_next: interaction-hooks/use-infinite-scroll
+pagination_prev: interaction-hooks/use-call-once
+sidebar_label: useDetectKeyDown
+slug: /interaction-hooks/use-detect-keydown
+---
+
+import { PackageCaption } from '@site/src/components';
+
+<PackageCaption packageName='@spa-tools/interaction-hooks' />
+
+# useDetectKeyDown()
+
+Have you ever had to write a simple form that needed a little validation that didn't warrant pulling in a kitchen-sink form validation library?
+
+If you need to hook into keyboard entry to handroll some input validation then the `useDetectKeyDown` hook is for you.
+
+## Usage
+
+```tsx
+import { useEffect, useRef } from 'react';
+import { useDetectKeyDown } from '@spa-tools/interaction-hooks';
+
+function UseDetectKeyDownExample() {
+  // here we wire up a ref for the submit button that we will auto-click
+  const submitButtonRef = useRef<HTMLButtonElement>(null);
+  // here we ask the hook to set onKeyDownInput1KeyDetected to true
+  // when the Shift-Ctrl-P keys are pressed
+  const [onKeyDownInput1, pShiftControlKeysDetected] = useDetectKeyDown('P', ['Shift', 'Control']);
+  // here we ask the hook to auto-click the submit button when
+  // the Enter key is pressed
+  const [onKeyDownInput2] = useDetectKeyDown('Enter', submitButtonRef);
+
+  useEffect(() => {
+    // we simply alert when the Shift-Ctrl-P keys are detected
+    if (pShiftControlKeysDetected) {
+      alert('Shift-Ctrl-P detected!');
+    }
+  }, [pShiftControlKeysDetected]);
+
+  return (
+    <div>
+      <div>
+        <input onKeyDown={onKeyDownInput1} placeholder='Focus here and press Shift-Ctrl-P' />
+      </div>
+      <div>
+        <input onKeyDown={onKeyDownInput2} placeholder='Type something here and press Enter' />
+        <button
+          onClick={() => {
+            alert('Submit button clicked!');
+          }}
+          ref={submitButtonRef}
+        >
+          Submit
+        </button>
+      </div>
+    </div>
+  );
+}
+```
+
+## Method overloads
+
+- `useDetectKeyDown()`
+- `useDetectKeyDown(key)`
+- `useDetectKeyDown(key, modifierKeys)`
+- `useDetectKeyDown(key, elementToAutoClickRef)`
+- `useDetectKeyDown(key, modifierKeys, elementToAutoClickRef)`
+
+## Parameters
+
+| Name                  | Type                           | Description                                                          |
+| --------------------- | ------------------------------ | -------------------------------------------------------------------- |
+| -                     | -                              | No parameters will default to detecting the `Enter` key              |
+| key                   | `string`                       | The key to detect                                                    |
+| modifierKeys          | `React.ModifierKey[]`          | An array of modifier keys to detect in conjunction with the main key |
+| elementToAutoClickRef | `React.RefObject<HTMLElement>` | A ref to the element to auto-click when the key is detected          |
+
+## Returns
+
+Returns a [`DetectKeyDownTuple`](#detectkeydowntuple).
+
+### DetectKeyDownTuple
+
+`DetectKeyDownTuple` is a tuple returned from the `useDetectKeyDown` hook and contains the following positional elements in order:
+
+1. `keyboardEventHandler` - A `React.KeyboardEventHandler` event handler
+
+2. `keyDetected` - A `boolean` that returns `true` when the requested key (and optional modifiers) are pressed down

@@ -1,0 +1,94 @@
+---
+title: Runtime Config
+pagination_label: 'Runtime Config: Getting Started'
+pagination_next: runtime-config/guide-obfuscation
+pagination_prev: core-router/reference-react
+slug: /runtime-config
+---
+
+import { FaCreativeCommonsZero } from 'react-icons/fa';
+import { GiStaticWaves } from 'react-icons/gi';
+import { GrDocumentConfig } from 'react-icons/gr';
+import { IoMdOptions } from 'react-icons/io';
+import { LuPackageOpen, LuTrees } from 'react-icons/lu';
+import { RiRunFill } from 'react-icons/ri';
+import { SiTypescript } from 'react-icons/si';
+import {
+  CodeTabs,
+  RuntimeConfigGettingStartedJsCode,
+  RuntimeConfigGettingStartedTsCode,
+  OverviewFeatures,
+  SectionText,
+} from '@site/src/components';
+
+All real-world SPAs have to deal with configuration, typcially having to manage settings that vary
+across mutliple environments. The defacto approach to solve this problem has been to use multiple
+_.env_ files using a package such as _dotenv_, which in its own right is a fantastically proven
+package.
+
+And while it's true that the _static_ dotenv flow has been standardized for quite some
+time now, it typically involves maintaining build scripts in lockstep with devops pipelines to
+ensure that pseudo environment-variables are available to your SPA across respective environments.
+Let's be honest, this can become a bit of a headache and arguably, pseudo-env-vars can feel yucky in frontend code.
+
+What if it didn't have to be that complex? Introducing **@spa-tools/runtime-config**, a modern
+hands-off alternative to the aforementioned classic approach. With the Runtime Config you don't
+have to worry about devops scripts because the correct environment config is automatically available
+at runtime, which is how the coy name "runtime-config" came about :-).
+
+<OverviewFeatures
+  features={[
+    {
+      title: 'Centralized Config',
+      icon: <GrDocumentConfig fontSize='1.75rem' />,
+    },
+    {
+      title: 'Runtime Detection',
+      icon: <RiRunFill fontSize='2rem' />,
+      titleStyle: { position: 'relative', top: '-0.13rem' },
+    },
+    {
+      title: 'Minimalist Options',
+      icon: <IoMdOptions fontSize='1.75rem' />,
+    },
+    {
+      title: 'Obfuscation',
+      icon: <GiStaticWaves fontSize='1.75rem' />,
+    },
+    {
+      title: 'TypeScript First',
+      icon: <SiTypescript fontSize='1.75rem' />,
+    },
+    {
+      title: 'Zero Dependencies',
+      icon: <FaCreativeCommonsZero fontSize='1.75rem' />,
+    },
+    {
+      title: '4KB Unpacked',
+      icon: <LuPackageOpen fontSize='1.75rem' />,
+    },
+    {
+      title: 'Tree-shakable',
+      icon: <LuTrees fontSize='2rem' />,
+      titleStyle: { position: 'relative', top: '-0.12rem' },
+    },
+  ]}
+/>
+
+## Installation
+
+<SectionText bottomMargin='0' topMargin='0'>
+  To install Runtime Config in your project, use your favorite package manager and run the respective command:
+</SectionText>
+
+```bash npm2yarn
+npm install @spa-tools/runtime-config
+```
+
+## Quickstart
+
+<SectionText bottomMargin='0' topMargin='0'>
+  Choose your preferred implementation:
+</SectionText>
+
+<CodeTabs jsCode={<RuntimeConfigGettingStartedJsCode />} tsCode={<RuntimeConfigGettingStartedTsCode />} />

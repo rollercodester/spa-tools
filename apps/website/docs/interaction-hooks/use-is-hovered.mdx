@@ -1,0 +1,94 @@
+---
+title: useIsHovered
+pagination_label: 'Interaction Hooks: useIsHovered'
+pagination_next: interaction-hooks/use-is-overflowed
+pagination_prev: interaction-hooks/use-infinite-scroll
+sidebar_label: useIsHovered
+slug: /interaction-hooks/use-is-hovered
+---
+
+import { PackageCaption } from '@site/src/components';
+
+<PackageCaption packageName='@spa-tools/interaction-hooks' />
+
+# useIsHovered()
+
+As much as we strive to use pure CSS for native UI state detection, sometimes we find ourselves in situations where CSS can't quite get us there, and so we find ourselves leaning on JavaScript to interact with DOM events.
+
+In that vain, if you find yourself dealing with complex hover interactions, the `useIsHovered` hook will most certainly make the task much, much eaiser.
+
+### Usage
+
+```tsx
+import { useRef } from 'react';
+import { useIsHovered } from '@spa-tools/interaction-hooks';
+
+function UseIsHoveredExample() {
+  // here we simply setup refs to all elements we want
+  // to track hover state for
+  const buttonRef = useRef<HTMLButtonElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const spanRef = useRef<HTMLSpanElement>(null);
+  // yes! you can also track hover state for an array of elements
+  const arrayRef = useRef<HTMLButtonElement[]>([]);
+
+  // then we use different hook instances to track the
+  // hover state for the above element refs
+  const isButtonHovered = useIsHovered(buttonRef);
+  const isInputHovered = useIsHovered(inputRef);
+  const isSpanHovered = useIsHovered(spanRef);
+  const isButtonArrayHovered = useIsHovered(arrayRef);
+
+  const getHoverStateText = () => {
+    if (isButtonHovered) {
+      return 'Very first button is hovered!';
+    }
+    if (isInputHovered) {
+      return 'Input is hovered!';
+    }
+    if (isSpanHovered) {
+      return 'Text is hovered!';
+    }
+    if (isButtonArrayHovered) {
+      return 'One of the six buttons from cluster is hovered!';
+    }
+
+    return 'Nothing is hovered!';
+  };
+
+  return (
+    <div>
+      <div>
+        <button ref={buttonRef}>Hover me!</button>
+        <input ref={inputRef} value='No, hover over me!' />
+        <div>
+          Don&apos;t listen to them, hover over{' '}
+          <span ref={spanRef} style={{ color: 'purple', cursor: 'pointer', fontWeight: 800 }}>
+            this text
+          </span>{' '}
+          instead!
+        </div>
+      </div>
+      <div>
+        <button ref={(el: HTMLButtonElement) => (arrayRef.current[0] = el)}/>Hover</button>
+        <button ref={(el: HTMLButtonElement) => (arrayRef.current[1] = el)}/>Over</button>
+        <button ref={(el: HTMLButtonElement) => (arrayRef.current[2] = el)}/>Any</button>
+        <button ref={(el: HTMLButtonElement) => (arrayRef.current[3] = el)}/>One</button>
+        <button ref={(el: HTMLButtonElement) => (arrayRef.current[4] = el)}/>Of</button>
+        <button ref={(el: HTMLButtonElement) => (arrayRef.current[5] = el)}/>Us</button>
+      </div>
+      <h2>{getHoverStateText()}</h2>
+    </div>
+  );
+}
+```
+
+### Parameters
+
+| Name   | Type              | Required? | Default | Description                                                         |
+| ------ | ----------------- | --------- | ------- | ------------------------------------------------------------------- |
+| `elem` | `React.RefObject` | yes       | -       | Holds a ref to the target element we want to watch for hover events |
+
+### Returns
+
+Returns `boolean` that will be `true` when the respective target element is hovered.

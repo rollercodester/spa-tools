@@ -1,0 +1,65 @@
+---
+title: deepEqual
+pagination_label: 'Data Utilities: deepEqual'
+pagination_next: utilities/data/deep-merge
+pagination_prev: utilities/data/deep-clone
+sidebar_label: deepEqual
+slug: /utilities/data/deep-equal
+---
+
+import { PackageCaption } from '@site/src/components';
+
+<PackageCaption packageName='@spa-tools/utilities' />
+
+# deepEqual()
+
+The `===` operator is ubiquitous in JavaScript for strict comparison but unfortunately it cannot be
+used to compare semantic equality between underlying values of reference types, but `deepEqual()` can!
+
+### Usage
+
+```ts
+import { deepEqual } from '@spa-tools/utilities';
+
+const person1 = {
+  address: {
+    city: 'New York',
+    country: 'USA',
+  },
+  hobbies: ['reading', 'coding'],
+  name: 'John',
+};
+
+const person2 = person1;
+
+const person3 = {
+  address: {
+    city: 'New York',
+    country: 'USA',
+  },
+  hobbies: ['reading', 'coding'],
+  name: 'John',
+};
+
+console.log(deepEqual(person1, person2));
+// --> true
+
+console.log(deepEqual(person1, person3));
+// --> true
+
+person3.address.city = 'Los Angeles';
+
+console.log(deepEqual(person1, person3));
+// --> false
+```
+
+### Arguments
+
+| Name | Type  | Description                     |
+| ---- | ----- | ------------------------------- |
+| `a`  | `any` | The first data item to compare  |
+| `b`  | `any` | The second data item to compare |
+
+### Returns
+
+Returns `true` if values are semantically equal and `false` if not.

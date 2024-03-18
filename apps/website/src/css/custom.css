@@ -1,0 +1,167 @@
+/**
+ * Any CSS included here will be global. The classic template
+ * bundles Infima by default. Infima is a CSS framework designed to
+ * work well for content-centric websites.
+ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+@import url('https://use.typekit.net/xso4mtu.css');
+
+/* You can override the default Infima variables here. */
+:root {
+  --ifm-background-color: #f8f5ff;
+  --ifm-color-primary: #610090;
+  --ifm-color-primary-dark: #4c007d;
+  --ifm-color-primary-darker: #37006a;
+  --ifm-color-primary-darkest: #250058;
+  --ifm-color-primary-light: #7600a4;
+  --ifm-color-primary-lighter: #8b10b9;
+  --ifm-color-primary-lightest: #a02dcd;
+  --ifm-code-font-size: 95%;
+  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
+  --ifm-font-family-base: 'Inter';
+  --ifm-navbar-height: 6rem;
+  --ifm-navbar-link-color: #666666;
+  --ifm-pre-padding: 1rem 1.25rem;
+}
+
+code {
+  background-color: #ecdbf6;
+  border-color: transparent;
+  border-radius: 0.25rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  padding: 0 0.2rem;
+}
+
+pre code {
+  background-color: unset;
+}
+
+.breadcrumbs {
+  margin-bottom: 1.5rem;
+}
+
+.breadcrumbs li:first-child .breadcrumbs__link:first-child {
+  background-image: url(/img/logo.svg);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  border-radius: 0%;
+  height: 2.2rem;
+  width: 2.5rem;
+  position: relative;
+  top: 0.8rem;
+}
+
+.breadcrumbs li:first-child .breadcrumbs__link:first-child:hover {
+  background-color: transparent;
+}
+
+.breadcrumbs li:first-child svg {
+  display: none;
+}
+
+.hero--primary {
+  --ifm-heading-color: #000000;
+  --ifm-hero-background-color: #ffffff;
+  --ifm-hero-text-color: #000000;
+}
+
+.heroCta_src-components-homepage-header-styles-module.button:hover {
+  opacity: 0.9;
+}
+
+.navbar__brand {
+  margin-right: 0;
+}
+
+.navbar__logo {
+  height: 4rem;
+}
+
+.navbar__title {
+  color: #5b1077;
+  font-family: 'bebas-neue';
+  font-weight: 400;
+  font-size: 2.25rem;
+}
+
+.navbar__title:hover {
+  color: #840caf;
+}
+
+/* For readability concerns, you should choose a lighter palette in dark mode. */
+[data-theme='dark'] {
+  --ifm-color-primary: #e4b3f4;
+  --ifm-color-primary-dark: #da99f0;
+  --ifm-color-primary-darker: #ce7feb;
+  --ifm-color-primary-darkest: #c263e7;
+  --ifm-color-primary-light: #eeccf8;
+  --ifm-color-primary-lighter: #f7e5fc;
+  --ifm-color-primary-lightest: #ffffff;
+  --ifm-navbar-link-color: #b6b6b6;
+  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
+}
+
+@media screen and (max-width: 996px) {
+  .navbar__title {
+    display: block;
+  }
+}
+
+@media (min-width: 997px) and (max-width: 1250px) {
+  .navbar__title {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 996px) {
+  .navbar__logo {
+    display: none;
+  }
+}
+
+@media (min-width: 1251px) {
+  .navbar__brand {
+    margin-right: 3rem;
+  }
+}
+
+[data-theme='dark'] {
+  code {
+    background-color: #562a6f;
+    border-color: transparent;
+    border-radius: 0.25rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+    padding: 0 0.2rem;
+  }
+
+  pre code {
+    background-color: unset;
+  }
+
+  .breadcrumbs li:first-child .breadcrumbs__link:first-child {
+    background-image: url(/img/logo-dark.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    border-radius: 0%;
+    height: 2.2rem;
+    width: 2.5rem;
+    position: relative;
+    top: 0.8rem;
+  }
+
+  .heroCta_src-components-homepage-header-styles-module.button:hover {
+    color: #ffffff;
+  }
+
+  .navbar__title {
+    color: #b256d4;
+  }
+  .navbar__title:hover {
+    color: #ab40d3;
+  }
+}

@@ -1,0 +1,49 @@
+---
+title: isNotEmptyRecord
+pagination_label: 'Conditional Utilities: isNotEmptyRecord'
+pagination_next: utilities/conditionals/is-past
+pagination_prev: utilities/conditionals/is-leap-year
+sidebar_label: isNotEmptyRecord
+slug: /utilities/conditionals/is-not-empty-record
+---
+
+import { PackageCaption } from '@site/src/components';
+
+<PackageCaption packageName='@spa-tools/utilities' />
+
+# isNotEmptyRecord()
+
+It's a common use case to check if a value is a valid plain object (aka `Record`)
+but often you will also need to check to see if the object is empty.
+
+The `isNotEmptyRecord()` foots the bill by returning `true` or `false` when the
+value is a valid `Record` (non-empty vs empty, respectively) but conversely
+returns `null` when it's not a valid `Record`.
+
+### Usage
+
+```ts
+import { isNotEmptyRecord } from '@spa-tools/utilities';
+
+const nonEmptyRecord = { baz: 123, foo: 'bar' };
+const emptyRecord = {};
+const notARecord = ['foo'];
+
+console.log(isNotEmptyRecord(nonEmptyRecord));
+// -> true
+console.log(isNotEmptyRecord(emptyRecord));
+// -> false
+console.log(isNotEmptyRecord(notARecord));
+// -> null
+```
+
+### Arguments
+
+| Name    | Type     | Required? | Default | Description        |
+| ------- | -------- | --------- | ------- | ------------------ |
+| `value` | `unkown` | yes       | -       | The value to check |
+
+### Returns
+
+`boolean` or `null` - If valid `Record` object then returns `true` if not-empty
+and `false` if empty; otherwise, returns `null`.

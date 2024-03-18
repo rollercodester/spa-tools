@@ -1,0 +1,48 @@
+---
+title: addHours
+pagination_label: 'Date Utilities: addHours'
+pagination_next: utilities/dates/add-milliseconds
+pagination_prev: utilities/dates/add-days
+sidebar_label: addHours
+slug: /utilities/dates/add-hours
+---
+
+import { PackageCaption } from '@site/src/components';
+
+<PackageCaption packageName='@spa-tools/utilities' />
+
+# addHours()
+
+The `addHours()` function adds a number of hours to a given date object,
+timestamp integer, or date string.
+
+### Usage
+
+```ts
+import { addHours } from '@spa-tools/utilities';
+
+const date = new Date('2021-01-01');
+
+const newDate1 = addHours(date, 5);
+console.log(newDate1.toLocaleDateString('en-US', { hour: 'numeric', minute: 'numeric' }));
+// --> '01/01/2021 5:00 AM'
+
+const newDate2 = addHours(date.getTime(), 6);
+console.log(newDate2.toLocaleDateString('en-US', { hour: 'numeric', minute: 'numeric' }));
+// --> '01/01/2021 6:00 AM'
+
+const newDate3 = addHours('2021-01-01', 7);
+console.log(newDate3.toLocaleDateString('en-US', { hour: 'numeric', minute: 'numeric' }));
+// --> '01/01/2021 7:00 AM'
+```
+
+### Arguments
+
+| Name    | Type                       | Required? | Description                                                                             |
+| ------- | -------------------------- | --------- | --------------------------------------------------------------------------------------- |
+| `date`  | `string \| number \| Date` | yes       | The date value to add hours to as either date string, timestamp integer, or date object |
+| `hours` | `number`                   | yes       | The number of hours to add                                                              |
+
+### Returns
+
+`Date` - The new date object with the added hours.

@@ -1,0 +1,34 @@
+.layoutContainer {
+  background-color: #281027;
+  height: 100vh;
+}
+
+.homeContainer {
+  background: url(/img/spatools-home-bg.png), linear-gradient(to top, #ffffff, #fbf3ff, #e8d9ed);
+  background-color: #310731;
+  background-position:
+    bottom,
+    bottom right;
+  background-repeat: no-repeat, no-repeat;
+  background-size:
+    100% 20%,
+    cover;
+  height: calc(100vh - var(--ifm-navbar-height));
+  width: 100%;
+
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+}
+
+@media screen and (max-width: 1279px) {
+  .homeContainer {
+    height: calc(100% - var(--ifm-navbar-height));
+  }
+}
+
+@media screen and (max-height: 998px) {
+  .homeContainer {
+    height: calc(100% - var(--ifm-navbar-height));
+  }
+}

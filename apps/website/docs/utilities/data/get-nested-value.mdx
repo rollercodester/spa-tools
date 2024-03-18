@@ -1,0 +1,58 @@
+---
+title: getNestedValue
+pagination_label: 'Data Utilities: getNestedValue'
+pagination_next: utilities/data/hash
+pagination_prev: utilities/data/download-file
+sidebar_label: getNestedValue
+slug: /utilities/data/get-nested-value
+---
+
+import { PackageCaption } from '@site/src/components';
+
+<PackageCaption packageName='@spa-tools/utilities' />
+
+# getNestedValue()
+
+As much as we'd like to always access data statically with properties known at build time, the
+reality is that sooner or later you're going to need to access nested data via a dot-notated string.
+
+Should this requirement ever rear its ugly head, you can use the `getNestedValue<T>()` function
+to retrieve nested data values via a string in a type-safe manner.
+
+The generic `T` type is used to define the type of the property that is returned.
+
+### Usage
+
+```ts
+import { getNestedValue } from '@spa-tools/utilities';
+
+const person = {
+  address: {
+    city: 'New York',
+    country: 'USA',
+  },
+  childrenAges: [8, 10],
+  id: 1,
+  name: 'John',
+};
+
+const city = getNestedValue(person, 'address.city', 'unknown city');
+console.log(city);
+// -->  'New York'
+
+const zipCode = getNestedValue(person, 'address.zipCode', 'n/a');
+console.log(zipCode);
+// -->  'n/a'
+```
+
+### Arguments
+
+| Name           | Type      | Description                                       |
+| -------------- | --------- | ------------------------------------------------- |
+| `data`         | `unknown` | The object holding nested property to access      |
+| `dataDotPath`  | `string`  | The string dot-notation path of property location |
+| `defaultValue` | `T`       | The value to return if the property is not found  |
+
+### Returns
+
+Returns either the found property value or default value as `T`.

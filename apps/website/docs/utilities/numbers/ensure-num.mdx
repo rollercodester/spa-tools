@@ -1,0 +1,44 @@
+---
+title: ensureNum
+pagination_label: 'Number Utilities: ensureNum'
+pagination_next: utilities/numbers/format-dollars
+pagination_prev: utilities/execution-control/sleep
+sidebar_label: ensureNum
+slug: /utilities/numbers/ensure-num
+---
+
+import { PackageCaption } from '@site/src/components';
+
+<PackageCaption packageName='@spa-tools/utilities' />
+
+# ensureNum()
+
+The `ensureNum<F>()` function checks if the given value is a valid number or can be
+parsed to a valid number and if so returns number; otherwise returns fallback value.
+
+The generic `F` type is used to define the type of the fallback value.
+
+### Usage
+
+```ts
+import { ensureNum } from '@spa-tools/utilities';
+
+const validNum = ensureNum('123', 0);
+console.log(validNum);
+// --> 123
+
+const invalidNum = ensureNum('abc', -1);
+console.log(invalidNum);
+// --> -1
+```
+
+### Arguments
+
+| Name       | Type      | Description                                                             |
+| ---------- | --------- | ----------------------------------------------------------------------- |
+| `value`    | `unknown` | The value to parse as number                                            |
+| `fallback` | `F`       | The value that will be returned if `value` cannot be parsed an a number |
+
+### Returns
+
+Returns parsed number or the fallback value of type `F`.

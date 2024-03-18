@@ -1,0 +1,35 @@
+---
+title: parseColor
+pagination_label: 'Color Utilities: parseColor'
+pagination_next: utilities/colors/rgba-to-hex
+pagination_prev: utilities/colors/hex-to-rgba
+sidebar_label: parseColor
+slug: /utilities/colors/parse-color
+---
+
+import { PackageCaption } from '@site/src/components';
+
+<PackageCaption packageName='@spa-tools/utilities' />
+
+# parseColor
+
+The `parseColor` function converts an rgba or hex color string to a [`ColorObject`](color-object).
+
+### Usage
+
+```ts
+import { parseColor } from '@spa-tools/utilities';
+
+const color = parseColor('#ff0000', 0.5);
+console.log(color);
+```
+
+### Arguments
+
+| Name  | Type             | Required? | Default | Description                        |
+| ----- | ---------------- | --------- | ------- | ---------------------------------- |
+| `hex` | `rgbOrRgbaOrHex` | yes       | -       | Either an rgba or hex color string |
+
+### Returns
+
+[`ColorObject`](color-object) object.

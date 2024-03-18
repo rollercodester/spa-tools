@@ -1,0 +1,47 @@
+---
+title: makeReadable
+pagination_label: 'String Utilities: makeReadable'
+pagination_next: utilities/strings/separate-words
+pagination_prev: utilities/strings/format-proper-case
+sidebar_label: makeReadable
+slug: /utilities/strings/make-readable
+---
+
+import { PackageCaption } from '@site/src/components';
+
+<PackageCaption packageName='@spa-tools/utilities' />
+
+# makeReadable()
+
+The `makeReadable()` function makes a hard-to-read, contiguous value more readable
+by inserting a separator character between groups of characters.
+
+### Usage
+
+```ts
+import { makeReadable } from '@spa-tools/utilities';
+
+const value1 = makeReadable('1234567890', '-');
+console.log(value1);
+// --> '1234-5678-90'
+
+const value2 = makeReadable('1234567890', [1, 2, 3] ' ');
+console.log(value2);
+// --> '1 23 456 7890'
+
+const value3 = makeReadable('123456789', [3, 2] '-');
+console.log(value3);
+// --> '123-45-6789'
+```
+
+### Arguments
+
+| Name            | Type               | Required? | Default | Description                                                   |
+| --------------- | ------------------ | --------- | ------- | ------------------------------------------------------------- |
+| `value`         | `string \| number` | yes       | -       | The value to make more readable                               |
+| `charGroupings` | `number[]`         | no        | `[4]`   | The array of character lengths to separate from left-to-right |
+| `separator`     | `string`           | no        | `' '`   | The separator character to insert between character groups    |
+
+### Returns
+
+Returns a `string`.

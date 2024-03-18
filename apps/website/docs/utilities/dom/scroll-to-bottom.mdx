@@ -1,0 +1,38 @@
+---
+title: scrollToBottom
+pagination_label: 'DOM Utilities: scrollToBottom'
+pagination_next: utilities/errors/normalize-error
+pagination_prev: utilities/dates/normalize-date
+sidebar_label: scrollToBottom
+slug: /utilities/dom/scroll-to-bottom
+---
+
+import { PackageCaption } from '@site/src/components';
+
+<PackageCaption packageName='@spa-tools/utilities' />
+
+# scrollToBottom()
+
+The `scrollToBottom()` function immediately scrolls to the bottom of a given element.
+
+### Usage
+
+```ts
+import { scrollToBottom } from '@spa-tools/utilities';
+
+// select the element
+const myElement = document.querySelector('#myElement');
+
+// do it!
+scrollToBottom(myElement);
+```
+
+### Arguments
+
+| Name | Type          | Description                     |
+| ---- | ------------- | ------------------------------- |
+| `el` | `HTMLElement` | The element to scroll bottom to |
+
+### Returns
+
+`void`

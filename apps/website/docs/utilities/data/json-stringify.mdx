@@ -1,0 +1,58 @@
+---
+title: jsonStringify
+pagination_label: 'Data Utilities: jsonStringify'
+pagination_next: utilities/data/looks-like-base64
+pagination_prev: utilities/data/is-record
+sidebar_label: jsonStringify
+slug: /utilities/data/json-stringify
+---
+
+import { PackageCaption } from '@site/src/components';
+
+<PackageCaption packageName='@spa-tools/utilities' />
+
+# jsonStringify()
+
+The `JSON.stringify()` method is a great way to encode JavaScript objects into
+strings; however, it fails if the object contains a circular reference or a
+`BigInt` value.
+
+The `jsonStringify()` method is a drop-in replacement (sans `replacer` function)
+that _gracefully_ handles these cases.
+
+### Usage
+
+```ts
+import { jsonStringify } from '@spa-tools/utilities';
+
+const objWithBigInt = {
+  a: 1,
+  b: '2',
+  c: BigInt(3),
+  d: {
+    e: 4,
+    f: '5',
+  },
+};
+console.log(jsonStringify(objWithBigInt));
+// --> {"a":1,"b":"2","c":3,"d":{"e":4,"f":"5"}}
+
+const objWithCircularRef = {
+  a: 1,
+  b: '2',
+};
+objWithCircularRef.c = objWithCircularRef;
+console.log(jsonStringify(objWithCircularRef));
+// --> {"a":1,"b":"2"}
+```
+
+### Arguments
+
+| Name    | Type               | Required? | Default | Description                                                                                                                                                     |
+| ------- | ------------------ | --------- | ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `obj`   | `unknown`          | yes       | -       | The object to stringify                                                                                                                                         |
+| `space` | `string \| number` | no        | `''`    | A string or number that's used to insert white space (including indentation, line break characters, etc.) into the output JSON string for readability purposes. |
+
+### Returns
+
+`string`: The JSON string representation of the object.

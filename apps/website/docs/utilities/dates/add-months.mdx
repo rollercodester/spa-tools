@@ -1,0 +1,48 @@
+---
+title: addMonths
+pagination_label: 'Date Utilities: addMonths'
+pagination_next: utilities/dates/add-seconds
+pagination_prev: utilities/dates/add-minutes
+sidebar_label: addMonths
+slug: /utilities/dates/add-months
+---
+
+import { PackageCaption } from '@site/src/components';
+
+<PackageCaption packageName='@spa-tools/utilities' />
+
+# addMonths()
+
+The `addMonths()` function adds a number of months to a given date object,
+timestamp integer, or date string.
+
+### Usage
+
+```ts
+import { addMonths } from '@spa-tools/utilities';
+
+const date = new Date('2021-01-01');
+
+const newDate1 = addMonths(date, 5);
+console.log(newDate1.toLocaleDateString('en-US'));
+// --> '06/01/2021'
+
+const newDate2 = addMonths(date.getTime(), 6);
+console.log(newDate2.toLocaleDateString('en-US'));
+// --> '07/01/2021'
+
+const newDate3 = addMonths('2021-01-01', 7);
+console.log(newDate3.toLocaleDateString('en-US'));
+// --> '08/01/2021'
+```
+
+### Arguments
+
+| Name     | Type                       | Required? | Description                                                                              |
+| -------- | -------------------------- | --------- | ---------------------------------------------------------------------------------------- |
+| `date`   | `string \| number \| Date` | yes       | The date value to add months to as either date string, timestamp integer, or date object |
+| `months` | `number`                   | yes       | The number of months to add                                                              |
+
+### Returns
+
+`Date` - The new date object with the added months.

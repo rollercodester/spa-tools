@@ -1,0 +1,265 @@
+import { act, renderHook } from '@testing-library/react';
+import * as callEndpointMod from './call-endpoint';
+import { EndpointOptions } from './types';
+import { INVALID_METHOD_FOR_APPEND_DATA, useCallEndpoint } from './use-call-endpoint';
+
+describe('useCallEndpoint', () => {
+  afterEach(() => {
+    vi.clearAllMocks();
+  });
+
+  it('should update result and pending flag when execute is called and clear result and call clear callback when clear is called', async () => {
+    const expectedResult = {
+      data: 'example data',
+    };
+
+    vi.spyOn(callEndpointMod, 'callEndpoint').mockImplementation(async () => {
+      await new Promise((resolve) => setTimeout(resolve, 100));
+      return expectedResult;
+    });
+
+    const { result } = renderHook(() => useCallEndpoint<string>('https://api/test'));
+
+    expect(result.current[1]).toBeUndefined();
+    expect(result.current[2]).toBe(false);
+
+    act(() => {
+      result.current[0]();
+    });
+
+    expect(result.current[2]).toBe(true);
+
+    await act(async () => {
+      await new Promise((resolve) => setTimeout(resolve, 200));
+    });
+
+    expect(result.current[1]).toEqual(expectedResult);
+    expect(result.current[2]).toBe(false);
+
+    await act(async () => {
+      result.current[3]();
+      await new Promise((resolve) => setTimeout(resolve, 200));
+    });
+
+    expect(result.current[1]).toBeUndefined();
+  });
+
+  it('should update result and pending flag when execute fails', async () => {
+    const error = 'example error';
+    const expectedResult = {
+      error,
+    };
+
+    vi.spyOn(callEndpointMod, 'callEndpoint').mockImplementation(async () => {
+      await new Promise((resolve) => setTimeout(resolve, 100));
+      throw new Error(error);
+    });
+
+    const { result } = renderHook(() => useCallEndpoint<void, string>('https://api/test'));
+
+    expect(result.current[1]).toBeUndefined();
+    expect(result.current[2]).toBe(false);
+
+    act(() => {
+      result.current[0]();
+    });
+
+    expect(result.current[2]).toBe(true);
+
+    await act(async () => {
+      await new Promise((resolve) => setTimeout(resolve, 200));
+    });
+
+    expect(result.current[1]).toEqual(expectedResult);
+    expect(result.current[2]).toBe(false);
+  });
+
+  it('should append result data when the appendData flag is set', async () => {
+    vi.spyOn(callEndpointMod, 'callEndpoint')
+      .mockImplementationOnce(() =>
+        Promise.resolve({
+          data: ['first result'],
+          nextPageToken: '2',
+        })
+      )
+      .mockImplementationOnce(() =>
+        Promise.resolve({
+          data: ['second result A', 'second result B'],
+          nextPageToken: '3',
+        })
+      )
+      .mockImplementationOnce(() =>
+        Promise.resolve({
+          data: ['third result'],
+        })
+      );
+
+    const { result } = renderHook(() => useCallEndpoint<string>('https://api/test', true));
+
+    expect(result.current[1]).toBeUndefined();
+
+    act(() => {
+      result.current[0]();
+    });
+
+    await act(async () => {
+      await new Promise((resolve) => setTimeout(resolve, 200));
+    });
+
+    expect(result.current[1]).toEqual({
+      data: ['first result'],
+      nextPageToken: '2',
+    });
+
+    act(() => {
+      result.current[0]();
+    });
+
+    await act(async () => {
+      await new Promise((resolve) => setTimeout(resolve, 200));
+    });
+
+    expect(result.current[1]).toEqual({
+      data: ['first result', 'second result A', 'second result B'],
+      nextPageToken: '3',
+    });
+
+    act(() => {
+      result.current[0]();
+    });
+
+    await act(async () => {
+      await new Promise((resolve) => setTimeout(resolve, 200));
+    });
+
+    expect(result.current[1]).toEqual({ data: ['first result', 'second result A', 'second result B', 'third result'] });
+
+    act(() => {
+      result.current[0]();
+    });
+
+    await act(async () => {
+      await new Promise((resolve) => setTimeout(resolve, 200));
+    });
+
+    // should not append data because there's no more pages to fetch
+    expect(result.current[1]).toEqual({ data: ['first result', 'second result A', 'second result B', 'third result'] });
+  });
+
+  it('should handle errors when the appendData flag is set', async () => {
+    const options = { requestOptions: { url: 'https://api/test' } };
+    vi.spyOn(callEndpointMod, 'callEndpoint')
+      .mockImplementationOnce(() =>
+        Promise.resolve({
+          error: 'first error',
+        })
+      )
+      .mockImplementationOnce(() =>
+        Promise.resolve({
+          data: { first: 'result' },
+          nextPageToken: '2',
+        })
+      )
+      .mockImplementationOnce(() =>
+        Promise.resolve({
+          error: 'second error',
+        })
+      )
+      .mockImplementationOnce(() =>
+        Promise.resolve({
+          data: { second: 'result' },
+          nextPageToken: '3',
+        })
+      )
+      .mockImplementationOnce(() => Promise.reject(new Error('third error')));
+
+    const { result } = renderHook(() => useCallEndpoint<string>(options, true));
+
+    expect(result.current[1]).toBeUndefined();
+
+    act(() => {
+      result.current[0]();
+    });
+
+    await act(async () => {
+      await new Promise((resolve) => setTimeout(resolve, 200));
+    });
+
+    expect(result.current[1]).toEqual({
+      error: 'first error',
+    });
+
+    act(() => {
+      result.current[0]();
+    });
+
+    await act(async () => {
+      await new Promise((resolve) => setTimeout(resolve, 200));
+    });
+
+    expect(result.current[1]).toEqual({
+      data: { first: 'result' },
+      nextPageToken: '2',
+    });
+
+    act(() => {
+      result.current[0]();
+    });
+
+    await act(async () => {
+      await new Promise((resolve) => setTimeout(resolve, 200));
+    });
+
+    expect(result.current[1]).toEqual({
+      data: { first: 'result' },
+      error: 'second error',
+      nextPageToken: '2',
+    });
+
+    act(() => {
+      result.current[0]();
+    });
+
+    await act(async () => {
+      await new Promise((resolve) => setTimeout(resolve, 200));
+    });
+
+    expect(result.current[1]).toEqual({
+      data: { first: 'result', second: 'result' },
+      nextPageToken: '3',
+    });
+
+    act(() => {
+      result.current[0]();
+    });
+
+    await act(async () => {
+      await new Promise((resolve) => setTimeout(resolve, 200));
+    });
+
+    expect(result.current[1]).toEqual({
+      data: { first: 'result', second: 'result' },
+      error: 'third error',
+      nextPageToken: '3',
+    });
+  });
+
+  it('should throw an error when the appendData flag is set and the request method is explicitly set to something other than GET', async () => {
+    const options = { requestOptions: { method: 'POST', url: 'https://api/test' } } as EndpointOptions;
+    const { result } = renderHook(() => useCallEndpoint<string>(options, true));
+
+    expect(result.current[1]).toBeUndefined();
+
+    act(() => {
+      result.current[0]();
+    });
+
+    await act(async () => {
+      await new Promise((resolve) => setTimeout(resolve, 200));
+    });
+
+    expect(result.current[1]).toEqual({
+      error: INVALID_METHOD_FOR_APPEND_DATA,
+    });
+  });
+});

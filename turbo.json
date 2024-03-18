@@ -1,0 +1,24 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "globalDependencies": ["**/.env.*local"],
+  "globalEnv": ["APP_HOSTNAME"],
+  "pipeline": {
+    "dev": {
+      "cache": false,
+      "persistent": true
+    },
+    "lint": {},
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": ["dist/**"]
+    },
+    "test": {
+      "inputs": ["src/**/*.tsx", "src/**/*.ts"]
+    },
+    "test:dev": {
+      "cache": false,
+      "dependsOn": ["^test"],
+      "inputs": ["src/**/*.tsx", "src/**/*.ts"]
+    }
+  }
+}

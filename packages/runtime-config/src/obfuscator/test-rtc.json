@@ -1,0 +1,26 @@
+{
+  "localhost": {
+    "appApiBaseUrl": "https://api.development.example.com",
+    "authClientId": "dev-client-id",
+    "authUserPoolId": "dev-user-pool-id",
+    "environment": "development"
+  },
+  "myapp.com": {
+    "appApiBaseUrl": "https://api.example.com",
+    "authClientId": "prod-client-id",
+    "authUserPoolId": "prod-user-pool-id",
+    "environment": "production"
+  },
+  "myapp.development.com": {
+    "appApiBaseUrl": "https://api.development.example.com",
+    "authClientId": "dev-client-id",
+    "authUserPoolId": "dev-user-pool-id",
+    "environment": "development"
+  },
+  "myapp.test.com": {
+    "appApiBaseUrl": "https://api.test.example.com",
+    "authClientId": "test-client-id",
+    "authUserPoolId": "test-user-pool-id",
+    "environment": "test"
+  }
+}

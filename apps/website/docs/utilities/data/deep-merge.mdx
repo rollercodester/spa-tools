@@ -1,0 +1,89 @@
+---
+title: deepMerge
+pagination_label: 'Data Utilities: deepMerge'
+pagination_next: utilities/data/download-csv-file
+pagination_prev: utilities/data/deep-equal
+sidebar_label: deepMerge
+slug: /utilities/data/deep-merge
+---
+
+import { PackageCaption } from '@site/src/components';
+
+<PackageCaption packageName='@spa-tools/utilities' />
+
+# deepMerge()
+
+It's a trivial task to merge one object into another via the ES6 spread `...` operator
+as long as the data is simple and not nested, but it can lead to bugs in code down the
+road if the underlying data changes to be more complex.
+
+The `deepMerge<T>()` function is safer in this regard because it will merge any data
+no matter how complex or nested it is. Moverover, if you're using TypeScript, you can
+specify what the resulting type of the merged data will be.
+
+As just eluded, the generic `T` type is used to define the type of the end-state merged data that is returned.
+
+### Usage
+
+```ts
+import { deepMerge } from '@spa-tools/utilities';
+
+const person1 = {
+  address: {
+    city: 'New York',
+    country: 'USA',
+  },
+  childrenAges: [8, 10],
+  id: 1,
+  name: 'John',
+};
+
+const person2 = {
+  address: {
+    state: 'NY',
+  },
+  childrenAges: [12],
+  id: 2,
+  name: 'John',
+};
+
+const mergedLeft = deepMerge(person1, person2, 'left');
+console.log(mergedLeft);
+// -->
+// {
+//   address: {
+//     city: 'New York',
+//     country: 'USA',
+//     state: 'NY'
+//   },
+//   childrenAges: [8, 10, 12],
+//   id: 1,
+//   name: 'John'
+// }
+
+const mergedRight = deepMerge(person2, person1);
+console.log(mergedRight);
+// -->
+// {
+//   address: {
+//     city: 'New York',
+//     country: 'USA',
+//     state: 'NY'
+//   },
+//   childrenAges: [12, 8, 10],
+//   id: 2,
+//   name: 'John'
+// }
+```
+
+### Arguments
+
+| Name         | Type                | Description                                 |
+| ------------ | ------------------- | ------------------------------------------- |
+| `left`       | `unknown`           | The first data item to merge                |
+| `right`      | `unknown`           | The second data item to merge               |
+| `precedence` | `'left' \| 'right'` | Which data item that takes merge precedence |
+
+### Returns
+
+Returns `T`.

@@ -1,0 +1,96 @@
+.heroContainer {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  gap: 3rem;
+  justify-content: center;
+  min-width: 480px;
+  overflow: hidden;
+  padding: 4rem;
+  position: relative;
+  text-align: left;
+  width: 100%;
+}
+
+.heroInduction {
+  flex-basis: 50rem;
+  flex-grow: 1;
+  max-width: 50rem;
+  width: 100%;
+}
+
+.heroTitle {
+  color: #9c33c2;
+  font-size: 4.5rem;
+  font-family: 'bebas-neue';
+  font-weight: 400;
+  margin-bottom: 0.5rem;
+}
+
+.heroDescription {
+  color: #231025;
+  font-size: 2rem;
+  font-weight: 500;
+  line-height: 150%;
+  margin-bottom: 3rem;
+  padding-left: 0.5rem;
+}
+
+.heroCtaContainer {
+  width: 100%;
+}
+
+.heroCta {
+  background-color: #610090;
+  color: #fff;
+  padding: calc(0.75rem * var(--ifm-button-size-multiplier))
+    calc(var(--ifm-button-padding-horizontal) * var(--ifm-button-size-multiplier));
+  border-radius: 2.5rem;
+}
+
+.heroImageContainer {
+  justify-self: center;
+  max-width: 22rem;
+  min-width: 16rem;
+  text-align: left;
+}
+
+@media screen and (max-width: 1337px) {
+  .heroImageContainer {
+    text-align: center;
+  }
+}
+
+@media screen and (max-width: 860px) {
+  :global(#__docusaurus) {
+    width: fit-content;
+  }
+
+  .heroInduction {
+    flex-basis: auto;
+    text-align: center;
+  }
+
+  .heroTitle {
+    font-size: 2.5rem;
+    font-weight: 800;
+    line-height: 3.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .heroContainer {
+    flex-direction: column-reverse;
+    gap: 1rem;
+    padding: 2rem 4rem;
+  }
+
+  .heroCtaContainer {
+    text-align: center;
+  }
+
+  .heroImageContainer {
+    max-width: 11rem;
+    min-width: 8rem;
+    text-align: center;
+  }
+}

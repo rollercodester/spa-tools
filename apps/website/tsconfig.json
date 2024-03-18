@@ -1,0 +1,6 @@
+{
+  "extends": "typescript-config-spatools/docusaurus.json",
+  "compilerOptions": {
+    "baseUrl": "."
+  }
+}

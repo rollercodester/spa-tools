@@ -1,0 +1,55 @@
+---
+title: Result Mapping
+pagination_label: 'API Client Guide: Result Mapping'
+pagination_next: api-client/guide-pagination
+pagination_prev: api-client/guide-state-interpolation
+sidebar_label: Result Mapping
+slug: /api-client/guides/result-mapping
+---
+
+import { PackageCaption } from '@site/src/components';
+
+<PackageCaption packageName='@spa-tools/api-client' />
+
+# Result Mapping
+
+It's not uncommon for backend APIs to have a wide variety of response model patterns and approaches; even those managed by a single team can fall prey to inconsistencies.
+The reasons for this aren't a concern here, only that it is a reality that frontend developers have to contend with.
+
+The `@spa-tools/api-client` makes dealing with backend model-madness as painless as possible by always keeping the frontend result envelope standard and
+consistent. Specifically, the API Client always returns a response object containing a <em>data</em> property for data and an <em>error</em> property for errors.
+
+This gives you prescriptive power to ensure data consistency in frontend code, regardless of how nutso backend response models can become.
+
+```js
+import { callEndpoint } from '@spa-tools/api-client';
+
+const groceriesResult = await callEndpoint(
+  'https://dummyjson.com/products/category/:category',
+  // since we're requesting to use "products" as the jsonDataDotPath, the
+  // API Client will deserialize the endpoint response body and then take the
+  // respective "products" property and return it in the result's data property
+  { serverModelOptions: { jsonDataDotPath: 'products' } },
+  { category: 'groceries' }
+);
+console.log(groceriesResult.data); // --> response.body.products
+
+// conversely, if we do NOT specify a jsonDataDotPath, the API Client
+// will retain the backend response body and assign it directly to the
+// result's data property
+const laptopsResult = await callEndpoint('https://dummyjson.com/products/category/:category', {
+  category: 'laptops',
+});
+console.log(groceriesResult.data); // --> response.body
+
+const errorResult = await callEndpoint('https://dummyjson.com/http/500/Example%20api%20error', {
+  // we can also set the dot path for the result's error property, which is nice
+  // for backends that implement custom app error envelopes
+  //
+  // for example, here we're setting the jsonErrorDotPath to "message" so that
+  // the API Client will return the response.body.message value in the result's
+  // error property for any error responses
+  serverModelOptions: { jsonErrorDotPath: 'message' },
+});
+console.error('500 error:', result?.error); // --> response.body.message
+```

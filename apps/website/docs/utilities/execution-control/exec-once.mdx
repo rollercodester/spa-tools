@@ -1,0 +1,62 @@
+---
+title: ExecOnce
+pagination_label: 'Execution Control Utilities: ExecOnce'
+pagination_next: utilities/execution-control/sleep
+pagination_prev: utilities/execution-control/debounce
+sidebar_label: ExecOnce
+slug: /utilities/exec-control/exec-once
+---
+
+import { PackageCaption } from '@site/src/components';
+
+<PackageCaption packageName='@spa-tools/utilities' />
+
+# ExecOnce()
+
+The `ExecOnce<T>()` class ingests a callback that can only be
+executed once per class initialization via the class's `exec` method.
+
+The generic `T` type is used to define the type of the callback.
+
+### Usage
+
+```ts
+import { ExecOnce } from '@spa-tools/utilities';
+
+const fn = (a: number, b: number) => {
+  console.log('executing fn that adds a and b');
+  return a + b;
+};
+
+const execOnce = new ExecOnce(fn);
+
+const result = execOnce.exec(1, 2);
+// --> executing fn that adds a and b
+console.log(result);
+// --> 3
+
+console.log(execOnce.hasExecuted);
+// --> true
+
+const notCalled = execOnce.exec(1, 2);
+console.log(notCalled);
+// --> undefined
+```
+
+### Constructor
+
+| Name       | Type | Description                       |
+| ---------- | ---- | --------------------------------- |
+| `callback` | `T`  | The function to execute only once |
+
+### Methods
+
+#### `exec`
+
+Executes the ingested callback function.
+
+### Properties
+
+#### `hasExecuted`
+
+Returns `true` if the callback has been executed, `false` otherwise.
