@@ -54,13 +54,22 @@ export async function handleJsonResponse<ResultDataType = unknown, ResultErrorTy
       }
 
       if (data) {
+        //
         // the response contained data, so return it
-        return {
-          data,
-          nextPageToken,
-          previousPageToken,
-          total,
-        } satisfies EndpointResult<ResultDataType, ResultErrorType>;
+        //
+        const result: EndpointResult<ResultDataType, ResultErrorType> = { data };
+
+        if (nextPageToken) {
+          result.nextPageToken = nextPageToken;
+        }
+        if (previousPageToken) {
+          result.previousPageToken = previousPageToken;
+        }
+        if (total) {
+          result.total = total;
+        }
+
+        return result;
       }
     }
 

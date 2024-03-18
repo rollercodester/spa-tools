@@ -129,26 +129,11 @@ export function useCallEndpoint<D = unknown, E = unknown, S = unknown>(
 
         const newResult = await callEndpoint<D, E>(normOptions, normState);
 
-        if (!normAppendData || (normAppendData && !Array.isArray(result?.data))) {
-          setResult(newResult);
-
-          if (!Array.isArray(newResult?.data)) {
-            console.error(NON_ARRAY_APPEND_DATA);
-          }
-
-          //
-          // EARLY RETURN because we don't want to append data
-          //
-          return;
-        }
-
         if (newResult?.error) {
-          if (result?.data) {
+          if (normAppendData) {
             setResult((prevResult) => {
-              return {
-                ...prevResult,
-                error: newResult.error,
-              };
+              const normPrevResult = deepMerge(prevResult, newResult);
+              return normPrevResult as EndpointResult<D, E>;
             });
           } else {
             setResult(newResult);
@@ -159,6 +144,21 @@ export function useCallEndpoint<D = unknown, E = unknown, S = unknown>(
           return;
         }
 
+        if (!normAppendData || (normAppendData && !Array.isArray(result?.data))) {
+          setResult(newResult);
+
+          if (normAppendData && newResult?.data && !Array.isArray(newResult?.data)) {
+            console.error(NON_ARRAY_APPEND_DATA);
+          }
+
+          //
+          // EARLY RETURN because we don't want to append data
+          //
+          return;
+        }
+
+        // caller wants to append data and there were no errors,
+        // so merge the new data with the existing data (if any)
         if (newResult?.data) {
           setResult((prevResult) => {
             let normNewResult = deepClone(prevResult);

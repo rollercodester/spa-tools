@@ -1,7 +1,7 @@
 /* eslint-disable no-case-declarations */
 import { hash } from '../../utilities/src/data/hash';
-import { pick } from '../../utilities/src/data/pick';
 import { jsonStringify } from '../../utilities/src/data/json-stringify';
+import { pick } from '../../utilities/src/data/pick';
 import { EndpointOptions, EndpointResult } from './types';
 import {
   handleRequest,

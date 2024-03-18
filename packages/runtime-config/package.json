@@ -29,7 +29,8 @@
     "build": "tsup",
     "test": "vitest run",
     "test:dev": "vitest --ui --coverage",
-    "cli": "node dist/cli.cjs"
+    "cli": "node dist/cli.cjs",
+    "test:cicd": "vitest --run --silent --coverage.enabled --coverage.clean --coverage.thresholds.100"
   },
   "prettier": "prettier-config-spatools",
   "devDependencies": {

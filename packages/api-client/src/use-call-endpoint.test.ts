@@ -13,7 +13,7 @@ describe('useCallEndpoint', () => {
       data: 'example data',
     };
 
-    vi.spyOn(callEndpointMod, 'callEndpoint').mockImplementation(async () => {
+    vi.spyOn(callEndpointMod, 'callEndpoint').mockImplementationOnce(async () => {
       await new Promise((resolve) => setTimeout(resolve, 100));
       return expectedResult;
     });
@@ -50,7 +50,7 @@ describe('useCallEndpoint', () => {
       error,
     };
 
-    vi.spyOn(callEndpointMod, 'callEndpoint').mockImplementation(async () => {
+    vi.spyOn(callEndpointMod, 'callEndpoint').mockImplementationOnce(async () => {
       await new Promise((resolve) => setTimeout(resolve, 100));
       throw new Error(error);
     });
@@ -76,23 +76,17 @@ describe('useCallEndpoint', () => {
 
   it('should append result data when the appendData flag is set', async () => {
     vi.spyOn(callEndpointMod, 'callEndpoint')
-      .mockImplementationOnce(() =>
-        Promise.resolve({
-          data: ['first result'],
-          nextPageToken: '2',
-        })
-      )
-      .mockImplementationOnce(() =>
-        Promise.resolve({
-          data: ['second result A', 'second result B'],
-          nextPageToken: '3',
-        })
-      )
-      .mockImplementationOnce(() =>
-        Promise.resolve({
-          data: ['third result'],
-        })
-      );
+      .mockResolvedValueOnce({
+        data: ['first result'],
+        nextPageToken: '2',
+      })
+      .mockResolvedValueOnce({
+        data: ['second result A', 'second result B'],
+        nextPageToken: '3',
+      })
+      .mockResolvedValueOnce({
+        data: ['third result'],
+      });
 
     const { result } = renderHook(() => useCallEndpoint<string>('https://api/test', true));
 
@@ -149,29 +143,21 @@ describe('useCallEndpoint', () => {
   it('should handle errors when the appendData flag is set', async () => {
     const options = { requestOptions: { url: 'https://api/test' } };
     vi.spyOn(callEndpointMod, 'callEndpoint')
-      .mockImplementationOnce(() =>
-        Promise.resolve({
-          error: 'first error',
-        })
-      )
-      .mockImplementationOnce(() =>
-        Promise.resolve({
-          data: { first: 'result' },
-          nextPageToken: '2',
-        })
-      )
-      .mockImplementationOnce(() =>
-        Promise.resolve({
-          error: 'second error',
-        })
-      )
-      .mockImplementationOnce(() =>
-        Promise.resolve({
-          data: { second: 'result' },
-          nextPageToken: '3',
-        })
-      )
-      .mockImplementationOnce(() => Promise.reject(new Error('third error')));
+      .mockResolvedValueOnce({
+        error: 'first error',
+      })
+      .mockResolvedValueOnce({
+        data: ['first result'],
+        nextPageToken: '2',
+      })
+      .mockResolvedValueOnce({
+        error: 'second error',
+      })
+      .mockResolvedValueOnce({
+        data: ['second result'],
+        nextPageToken: '3',
+      })
+      .mockRejectedValueOnce(new Error('third error'));
 
     const { result } = renderHook(() => useCallEndpoint<string>(options, true));
 
@@ -198,7 +184,7 @@ describe('useCallEndpoint', () => {
     });
 
     expect(result.current[1]).toEqual({
-      data: { first: 'result' },
+      data: ['first result'],
       nextPageToken: '2',
     });
 
@@ -211,7 +197,7 @@ describe('useCallEndpoint', () => {
     });
 
     expect(result.current[1]).toEqual({
-      data: { first: 'result' },
+      data: ['first result'],
       error: 'second error',
       nextPageToken: '2',
     });
@@ -225,7 +211,7 @@ describe('useCallEndpoint', () => {
     });
 
     expect(result.current[1]).toEqual({
-      data: { first: 'result', second: 'result' },
+      data: ['first result', 'second result'],
       nextPageToken: '3',
     });
 
@@ -238,7 +224,7 @@ describe('useCallEndpoint', () => {
     });
 
     expect(result.current[1]).toEqual({
-      data: { first: 'result', second: 'result' },
+      data: ['first result', 'second result'],
       error: 'third error',
       nextPageToken: '3',
     });
