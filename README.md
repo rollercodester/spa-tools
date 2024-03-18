@@ -1,7 +1,6 @@
-<div style='align-items: center; display:flex; flex-direction: row; gap: 1rem;'>
-  <img alt="@spa-tools" height="150" src="./apps/website/static/img/logo.svg?raw=true">
-  <div style='font-size: 3rem'>@spa-tools</div>
-</div>
+<img alt="@spa-tools" height="150" src="./apps/website/static/img/logo.svg?raw=true">
+
+# @spa-tools
 
 
 ## Introduction
