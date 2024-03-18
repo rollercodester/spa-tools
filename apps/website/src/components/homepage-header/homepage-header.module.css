@@ -66,6 +66,10 @@
     width: fit-content;
   }
 
+  #__docusaurus {
+    width: fit-content;
+  }
+
   .heroInduction {
     flex-basis: auto;
     text-align: center;

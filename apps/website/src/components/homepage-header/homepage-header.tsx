@@ -2,7 +2,7 @@ import Link from '@docusaurus/Link';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Heading from '@theme/Heading';
 import { VscDebugStart } from 'react-icons/vsc';
-import styles from './styles.module.css';
+import styles from './homepage-header.module.css';
 
 export function HomepageHeader() {
   const { siteConfig } = useDocusaurusContext();

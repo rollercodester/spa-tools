@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import Heading from '@theme/Heading';
-import styles from './styles.module.css';
+import styles from './homepage-features.module.css';
 
 type FeatureItem = {
   description: JSX.Element;

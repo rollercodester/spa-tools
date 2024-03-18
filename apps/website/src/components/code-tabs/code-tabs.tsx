@@ -1,7 +1,7 @@
 import TabItem from '@theme/TabItem';
 import Tabs from '@theme/Tabs';
 import { SiJavascript, SiReact, SiTypescript } from 'react-icons/si';
-import styles from './styles.module.css';
+import styles from './code-tabs.module.css';
 
 interface CodeTabsProps {
   jsCode?: JSX.Element;
