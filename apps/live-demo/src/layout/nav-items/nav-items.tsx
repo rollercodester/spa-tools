@@ -13,7 +13,7 @@ export function NavItems() {
       <NavLinkListItem route={routes.reactHooksRoute} text='Interaction Hooks' />
       <NavLinkListItem route={routes.utilsRoute} text='Utilities' />
       {!isSmallScreen && <Divider orientation='vertical' sx={{ borderColor: 'gray.500', height: '1.25rem' }} />}
-      <NavLinkListItem href='' text='Get Started' />
+      <NavLinkListItem href='https://rollercodester.github.io/spa-tools' text='Get Started' />
       <NavLinkListItem href='https://github.com/rollercodester/spa-tools' text='GitHub' />
     </>
   );

@@ -29,11 +29,10 @@ export function ObfuscationTabPanel() {
             decrypt+decode the config at runtime.
           </Text>
           <Text sx={{ fontWeight: 'normal', lineHeight: 1.5 }}>
-            {/* TODO: Update this link to the correct URL */}
             For an example of how to create a local, obfuscated config-file at build time, refer to the{' '}
             <Link
               color='purple.500'
-              href='http://localhost:3000/runtime-config/guides/obfuscation'
+              href='https://rollercodester.github.io/spa-tools/runtime-config/guides/obfuscation'
               sx={{ fontWeight: 700 }}
               target='_blank'
             >

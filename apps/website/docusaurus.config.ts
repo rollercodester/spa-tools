@@ -1,3 +1,4 @@
+/* eslint-disable sort-keys-plus/sort-keys */
 import { themes as prismThemes } from 'prism-react-renderer';
 import type * as Preset from '@docusaurus/preset-classic';
 import type { Config } from '@docusaurus/types';
@@ -14,13 +15,9 @@ export default {
   baseUrl: '/',
 
   // Set the production url of your site here
-  url: 'https://your-docusaurus-site.example.com',
+  url: 'https://rollercodester.github.io/spa-tools',
 
-  // GitHub pages deployment config.
-  // If you aren't using GitHub pages, you don't need these.
-  organizationName: 'rollercodester',
-  projectName: 'spa-tools',
-
+  trailingSlash: false,
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
 
@@ -86,7 +83,7 @@ export default {
           to: 'utilities',
         },
         {
-          href: 'http://localhost:5173/',
+          href: 'https://rollercodester.github.io/spa-tools-demo',
           label: 'Live Demo',
           position: 'right',
         },
