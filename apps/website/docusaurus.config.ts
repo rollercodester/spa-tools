@@ -17,7 +17,7 @@ export default {
   // Set the production url of your site here
   url: 'https://rollercodester.github.io',
 
-  trailingSlash: false,
+  trailingSlash: true,
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
 
