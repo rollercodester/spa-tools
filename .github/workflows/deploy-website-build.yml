@@ -30,7 +30,7 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Build monorepo
-        run: pnpm run build
+        run: pnpm build
 
       - name: Deploy Website to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3

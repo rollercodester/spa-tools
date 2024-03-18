@@ -12,10 +12,10 @@ export default {
 
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
-  baseUrl: '/',
+  baseUrl: '/spa-tools',
 
   // Set the production url of your site here
-  url: 'https://rollercodester.github.io/spa-tools',
+  url: 'https://rollercodester.github.io',
 
   trailingSlash: false,
   onBrokenLinks: 'throw',
