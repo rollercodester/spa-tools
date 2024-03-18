@@ -11,22 +11,22 @@ type FeatureItem = {
 const FeatureList: FeatureItem[] = [
   {
     description: <>Minimalist by design&mdash;separating concerns without sacrificing core features.</>,
-    src: '/img/anti-kitchen-sink.png',
+    src: require('@site/static/img/anti-kitchen-sink.png'),
     title: 'Anti-Kitchen-Sink',
   },
   {
     description: <>Written 100% in TypeScript with first-class type support baked right-on in.</>,
-    src: '/img/typescript-logo.png',
+    src: require('@site/static/img/typescript-logo.png'),
     title: 'TypeScript-First',
   },
   {
     description: <>Lean and mean without worrying about package bloat or dependency nightmares.</>,
-    src: '/img/zero-deps.png',
+    src: require('@site/static/img/zero-deps.png'),
     title: 'Zero Dependencies',
   },
   {
     description: <>Only bundle features you import and never again ship dead library code.</>,
-    src: '/img/tree-shake.png',
+    src: require('@site/static/img/tree-shake.png'),
     title: 'Tree-Shakable',
   },
 ];
