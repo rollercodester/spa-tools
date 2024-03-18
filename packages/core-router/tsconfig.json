@@ -1,5 +1,0 @@
-{
-  "extends": "typescript-config-spatools/react-library.json",
-  "include": ["./src", "../../mocks"],
-  "exclude": ["dist", "node_modules"]
-}
