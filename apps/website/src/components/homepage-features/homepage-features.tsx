@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
+import useBaseUrl from '@docusaurus/useBaseUrl';
 import Heading from '@theme/Heading';
 import styles from './styles.module.css';
 
@@ -11,22 +12,22 @@ type FeatureItem = {
 const FeatureList: FeatureItem[] = [
   {
     description: <>Minimalist by design&mdash;separating concerns without sacrificing core features.</>,
-    src: require('@site/static/img/anti-kitchen-sink.png'),
+    src: '/img/anti-kitchen-sink.png',
     title: 'Anti-Kitchen-Sink',
   },
   {
     description: <>Written 100% in TypeScript with first-class type support baked right-on in.</>,
-    src: require('@site/static/img/typescript-logo.png'),
+    src: '/img/typescript-logo.png',
     title: 'TypeScript-First',
   },
   {
     description: <>Lean and mean without worrying about package bloat or dependency nightmares.</>,
-    src: require('@site/static/img/zero-deps.png'),
+    src: '/img/zero-deps.png',
     title: 'Zero Dependencies',
   },
   {
     description: <>Only bundle features you import and never again ship dead library code.</>,
-    src: require('@site/static/img/tree-shake.png'),
+    src: '/img/tree-shake.png',
     title: 'Tree-Shakable',
   },
 ];
@@ -35,7 +36,7 @@ function Feature({ description, src, title }: FeatureItem) {
   return (
     <div className={styles.featureContainer}>
       <div className='text--center'>
-        <img alt={title} className={styles.featureImg} src={src} />
+        <img alt={title} className={styles.featureImg} src={useBaseUrl(src)} />
       </div>
       <div className='text--center padding-horiz--md'>
         <Heading as='h3'>{title}</Heading>

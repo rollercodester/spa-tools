@@ -49,7 +49,7 @@ export default {
       disableSwitch: false,
       respectPrefersColorScheme: true,
     },
-    image: 'img/social-card.jpeg',
+    image: 'img/social-card.jpg',
     navbar: {
       items: [
         {
