@@ -19,9 +19,13 @@ View the [@spa-tools documentation site](https://spa-tools.github.io) for comple
 
 ## Contributing
 
-If you're interested in contributing to @spa-tools, please first create an issue on the [@spa-tools monorepo in GitHub](https://github.com/rollercodester/spa-tools)
-or comment on an existing issue. From there we can discuss the feature or bugfix you're interested in and how best to approach it.
-In terms of workflow, we use the standard approach of forking the repo, creating a PR, and merging after tesing/approval.
+If you're interested in contributing to @spa-tools, please search and see if there's already an  [existing issue for the feature/bug](https://github.com/rollercodester/spa-tools/issues).
+
+If you find an existing issue for what you'd like contribute, please addd acomment on the respective issue. If you can't find an existing issue or you'e short on time, please go ahead and
+[create a new issue](https://github.com/rollercodester/spa-tools/issues/new/choose).
+
+From there we can discuss the feature or bugfix you're interested in and how best to approach it.
+In terms of workflow, we use the standard approach of forking the repo, creating a PR, and merging after tesing/approval. If you have questions regarding contributing in general, please take a gander at the [Contributions Board](https://github.com/rollercodester/spa-tools/discussions/categories/contributing).
 
 ### Unit Test Coverage
 
@@ -29,6 +33,18 @@ All packages in @spa-tools require 100% unit test coverage. This is a condition 
 
 The only exception is when native code is being wrapped and coverage is either not possible or redundant, which can be discussed on a case-by-case basis
 during the approval process.
+
+## Bugs
+
+Found a bug? We'd super appreciate you reporting it by [creating a new bug report](https://github.com/rollercodester/spa-tools/issues/new?assignees=&labels=&projects=&template=bug_report.md&title=).
+
+## Feature/Package Ideas
+
+Do you have ideas for tools/features to add but don't have time to contribute? No worries, we still want to capture your idea for discussion: please create a post under the [Ideas Board](https://github.com/rollercodester/spa-tools/discussions/categories/ideas).
+
+## Got Questions?
+
+Post your question on the [Q/A Board](https://github.com/rollercodester/spa-tools/discussions/categories/q-a).
 
 ## License
 
