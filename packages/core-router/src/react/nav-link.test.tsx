@@ -28,6 +28,9 @@ const Layout = ({ children }: { children: React.ReactNode }) => (
     <NavLink onClick={onClickSpy}>
       <p>On Click Nav</p>
     </NavLink>
+    <NavLink href='https://spatools/login'>
+      <p>On Href Nav</p>
+    </NavLink>
     <div>{children}</div>
   </div>
 );
@@ -162,6 +165,28 @@ describe('NavLink', () => {
 
     await waitFor(() => {
       expect(onClickSpy).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  it('should not change current view when href is specified', async () => {
+    render(
+      <CoreReactRouter fallbackRoute={routes.homeRoute} onRouteRequest={() => Promise.resolve()} routes={routes} />
+    );
+
+    act(() => {
+      window.location.pathname = '/login';
+    });
+
+    await waitFor(() => {
+      expect(screen.getByText('On Href Nav'));
+    });
+
+    fireEvent.click(screen.getByText('On Href Nav'));
+
+    await new Promise((resolve) => setTimeout(resolve, 500));
+
+    await waitFor(() => {
+      expect(screen.getByText('Login'));
     });
   });
 

@@ -2,6 +2,7 @@ import { isRecord } from '../../utilities/src/conditionals/is-record';
 import { deepClone } from '../../utilities/src/data/deep-clone';
 import { PathMatcher, parseRoute } from './utils';
 
+export const INVALID_ROUTE_REQUEST_CB_VALUE_WARNING = 'WARNING: Invalid route request callback value';
 export const INVALID_STATE_WARNING =
   'WARNING: Invalid navigaion state detected; router navigation state can only be a plain object or array';
 
@@ -21,6 +22,7 @@ export class CoreRouter<R extends CoreRoute = CoreRoute> {
   private lastRenderedState: UnknownState = undefined;
   private routeToRender: R | null | undefined = undefined;
   private stateToRender: UnknownState = undefined;
+  private hashForReplace: string | null | undefined = undefined;
 
   private constructor(routes: Record<string, R>, options?: CoreRouterOptions<R>) {
     const normOptions = deepClone<CoreRouterOptions<R>>(options || {});
@@ -67,7 +69,7 @@ export class CoreRouter<R extends CoreRoute = CoreRoute> {
 
     const path = normUrl.pathname + normUrl.search;
     const normHash = normalizeHash(hash);
-    const newURL = `${path}${normHash}`;
+    const newURL = path.includes(normHash) ? path : `${path}${normHash}`;
 
     window.history.pushState(normState, '', newURL);
     window.dispatchEvent(popStateEvent);
@@ -81,7 +83,12 @@ export class CoreRouter<R extends CoreRoute = CoreRoute> {
 
         if (hashElem) {
           window.clearInterval(intervalId);
-          hashElem.scrollIntoView({ behavior: normRoute.hashScrollBehavior || 'auto' });
+          // try block is purely so that we can test this function
+          // in NodeJS without worrying about mocking scrollIntoView
+          try {
+            hashElem.scrollIntoView({ behavior: normRoute.hashScrollBehavior || 'auto' });
+            // eslint-disable-next-line no-empty
+          } catch {}
         }
 
         if (tries > 20) {
@@ -176,7 +183,7 @@ export class CoreRouter<R extends CoreRoute = CoreRoute> {
           //
           // consumer has responded with an invalid tuple
           //
-          console.error('WARNING: Invalid route change request.');
+          console.error(INVALID_ROUTE_REQUEST_CB_VALUE_WARNING);
           this.routeToRender = this.lastRenderedRoute || this.options.fallbackRoute;
           this.stateToRender = this.lastRenderedState || this.options.fallbackState || {};
           this.replaceLastHistoryEntry(true);
@@ -194,7 +201,7 @@ export class CoreRouter<R extends CoreRoute = CoreRoute> {
           const hashToRender = typeof feedback[1] === 'string' ? feedback[1] : feedback[2];
           const normHash = normalizeHash(hashToRender);
           if (normHash && this.routeToRender) {
-            this.routeToRender.path += normHash;
+            this.hashForReplace = normHash;
           }
           this.replaceLastHistoryEntry();
         }
@@ -229,7 +236,11 @@ export class CoreRouter<R extends CoreRoute = CoreRoute> {
       if (goBackInstead) {
         window.history.back();
       } else {
-        window.history.replaceState(this.stateToRender, '', this.routeToRender?.path);
+        const path =
+          !this.hashForReplace || this.routeToRender?.path.includes(this.hashForReplace)
+            ? this.routeToRender?.path
+            : `${this.routeToRender?.path}${this.hashForReplace}`;
+        window.history.replaceState(this.stateToRender, '', path);
       }
     }
   };
