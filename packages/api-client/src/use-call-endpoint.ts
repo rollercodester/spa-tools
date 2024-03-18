@@ -14,7 +14,7 @@ import {
 import { normalizeOptions } from './utils';
 
 export const INVALID_METHOD_FOR_APPEND_DATA = 'appendData is only supported for GET requests';
-export const NON_ARRAY_APPEND_DATA = 'WARNING: appendData is only supported for array data and result was not an array';
+export const NON_ARRAY_APPEND_DATA = 'appendData is only supported for array data and result was not an array';
 
 /**
  * React hook that returns a tuple containing the following positional elments:
@@ -92,35 +92,29 @@ export function useCallEndpoint<D = unknown, E = unknown, S = unknown>(
 
         if (result?.data && normAppendData) {
           if (result && result?.data) {
-            if (Array.isArray(result?.data)) {
-              if (result.nextPageToken) {
-                //
-                // endpoint returned a next page token, so add it to the request
-                //
-                (normOptions as NormEndpointOptionsDefaults).requestOptions.pageToken = result?.nextPageToken;
-              }
-
-              if (result.total) {
-                //
-                // endpoint returned a record total so set the record skip value
-                //
-                (normOptions as NormEndpointOptionsDefaults).requestOptions.recordSkip = result.data.length;
-              }
-
-              if (
-                (result.total && normOptions.requestOptions.recordSkip && result.data.length >= result.total) ||
-                (!normOptions.requestOptions.recordSkip && !result?.nextPageToken)
-              ) {
-                //
-                // EARLY RETURN because there's no more pages to fetch
-                //
-                return;
-              }
-            } else {
-              console.error(NON_ARRAY_APPEND_DATA);
-
+            if (result.nextPageToken) {
               //
-              // EARLY RETURN because non-array data returned
+              // endpoint returned a next page token, so add it to the request
+              //
+              (normOptions as NormEndpointOptionsDefaults).requestOptions.pageToken = result?.nextPageToken;
+            }
+
+            if (result.total && Array.isArray(result.data)) {
+              //
+              // endpoint returned a record total so set the record skip value
+              //
+              (normOptions as NormEndpointOptionsDefaults).requestOptions.recordSkip = result.data.length;
+            }
+
+            if (
+              (result.total &&
+                normOptions.requestOptions.recordSkip &&
+                Array.isArray(result.data) &&
+                result.data.length >= result.total) ||
+              (!normOptions.requestOptions.recordSkip && !result?.nextPageToken)
+            ) {
+              //
+              // EARLY RETURN because there's no more pages to fetch
               //
               return;
             }
@@ -145,11 +139,11 @@ export function useCallEndpoint<D = unknown, E = unknown, S = unknown>(
         }
 
         if (!normAppendData || (normAppendData && !Array.isArray(result?.data))) {
-          setResult(newResult);
-
           if (normAppendData && newResult?.data && !Array.isArray(newResult?.data)) {
-            console.error(NON_ARRAY_APPEND_DATA);
+            throw new Error(NON_ARRAY_APPEND_DATA);
           }
+
+          setResult(newResult);
 
           //
           // EARLY RETURN because we don't want to append data
@@ -165,19 +159,11 @@ export function useCallEndpoint<D = unknown, E = unknown, S = unknown>(
             delete normNewResult?.nextPageToken;
             delete normNewResult?.total;
 
-            if (!normNewResult?.data) {
-              normNewResult = {
-                ...normNewResult,
-                data: newResult.data,
-                error: newResult.error,
-              };
-            } else {
-              normNewResult = {
-                ...normNewResult,
-                data: deepMerge(normNewResult.data, newResult.data),
-                error: newResult.error,
-              };
-            }
+            normNewResult = {
+              ...normNewResult,
+              data: deepMerge(normNewResult?.data, newResult.data),
+              error: newResult.error,
+            };
 
             if (newResult.nextPageToken) {
               normNewResult.nextPageToken = newResult.nextPageToken;

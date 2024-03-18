@@ -1,6 +1,12 @@
+import { setOptionsDefaults } from '../set-options-defaults';
 import { handleJsonResponse } from './handle-json-response';
 
 describe('handleJsonResponse', () => {
+  afterEach(() => {
+    // Reset optionsDefaults to its original state after each test
+    setOptionsDefaults({});
+  });
+
   it('should handle a response with valid JSON data', async () => {
     const jsonDataDotPath = 'data';
     const jsonNextPageTokenDotPath = 'nextPageTokenX';
@@ -83,6 +89,40 @@ describe('handleJsonResponse', () => {
 
     const result = await handleJsonResponse({
       jsonDataDotPath,
+      response,
+    });
+
+    expect(result).toEqual({
+      data: {
+        id: 1,
+        name: 'John Doe',
+      },
+      nextPageToken: 'abc123',
+      previousPageToken: 'xyz789',
+    });
+  });
+
+  it('should use optionsDefaults', async () => {
+    setOptionsDefaults({
+      serverModelOptions: {
+        jsonDataDotPath: 'data.nested',
+      },
+    });
+
+    const response = new Response(
+      JSON.stringify({
+        data: {
+          nested: {
+            id: 1,
+            name: 'John Doe',
+          },
+        },
+        nextPageToken: 'abc123',
+        previousPageToken: 'xyz789',
+      })
+    );
+
+    const result = await handleJsonResponse({
       response,
     });
 

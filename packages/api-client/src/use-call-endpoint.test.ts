@@ -1,7 +1,7 @@
 import { act, renderHook } from '@testing-library/react';
 import * as callEndpointMod from './call-endpoint';
 import { EndpointOptions } from './types';
-import { INVALID_METHOD_FOR_APPEND_DATA, useCallEndpoint } from './use-call-endpoint';
+import { INVALID_METHOD_FOR_APPEND_DATA, NON_ARRAY_APPEND_DATA, useCallEndpoint } from './use-call-endpoint';
 
 describe('useCallEndpoint', () => {
   afterEach(() => {
@@ -24,7 +24,9 @@ describe('useCallEndpoint', () => {
     expect(result.current[2]).toBe(false);
 
     act(() => {
-      result.current[0]();
+      result.current[0]({
+        recordSkip: 10,
+      });
     });
 
     expect(result.current[2]).toBe(true);
@@ -44,7 +46,7 @@ describe('useCallEndpoint', () => {
     expect(result.current[1]).toBeUndefined();
   });
 
-  it('should update result and pending flag when execute fails', async () => {
+  it('should update result and pending flag when execute throws', async () => {
     const error = 'example error';
     const expectedResult = {
       error,
@@ -54,6 +56,34 @@ describe('useCallEndpoint', () => {
       await new Promise((resolve) => setTimeout(resolve, 100));
       throw new Error(error);
     });
+
+    const { result } = renderHook(() => useCallEndpoint<void, string>('https://api/test'));
+
+    expect(result.current[1]).toBeUndefined();
+    expect(result.current[2]).toBe(false);
+
+    act(() => {
+      result.current[0]({
+        signal: new AbortController().signal,
+      });
+    });
+
+    expect(result.current[2]).toBe(true);
+
+    await act(async () => {
+      await new Promise((resolve) => setTimeout(resolve, 200));
+    });
+
+    expect(result.current[1]).toEqual(expectedResult);
+    expect(result.current[2]).toBe(false);
+  });
+
+  it('should handle api error', async () => {
+    const expectedResult = {
+      error: 'example error',
+    };
+
+    vi.spyOn(callEndpointMod, 'callEndpoint').mockResolvedValue(expectedResult);
 
     const { result } = renderHook(() => useCallEndpoint<void, string>('https://api/test'));
 
@@ -76,13 +106,16 @@ describe('useCallEndpoint', () => {
 
   it('should append result data when the appendData flag is set', async () => {
     vi.spyOn(callEndpointMod, 'callEndpoint')
+      .mockResolvedValueOnce({})
       .mockResolvedValueOnce({
         data: ['first result'],
         nextPageToken: '2',
+        total: 20,
       })
       .mockResolvedValueOnce({
         data: ['second result A', 'second result B'],
         nextPageToken: '3',
+        total: 20,
       })
       .mockResolvedValueOnce({
         data: ['third result'],
@@ -100,9 +133,20 @@ describe('useCallEndpoint', () => {
       await new Promise((resolve) => setTimeout(resolve, 200));
     });
 
+    expect(result.current[1]).toEqual({});
+
+    act(() => {
+      result.current[0]();
+    });
+
+    await act(async () => {
+      await new Promise((resolve) => setTimeout(resolve, 200));
+    });
+
     expect(result.current[1]).toEqual({
       data: ['first result'],
       nextPageToken: '2',
+      total: 20,
     });
 
     act(() => {
@@ -116,6 +160,7 @@ describe('useCallEndpoint', () => {
     expect(result.current[1]).toEqual({
       data: ['first result', 'second result A', 'second result B'],
       nextPageToken: '3',
+      total: 20,
     });
 
     act(() => {
@@ -246,6 +291,28 @@ describe('useCallEndpoint', () => {
 
     expect(result.current[1]).toEqual({
       error: INVALID_METHOD_FOR_APPEND_DATA,
+    });
+  });
+
+  it('should console error when append result returns non-array data', async () => {
+    vi.spyOn(callEndpointMod, 'callEndpoint').mockResolvedValueOnce({
+      data: 'invalid result',
+    });
+
+    const { result } = renderHook(() => useCallEndpoint<string>('https://api/test', true));
+
+    expect(result.current[1]).toBeUndefined();
+
+    act(() => {
+      result.current[0]();
+    });
+
+    await act(async () => {
+      await new Promise((resolve) => setTimeout(resolve, 200));
+    });
+
+    expect(result.current[1]).toEqual({
+      error: NON_ARRAY_APPEND_DATA,
     });
   });
 });
