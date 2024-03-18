@@ -1,0 +1,88 @@
+---
+title: Throttling
+pagination_label: 'API Client Guide: Throttling'
+pagination_next: api-client/guide-caching
+pagination_prev: api-client/getting-started
+sidebar_label: Throttling
+slug: /api-client/guides/throttling
+---
+
+import { PackageCaption } from '@site/src/components';
+
+<PackageCaption packageName='@spa-tools/api-client' />
+
+# Throttling
+
+Throttling is crucial to backend APIs for traffic control, but what about throttling on the frontend? And why should you even consider it?
+
+In modern Web UIs, calls to backends comingle with interaction flows to the point of even hooking into render logic. Thus, frontends should be cognizant of the possibility and even the probability of erroneous, duplicate API requests being made, especially considering the complexities of today's render frameworks.
+
+To address this concern, the `@spa-tools/api-client` package includes a built-in throttling mechanism to help you manage how often a particular request can be made to the server from your SPA.
+
+```ts
+import { callEndpoint } from '@spa-tools/api-client';
+
+async function getAlbumPhotos(albumId: number) {
+  const result = await callEndpoint(
+    'https://jsonplaceholder.typicode.com/albums/:albumId/photos',
+    // pass in an options object to configure the throttle settings
+    {
+      consoleOptions: {
+        // turn console logging ON for throttle hits so we can
+        // easily see every time a request is throttled, which
+        // is useful for debugging and understanding how the
+        // throttle is working; however, it's advised to keep
+        // this turned off in production environments
+        logThrottleCacheHits: true,
+        //
+        // set the threshold for the number of throttles that can
+        // occur within the configured TTL before an error-warning
+        // is logged to the console
+        //
+        // the real-world goal here is to use this error-warning as
+        // a bug indicator to know when your app is making too many
+        // dupe requests. The threshold is of course dependent on
+        // how data calls are made in conjunction with your render
+        // logic. For example, a React app that makes data requests
+        // via useEffect hooks can easily result in unexpected dupe
+        // calls that are par for the course, so a higher threshold
+        // setting would make sense in that scenario.
+        logThrottleWarningsThreshold: 3,
+      },
+      frequencyOptions: {
+        // set the frequency strategy to throttle
+        frequencyStrategy: 'throttle',
+        // set the time-to-live for the throttle (in ms), meaning
+        // a dupe call will be allowed after this time has passed
+        frequencyStrategyTTL: 300,
+      },
+    },
+    // set state object to interpolate path parameter value
+    { albumId }
+  );
+
+  if (!result) {
+    // this means call was throttled
+    return;
+  }
+
+  console.log(`Photos for album with ID "${albumId}":`);
+  console.log(result?.data);
+}
+
+// first two calls are distinct and will be made to the API endpoint
+getAlbumPhotos(1);
+getAlbumPhotos(8);
+// following three calls will be throttled (no more calls will be
+// made to the API endpoint)
+getAlbumPhotos(8);
+getAlbumPhotos(8);
+// this call will cross the configured throttle warning threshold
+// so an error-warning will be logged
+getAlbumPhotos(8);
+
+setTimeout(() => {
+  // the throttle will reset after 300ms so this call will be made
+  getAlbumPhotos(8);
+}, 350);
+```

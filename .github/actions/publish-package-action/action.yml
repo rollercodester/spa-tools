@@ -1,0 +1,49 @@
+name: "publish-package-action"
+description: "This action runs linting, tests, and builds the @spa-tools monorepo and then publishes the package that is parsed from the tag of the release when the tag is in the format of '<semver>_<package-name>'"
+author: "Ryan Howard (rollercodester)"
+inputs:
+  npm-publish-tag:
+    description: "The npm-tag to publish the package with"
+    required: false
+    default: latest
+  npm-token:
+    description: "The npm token to use for publishing"
+    required: true
+runs:
+  using: "composite"
+  steps:
+    - id: get_version
+      name: Get version
+      # this action gets the version from the tag and
+      # automatically removes leading 'v', if present
+      uses: jannemattila/get-version-from-tag@v3
+    - id: parsed-semver-package
+      name: Parse Semver and Package
+      uses: kaisugi/action-regex-match@v1.0.1
+      with:
+        text: ${{ steps.get_version.outputs.version }}
+        # This regex matches a semver version and a package name separated by a _
+        regex: '^(\d+\.\d+\.\d+(-[A-Za-z\d.]+)?)_([A-Za-z\d-]+)$'
+    - name: Test and Build Monorepo
+      if: ${{ steps.parsed-semver-package.outputs.group1 != '' && steps.parsed-semver-package.outputs.group3 != '' }}
+      uses: ./.github/actions/test-and-build-monorepo-action
+      with:
+        run-build: true
+    - name: Version Update
+      if: ${{ steps.parsed-semver-package.outputs.group1 != '' && steps.parsed-semver-package.outputs.group3 != '' }}
+      run: pnpm version ${{ steps.parsed-semver-package.outputs.group1 }}
+      shell: bash
+      working-directory: packages/${{ steps.parsed-semver-package.outputs.group3 }}
+    - name: Commit Updated Version
+      if: ${{ steps.parsed-semver-package.outputs.group1 != '' && steps.parsed-semver-package.outputs.group3 != '' }}
+      uses: stefanzweifel/git-auto-commit-action@v4
+      with:
+        file_pattern: packages/${{ steps.parsed-semver-package.outputs.group3 }}/package.json
+        branch: main
+        commit_message: Auto-committed package.json version update to ${{ steps.parsed-semver-package.outputs.group1 }} for @spa-tools/${{ steps.parsed-semver-package.outputs.group3 }}
+    - name: Publish Package
+      if: ${{ steps.parsed-semver-package.outputs.group1 != '' && steps.parsed-semver-package.outputs.group3 != '' }}
+      run: pnpm publish --tag ${{ inputs.npm-publish-tag }} --access public --filter ${{ steps.parsed-semver-package.outputs.group3 }}
+      shell: bash
+      env:
+        NODE_AUTH_TOKEN: ${{ inputs.npm-token }}

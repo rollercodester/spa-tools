@@ -1,0 +1,57 @@
+---
+title: pick
+pagination_label: 'Data Utilities: pick'
+pagination_next: utilities/dates/add-days
+pagination_prev: utilities/data/omit
+sidebar_label: pick
+slug: /utilities/data/pick
+---
+
+import { PackageCaption } from '@site/src/components';
+
+<PackageCaption packageName='@spa-tools/utilities' />
+
+# pick()
+
+The `pick<T>()` function is similar to the TypeScript `Pick` utility type, but it is used
+at runtime to return a new object with one or more properties picked from the provided object.
+
+The generic `T` type is used to define the type of the object that is picked from.
+
+### Usage
+
+```ts
+import { pick } from '@spa-tools/utilities';
+
+const person = {
+  address: {
+    city: 'New York',
+    country: 'USA',
+  },
+  childrenAges: [8, 10],
+  id: 1,
+  name: 'John',
+};
+
+const newPerson = pick(person, 'address', 'name');
+console.log(newPerson);
+// -->
+// {
+//   address: {
+//     city: 'New York',
+//     country: 'USA'
+//   },
+//   name: 'John'
+// }
+```
+
+### Arguments
+
+| Name      | Type       | Description                  |
+| --------- | ---------- | ---------------------------- |
+| `obj`     | `T`        | The object to pick from      |
+| `...keys` | `string[]` | A param list of keys to pick |
+
+### Returns
+
+Returns object as type of `Pick<T, keyof T>`.

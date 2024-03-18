@@ -1,0 +1,29 @@
+name: Test and Build
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "packages/**"
+      # don't trigger for coverage-badge changes because they are committed
+      # as part of the CI/CD pipeline for automatic code coverage report
+      - "!packages/**/coverage-badge.svg"
+      # don't trigger for package.json changes because they are committed as
+      # part of the CI/CD pipeline for automatic version bump
+      - "!packages/**/package.json"
+
+jobs:
+  test-build:
+    name: Test and Build Monorepo
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Test and Build Monorepo
+        uses: ./.github/actions/test-and-build-monorepo-action
+        with:
+          generate-coverage-badges: true
+          run-build: true

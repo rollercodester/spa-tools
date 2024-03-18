@@ -1,0 +1,20 @@
+name: Test
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - packages/**
+
+jobs:
+  test:
+    name: Test Monorepo
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Test Monorepo
+        uses: ./.github/actions/test-and-build-monorepo-action

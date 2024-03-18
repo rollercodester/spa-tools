@@ -1,0 +1,5 @@
+{
+  "extends": "typescript-config-spatools/base.json",
+  "include": ["./src", "src/nodejs-obfuscation"],
+  "exclude": ["dist", "node_modules"]
+}

@@ -1,0 +1,52 @@
+---
+title: debounce
+pagination_label: 'Execution Control Utilities: debounce'
+pagination_next: utilities/execution-control/exec-once
+pagination_prev: utilities/errors/normalize-error
+sidebar_label: debounce
+slug: /utilities/exec-control/debounce
+---
+
+import { PackageCaption } from '@site/src/components';
+
+<PackageCaption packageName='@spa-tools/utilities' />
+
+# debounce()
+
+The `debounce<T>()` function wraps another function to ensure that it is not called more
+than once per given `delay` milliseconds. It is useful for preventing a function from
+being called too frequently, such as when handling user input.
+
+The generic `T` type is used to define the type of the function that is debounced.
+
+### Usage
+
+```ts
+import { debounce } from '@spa-tools/utilities';
+
+const debounced = debounce((a: number, b: number) => {
+  console.log(a, b);
+}, 1000);
+
+const start = Date.now();
+const intervalId = setInterval(() => {
+  if (Date.now() - start > 3000) {
+    clearInterval(intervalId);
+  } else {
+    // this will only get called every 1000ms
+    // instead of every 50ms
+    debounced(1, 2);
+  }
+}, 50);
+```
+
+### Arguments
+
+| Name    | Type     | Description                                               |
+| ------- | -------- | --------------------------------------------------------- |
+| `fn`    | `T`      | The function to debounce                                  |
+| `delay` | `number` | The number of milliseconds to delay between allowed calls |
+
+### Returns
+
+Returns debounced function of type of `T`.

@@ -1,0 +1,50 @@
+---
+title: addSeconds
+pagination_label: 'Date Utilities: addSeconds'
+pagination_next: utilities/dates/add-weeks
+pagination_prev: utilities/dates/add-months
+sidebar_label: addSeconds
+slug: /utilities/dates/add-seconds
+---
+
+import { PackageCaption } from '@site/src/components';
+
+<PackageCaption packageName='@spa-tools/utilities' />
+
+# addSeconds()
+
+The `addSeconds()` function adds a number of seconds to a given date object,
+timestamp integer, or date string.
+
+### Usage
+
+```ts
+import { addSeconds } from '@spa-tools/utilities';
+
+const date = new Date('2021-01-01');
+console.log(date.toLocaleDateString('en-US', { hour: 'numeric', minute: 'numeric', second: 'numeric' }));
+// --> '01/01/2021 12:00:00 AM'
+
+const newDate1 = addSeconds(date, 5);
+console.log(newDate1.toLocaleDateString('en-US', { hour: 'numeric', minute: 'numeric', second: 'numeric' }));
+// --> '01/01/2021 12:00:05 AM'
+
+const newDate2 = addSeconds(date, 60);
+console.log(newDate2.toLocaleDateString('en-US', { hour: 'numeric', minute: 'numeric', second: 'numeric' }));
+// --> '01/01/2021 12:01:00 AM'
+
+const newDate3 = addSeconds(date, -60);
+console.log(newDate3.toLocaleDateString('en-US', { hour: 'numeric', minute: 'numeric', second: 'numeric' }));
+// --> '12/31/2020 11:59:00 PM'
+```
+
+### Arguments
+
+| Name      | Type                       | Required? | Description                                                                               |
+| --------- | -------------------------- | --------- | ----------------------------------------------------------------------------------------- |
+| `date`    | `string \| number \| Date` | yes       | The date value to add seconds to as either date string, timestamp integer, or date object |
+| `seconds` | `number`                   | yes       | The number of seconds to add                                                              |
+
+### Returns
+
+`Date` - The new date object with the added seconds.

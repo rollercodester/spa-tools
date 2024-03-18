@@ -1,0 +1,39 @@
+---
+title: isLeapYear
+pagination_label: 'Conditional Utilities: isLeapYear'
+pagination_next: utilities/conditionals/is-not-empty-record
+pagination_prev: utilities/conditionals/is-future
+sidebar_label: isLeapYear
+slug: /utilities/conditionals/is-leap-year
+---
+
+import { PackageCaption } from '@site/src/components';
+
+<PackageCaption packageName='@spa-tools/utilities' />
+
+# isLeapYear()
+
+The `isLeapYear()` function checks if a date value equates to a date that falls in a leap year.
+
+### Usage
+
+```ts
+import { isLeapYear } from '@spa-tools/utilities';
+
+const leapYear = new Date('2020-01-01');
+console.log(isLeapYear(leapYear));
+// --> true
+
+console.log(isLeapYear('2021-12-31'));
+// --> false
+```
+
+### Arguments
+
+| Name   | Type                       | Required? | Description                                                                      |
+| ------ | -------------------------- | --------- | -------------------------------------------------------------------------------- |
+| `date` | `string \| number \| Date` | yes       | The date value to check as either date string, timestamp integer, or date object |
+
+### Returns
+
+`boolean` - If value of `date` equates to a date that falls in a leap year then returns `true` else returns `false`.

@@ -1,0 +1,99 @@
+---
+title: API Client
+pagination_label: 'API Client: Getting Started'
+pagination_next: api-client/guide-throttling
+pagination_prev: overview/welcome
+hide_table_of_contents: false
+slug: /api-client
+---
+
+import { FaCreativeCommonsZero } from 'react-icons/fa';
+import { GiRaceCar } from 'react-icons/gi';
+import { LuPackageOpen, LuTrees } from 'react-icons/lu';
+import { MdMemory } from 'react-icons/md';
+import { PiTreeStructureDuotone } from 'react-icons/pi';
+import { SiTypescript } from 'react-icons/si';
+import { TbTransformFilled, TbBrandReact } from 'react-icons/tb';
+import {
+  CodeTabs,
+  ApiClientGettingStartedJsCode,
+  ApiClientGettingStartedTsCode,
+  ApiClientGettingStartedReactTsCode,
+  ApiClientGettingStartedReactJsCode,
+  OverviewFeatures,
+  SectionText,
+} from '@site/src/components';
+
+**@spa-tools/api-client** excels in calling HTTP API endpoints with features specifically designed
+for modern, data-driven web applications. If your SPA has data workflows requiring calls to backend
+APIs (public and/or private), then this tool may be just what the doctor ordered.
+
+<OverviewFeatures
+  features={[
+    {
+      title: 'Throttling',
+      icon: <GiRaceCar fontSize='3.5rem' />,
+      titleStyle: { position: 'relative', top: '-0.75rem' },
+    },
+    {
+      title: 'Caching',
+      icon: <MdMemory fontSize='2rem' />,
+    },
+    {
+      title: 'State Interpolation',
+      icon: <PiTreeStructureDuotone fontSize='1.75rem' />,
+    },
+    {
+      title: 'Result Mapping',
+      icon: <TbTransformFilled fontSize='1.75rem' />,
+    },
+    {
+      title: 'React (or not)',
+      icon: <TbBrandReact fontSize='1.75rem' />,
+    },
+    {
+      title: 'TypeScript First',
+      icon: <SiTypescript fontSize='1.75rem' />,
+    },
+    {
+      title: 'Zero Dependencies',
+      icon: <FaCreativeCommonsZero fontSize='1.75rem' />,
+    },
+    {
+      title: (
+        <>
+          14 kB <span style={{ fontWeight: 500 }}>cjs</span> → 16 kB <span style={{ fontWeight: 500 }}>pkg</span>
+        </>
+      ),
+      icon: <LuPackageOpen fontSize='1.75rem' />,
+    },
+    {
+      title: 'Tree-shakable',
+      icon: <LuTrees fontSize='2rem' />,
+      titleStyle: { position: 'relative', top: '-0.12rem' },
+    },
+  ]}
+/>
+
+## Installation
+
+<SectionText bottomMargin='0' topMargin='0'>
+  To install API Client in your project, use your favorite package manager and run the respective command:
+</SectionText>
+
+```bash npm2yarn
+npm install @spa-tools/api-client
+```
+
+## Quickstart
+
+<SectionText bottomMargin='0' topMargin='0'>
+  Choose your preferred implementation:
+</SectionText>
+
+<CodeTabs
+  jsCode={<ApiClientGettingStartedJsCode />}
+  tsCode={<ApiClientGettingStartedTsCode />}
+  reactJsCode={<ApiClientGettingStartedReactJsCode />}
+  reactTsCode={<ApiClientGettingStartedReactTsCode />}
+/>

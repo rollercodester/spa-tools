@@ -1,0 +1,21 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "globalDependencies": ["**/.env.*local"],
+  "globalEnv": ["APP_HOSTNAME"],
+  "pipeline": {
+    "lint": {
+      "inputs": ["src/**/*.tsx", "src/**/*.ts"]
+    },
+    "test:dev": {
+      "cache": false,
+      "inputs": ["src/**/*.tsx", "src/**/*.ts"]
+    },
+    "test:cicd": {
+      "inputs": ["src/**/*.tsx", "src/**/*.ts"]
+    },
+    "build": {
+      "inputs": ["src/**/*.tsx", "src/**/*.ts"],
+      "outputs": ["dist/**"]
+    }
+  }
+}

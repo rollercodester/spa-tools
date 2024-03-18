@@ -1,0 +1,66 @@
+---
+title: Welcome!
+pagination_label: Overview
+slug: /overview
+---
+
+import { SiTypescript } from 'react-icons/si';
+import { FaCreativeCommonsZero } from 'react-icons/fa';
+import { LuPackageOpen, LuTrees } from 'react-icons/lu';
+import { OverviewFeatures, SectionText } from '@site/src/components';
+
+# Welcome!
+
+`@spa-tools` is a collection of packages aimed at helping engineers _better-build_ single-page applications.
+It came about after years of shipping real-world, business-focused SPAs and then taking a handful of the resulting
+wants+learnings and distilling them into a set of packages that can be used in any modern Web project.
+
+<OverviewFeatures
+  features={[
+    {
+      title: 'TypeScript First',
+      icon: <SiTypescript fontSize='1.75rem' />,
+    },
+    {
+      title: 'Zero Dependencies',
+      icon: <FaCreativeCommonsZero fontSize='1.75rem' />,
+    },
+    {
+      title: 'Small Footprint',
+      icon: <LuPackageOpen fontSize='1.75rem' />,
+    },
+    {
+      title: 'Tree-shakable',
+      icon: <LuTrees fontSize='2rem' />,
+      titleStyle: { position: 'relative', top: '-0.12rem' },
+    },
+  ]}
+/>
+
+### Motivation
+
+Aside from the earnest intent of giving back to the community, the other is to offer frontend developers simple
+and efficient alternatives to other webapp tools.
+
+## Ideation
+
+Got an idea for a new package or feature? We have fun solving problems and making repetitive tasks easier and more efficient. Share your ideas and we promise to consider.
+
+To do so, please create an issue on the [@spa-tools monorepo in GitHub](https://github.com/rollercodester/spa-tools).
+
+## Contributing
+
+If you're interested in contributing to @spa-tools, please first create an issue on the [@spa-tools monorepo in GitHub](https://github.com/rollercodester/spa-tools)
+or comment on an existing issue. From there we can discuss the feature or bugfix you're interested in and how best to approach it.
+In terms of workflow, we use the standard approach of forking the repo, creating a PR, and merging after tesing/approval.
+
+### Unit Test Coverage
+
+All packages in @spa-tools require 100% unit test coverage on logic. This is a condition for all PRs to be merged whether you're adding a new feature or fixing a bug.
+
+The only exception is when native code is being wrapped and coverage is not feasible or is redundant, either of which can be discussed on a case-by-case basis
+during the approval process.
+
+## License
+
+All packages in @spa-tools are licensed under the [MIT license](https://en.wikipedia.org/wiki/MIT_License). Copyright © 2024, Ryan Howard (rollercodester). All rights reserved.

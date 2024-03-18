@@ -1,0 +1,122 @@
+---
+title: Utilities
+pagination_label: 'Utilities: Getting Started'
+pagination_next: utilities/colors/color-object
+pagination_prev: interaction-hooks/use-query-state
+slug: /utilities
+---
+
+import { BsCalendar2Date, BsClipboardData } from 'react-icons/bs';
+import { FaCreativeCommonsZero, FaSitemap } from 'react-icons/fa';
+import { GoNumber } from 'react-icons/go';
+import { IoColorPaletteOutline } from 'react-icons/io5';
+import { LuPackageOpen, LuTrees } from 'react-icons/lu';
+import { MdOutlineDataObject } from 'react-icons/md';
+import { RiFlowChart, RiInputCursorMove } from 'react-icons/ri';
+import { SiTypescript } from 'react-icons/si';
+import { TbArrowFork, TbFaceIdError } from 'react-icons/tb';
+import { VscWordWrap } from 'react-icons/vsc';
+import {
+  CoreRouterGettingStartedReactTsCode,
+  CoreRouterGettingStartedReactJsCode,
+  OverviewFeatures,
+  SectionText,
+} from '@site/src/components';
+
+There are many good general-purpose Javascript libraries out there, some modern and some
+that are a little long in the tooth.
+
+While **@spa-tools/utilities** is yet another to add to the list, it's succinctly written
+in TypeScript with a focus on being requirements-driven. As such, we hope you'll find one
+or two or even a few helpers that are just that: _helpful_.
+
+<OverviewFeatures
+  features={[
+    {
+      title: 'Colors',
+      icon: <IoColorPaletteOutline fontSize='2.25rem' />,
+      titleStyle: { position: 'relative', top: '-0.25rem' },
+    },
+    {
+      title: 'Conditionals',
+      icon: <TbArrowFork fontSize='1.75rem' />,
+    },
+    {
+      title: 'Data',
+      icon: <BsClipboardData fontSize='1.75rem' />,
+    },
+    {
+      title: 'Dates',
+      icon: <BsCalendar2Date fontSize='1.75rem' />,
+    },
+    {
+      title: 'DOM',
+      icon: <FaSitemap fontSize='1.75rem' />,
+    },
+    {
+      title: 'Errors',
+      icon: <TbFaceIdError fontSize='2.25rem' />,
+      titleStyle: { position: 'relative', top: '-0.25rem' },
+    },
+    {
+      title: 'Execution Control',
+      icon: <RiFlowChart fontSize='2rem' />,
+      titleStyle: { position: 'relative', top: '-0.12rem' },
+    },
+    {
+      title: 'Numbers',
+      icon: <GoNumber fontSize='2rem' />,
+      titleStyle: { position: 'relative', top: '-0.12rem' },
+    },
+    {
+      title: 'Strings',
+      icon: <VscWordWrap fontSize='2.25rem' />,
+      titleStyle: { position: 'relative', top: '-0.25rem' },
+    },
+    {
+      title: 'Type Helpers',
+      icon: <MdOutlineDataObject fontSize='2.25rem' />,
+      titleStyle: { position: 'relative', top: '-0.25rem' },
+    },
+    {
+      title: 'URLs',
+      icon: <RiInputCursorMove fontSize='2rem' />,
+      titleStyle: { position: 'relative', top: '-0.12rem' },
+    },
+    {
+      title: 'TypeScript First',
+      icon: <SiTypescript fontSize='1.75rem' />,
+    },
+    {
+      title: 'Zero Dependencies',
+      icon: <FaCreativeCommonsZero fontSize='1.75rem' />,
+    },
+    {
+      title: (
+        <>
+          15 kB <span style={{ fontWeight: 500 }}>cjs</span> → 18 kB <span style={{ fontWeight: 500 }}>pkg</span>
+        </>
+      ),
+      icon: <LuPackageOpen fontSize='1.75rem' />,
+    },
+    {
+      title: 'Tree-shakable',
+      icon: <LuTrees fontSize='2rem' />,
+      titleStyle: { position: 'relative', top: '-0.12rem' },
+    },
+  ]}
+/>
+
+## Installation
+
+<SectionText bottomMargin='0' topMargin='0'>
+  To install Utilities in your project, use your favorite package manager and run the respective command:
+</SectionText>
+
+```bash npm2yarn
+npm install @spa-tools/utilities
+```
+
+## Quickstart
+
+Expand the categories in the sidebar and go for it!

@@ -1,0 +1,91 @@
+name: "test-and-build-monorepo-action"
+description: "This action runs linting and tests and optionally builds for the @spa-tools monorepo"
+author: "Ryan Howard (rollercodester)"
+inputs:
+  generate-coverage-badges:
+    description: "Generate ccode overage badges"
+    default: false
+  run-build:
+    description: "Run build"
+    default: false
+runs:
+  using: "composite"
+  steps:
+    - name: Setup PNPM
+      uses: pnpm/action-setup@v3
+      with:
+        version: latest
+    - name: Setup NodeJS
+      uses: actions/setup-node@v4
+      with:
+        node-version: 20
+        registry-url: "https://registry.npmjs.org"
+        cache: pnpm
+    - name: Install dependencies
+      shell: bash
+      run: pnpm install --frozen-lockfile
+    - name: Lint monorepo
+      shell: bash
+      run: pnpm lint
+    - name: Test monorepo
+      shell: bash
+      run: pnpm test:cicd
+    - name: "Coverage Badge: api-client"
+      uses: wjervis7/vitest-badge-action@v1.0.0
+      if: ${{ inputs.generate-coverage-badges }}
+      with:
+        badge-path: packages/api-client/coverage-badge.svg
+        badge-text: Code Coverage
+        result-type: lines
+        summary-path: packages/api-client/coverage/coverage-summary.json
+        upload-badge: false
+        vitest-config-path: vite.config.mts
+    - name: "Coverage Badge: core-router"
+      uses: wjervis7/vitest-badge-action@v1.0.0
+      if: ${{ inputs.generate-coverage-badges }}
+      with:
+        badge-path: packages/core-router/coverage-badge.svg
+        badge-text: Code Coverage
+        result-type: lines
+        summary-path: packages/core-router/coverage/coverage-summary.json
+        upload-badge: false
+        vitest-config-path: vite.config.mts
+    - name: "Coverage Badge: interaction-hooks"
+      uses: wjervis7/vitest-badge-action@v1.0.0
+      if: ${{ inputs.generate-coverage-badges }}
+      with:
+        badge-path: packages/interaction-hooks/coverage-badge.svg
+        badge-text: Code Coverage
+        result-type: lines
+        summary-path: packages/interaction-hooks/coverage/coverage-summary.json
+        upload-badge: false
+        vitest-config-path: vite.config.mts
+    - name: "Coverage Badge: runtime-config"
+      uses: wjervis7/vitest-badge-action@v1.0.0
+      if: ${{ inputs.generate-coverage-badges }}
+      with:
+        badge-path: packages/runtime-config/coverage-badge.svg
+        badge-text: Code Coverage
+        result-type: lines
+        summary-path: packages/runtime-config/coverage/coverage-summary.json
+        upload-badge: false
+        vitest-config-path: vite.config.mts
+    - name: "Coverage Badge: utilities"
+      uses: wjervis7/vitest-badge-action@v1.0.0
+      if: ${{ inputs.generate-coverage-badges }}
+      with:
+        badge-path: packages/utilities/coverage-badge.svg
+        badge-text: Code Coverage
+        result-type: lines
+        summary-path: packages/utilities/coverage/coverage-summary.json
+        upload-badge: false
+        vitest-config-path: vite.config.mts
+    - name: Commit Coverage Badge Changes
+      uses: stefanzweifel/git-auto-commit-action@v4
+      if: ${{ inputs.generate-coverage-badges }}
+      with:
+        file_pattern: packages/**/coverage-badge.svg
+    - name: Build monorepo
+      shell: bash
+      if: ${{ inputs.run-build }}
+      run: pnpm build

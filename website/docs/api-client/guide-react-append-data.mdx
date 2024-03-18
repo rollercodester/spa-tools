@@ -1,0 +1,78 @@
+---
+title: Appending Data (React)
+pagination_label: 'API Client Guide: Appending Data (React)'
+pagination_next: api-client/reference-vanilla
+pagination_prev: api-client/guide-pagination
+sidebar_label: Appending Data (React)
+slug: /api-client/guides/react-append-data
+---
+
+import { PackageCaption } from '@site/src/components';
+
+<PackageCaption packageName='@spa-tools/api-client' />
+
+# Appending React Data
+
+If you're using the `@spa-tools/api-client` to build a React application and your design calls for cumulative loading of data (e.g. "load more", "infinite scroll", etc.), the `useCallEndpoint` hook has an append feature that will help you implement your solution with such ease and head-spinning speed that you'll be demo'ing in a matter of minutes.
+
+**Bonus:** If you need to implement infinite scroll, be sure to also check out the `useInfiniteScroll` hook in the `@spa-tools/interaction-hooks` package!
+
+```jsx
+import { useEffect, useState } from 'react';
+import { useCallEndpoint } from '@spa-tools/api-client';
+
+const RECIPE_RECORD_LIMIT = 10;
+
+// this is a simple hook wrapper making it specific to the "recipes" endpoint
+function useGetRecipes() {
+  return useCallEndpoint(
+    'https://dummyjson.com/recipes',
+    {
+      requestOptions: { recordLimit: RECIPE_RECORD_LIMIT },
+      serverModelOptions: { jsonDataDotPath: 'recipes' },
+    },
+    // passing in true here tells the hook to append
+    // all successive paginated data to the result
+    true
+  );
+}
+
+function LoadMoreRecipes() {
+  const [loadRecipes, recipesResult, areRecipesLoading, clearRecipes] = useGetRecipes();
+  const [totalRecipes, setTotalRecipes] = useState(0);
+
+  useEffect(() => {
+    const callNum = recipesResult && recipesResult.data ? recipesResult.data.length / RECIPE_RECORD_LIMIT : 0;
+
+    if (recipesResult?.data && !areRecipesLoading) {
+      setTotalRecipes(recipesResult.total ?? 0);
+      console.log(`loadRecipes call #${callNum} completed:`);
+      console.log(recipesResult.data);
+    } else if (recipesResult?.error) {
+      console.error(`loadRecipes call #${callNum} errored:`);
+      console.error(recipesResult.error);
+    } else if (areRecipesLoading) {
+      console.log(`loadRecipes call #${callNum + 1} in-progress`);
+    }
+  }, [areRecipesLoading, recipesResult]);
+
+  return (
+    <div>
+      <h1>Recipes</h1>
+      <div>
+        <button disabled={recipesResult?.data?.length ?? -1 === totalRecipes} onClick={loadRecipes}>
+          Load More Recipes
+        </button>
+        <button disabled={!!recipesResult?.data?.length} onClick={clearRecipes}>
+          Clear Recipes
+        </button>
+      </div>
+      <div>
+        {recipesResult?.data?.length
+          ? `${recipesResult.data.length} of ${totalRecipes} have been loaded!`
+          : 'No recipes loaded, yet'}
+      </div>
+    </div>
+  );
+}
+```

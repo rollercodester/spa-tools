@@ -1,0 +1,198 @@
+---
+title: Vanilla JS Reference
+pagination_label: 'API Client: Vanilla Reference'
+pagination_next: api-client/reference-react
+pagination_prev: api-client/guide-react-append-data
+sidebar_label: Vanilla
+slug: /api-client/reference/vanilla
+---
+
+import { PackageCaption } from '@site/src/components';
+
+<PackageCaption packageName='@spa-tools/api-client' />
+
+# Vanilla Reference
+
+The API Client is designed to be framework agnostic and can be used with any JavaScript
+library. This reference demonstrates Typescript syntax but works for Javascript as well (simply remove all type usage).
+
+## callEndpoint()
+
+The `callEndpoint<D, E, S>` function is analogous to the native _fetch_ function but packed with value-add features that target common SPA data-fetching use cases.
+
+### Generics
+
+There are three generic types that can be included when calling `callEndpoint` in the following order:
+
+- `D` is used to define the shape of the result data returned from the endpoint
+- `E` is used to define the shape of the error data returned from the endpoint
+- `S` is used to define the shape of the state passed to the endpoint for interpolation
+
+### Method overloads
+
+There are six method signature overloads for `callEndpoint` to make call execution succinct, flexible, and comprehensive:
+
+- `callEndpoint<D, E, S>(url)`
+- `callEndpoint<D, E, S>(url, options)`
+- `callEndpoint<D, E, S>(url, stateToInterpolate)`
+- `callEndpoint<D, E, S>(url, options, stateToInterpolate)`
+- `callEndpoint<D, E, S>(options)`
+- `callEndpoint<D, E, S>(options, stateToInterpolate)`
+
+### Parameters
+
+| Parameter            | Type              | Description                                                                                                                                                                                                                                         |
+| -------------------- | ----------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `url`                | `string`          | The URL of the endpoint to be called and can include any number of path parameters and query-value placeholders. All path parameters and query-value placeholders must begin with a colon (e.g. `:id`)                                              |
+| `options`            | `EndpointOptions` | An object that can be used to configure the request. It is an instance of the [`EndpointOptions`](#endpointoptions) type and exposes many of the value-add features that the API Client has to offer.                                               |
+| `stateToInterpolate` | `S`               | An object that is used to interpolate path parameters and query-value placeholders, and optionally to auto-create querystring values in the URL of the endpoint. It is an instance of the `S` generic type or by default `Record<string, unknown>`. |
+
+### Return value
+
+The `callEndpoint` function returns a `Promise` to _always_ resolve an [`EndpointResult`](#endpointresult) object. In other words, the call will never be rejected and thus async calls need not be wrapped in try-catch statements.
+
+### Usage
+
+```ts
+import { callEndpoint } from '@spa-tools/api-client';
+
+// define our data shape
+export interface Todo {
+  userId: number;
+  id: number;
+  title: string;
+  completed: boolean;
+}
+
+const options: EndpointOptions = {
+  interpolateUrlOptions: {
+    // here we tell the API Client to automatically add any
+    // unused (i.e. un-interpolated) state to the query string
+    addUnusedStateToQueryString: true,
+  },
+};
+
+const stateToInterpolate = { userId: 2, completed: true };
+
+// using generics, we tell the API Client that the data we expect
+// to be returned from the call is an array of `Todo` objects
+//
+// the :userId path parameter will be interpolated with the value `2`
+// and a `completed` querystring value will be auto-created with the
+// value of `true` so that the actual request URL will be:
+// --> https://jsonplaceholder.typicode.com/users/2/todos?completed=true
+const result = await callEndpoint<Todo[]>(
+  'https://jsonplaceholder.typicode.com/users/:userId/todos',
+  options,
+  stateToInterpolate
+);
+
+if (result.data) {
+  console.log(
+    `${stateToInterpolate.completed ? 'Completed' : 'Pending'} todos for user with ID "${stateToInterpolate.userId}":`
+  );
+  console.log(result.data);
+} else if (result.error) {
+  console.error(`Error retrieving todos for user with ID "${stateToInterpolate.userId}":`);
+  console.error(result.error);
+}
+```
+
+## EndpointOptions
+
+`EndpointOptions` is the object used to configure the request when calling [`callEndpoint`](#callendpoint).
+
+| Property                | Type                                                              | Required? | Comments                                                                 |
+| ----------------------- | ----------------------------------------------------------------- | --------- | ------------------------------------------------------------------------ |
+| `callbackOptions`       | [`EndpointCallbackOptions`](#endpointcallbackoptions)             | no        | Defines event callbacks to be implemented by caller.                     |
+| `consoleOptions`        | [`EndpointConsoleOptions`](#endpointconsoleoptions)               | no        | Determines if/when to log runtime feedback to the console.               |
+| `frequencyOptions`      | [`EndpointFrequencyOptions`](#endpointfrequencyoptions)           | no        | Configures data frequency settings (i.e. throttle and cache options).    |
+| `interpolateUrlOptions` | [`EndpointInterpolateUrlOptions`](#endpointinterpolateurloptions) | no        | Determines how the endpoint's URL is to be interpolated.                 |
+| `requestOptions`        | [`EndpointRequestOptions`](#endpointrequestoptions)               | no        | Configures various request options for the endpoint.                     |
+| `serverModelOptions`    | [`EndpointServerModelOptions`](#endpointservermodeloptions)       | no        | Configures server-side model/interface mapping options for the endpoint. |
+
+## EndpointCallbackOptions
+
+`EndpointCallbackOptions` is the object used to define event callbacks to be implemented by the caller.
+
+| Property          | Type                           | Required? | Comments                                                                                                                                                           |
+| ----------------- | ------------------------------ | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `onAddHeaders`    | `() => Promise<Headers>`       | no        | A callback that enables caller to asynchronously add headers to support scenarios where including an authorization header depends on an async call to an IdP, etc. |
+| `onResponseError` | `(response: Response) => void` | no        | A callback that notifies caller when an endpoint response error occurs.                                                                                            |
+
+## EndpointConsoleOptions
+
+`EndpointConsoleOptions` is the object used to determine if/when to log runtime feedback to the console.
+
+| Property                       | Type      | Required? | Default | Comments                                                                                                                                                            |
+| ------------------------------ | --------- | --------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `logThrottleCacheHits`         | `boolean` | no        | `false` | When _true_, logs to the console everytime a GET call to the endpoint either throttles or has a cache hit. Useful for debugging or logging throttle/cache metrics.  |
+| `logThrottleWarnings`          | `boolean` | no        | `true`  | When _true_, error-logs warning to the console when the endpoint's GET requests are throttled beyond configured threshold.                                          |
+| `logThrottleWarningsThreshold` | `number`  | no        | `10`    | Determines how many times the endpoint's GET requests can be throttled before a warning is error-logged. Only applicable if _logThrottleWarnings_ is set to _true_. |
+
+## EndpointFrequencyOptions
+
+`EndpointFrequencyOptions` is the object used to configure data frequency settings (i.e. throttle and cache options).
+
+| Property               | Type                                                                                                         | Required? | Default                                                                              | Comments                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| ---------------------- | ------------------------------------------------------------------------------------------------------------ | --------- | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `frequencyStrategy`    | pick one: <ul><li>`'throttle'`</li><li>`'memory-cache'`</li><li>`'session-cache'`</li><li>`'none'`</li></ul> | no        | <p>For GET requests: `'memory-cache'`</p><p>For all other requests: `'throttle'`</p> | <p>Determines how duplicate endpoint requests are handled.</p><p>`throttle`: the endpoint call will be ignored when the same call has already been responded to within the call timeframe per _frequencyStrategyTTL_.</p><p>`memory-cache`: the endpoint call's result data will be cached in memory and returned every time the same endpoint call is made within the call timeframe per _frequencyStrategyTTL_.</p><p>`session-cache`: the endpoint call's result data will be cached locally using the browser's _sessionStorage_ and returned every time the same endpoint call is made within the call timeframe per _frequencyStrategyTTL_ across the browser tab's lifetime.</p><p>`none`: the endpoint call will be executed every time it is made, even if it is a duplicate request.</p><p>**Guidance:**<ul><li>If the endpoint is primarily called from one place at a time within your application, then the `throttle` strategy should be utilized.</li><li>If a GET endpoint is called _concurrently_ from multiple places in an applicaton then either the `memory-cache` or `session-cache` strategy should be utilized. The `memory-cache` strategy is preferred as it is more performant but the `session-cache` strategy is desirable when the client app wishes to cache result data without consuming additional memory.</li><li>If an endpoint is called via a React hook then **NEVER** set strategy to `none` as the endpoint can unintentionally be called on every render.</li></ul></p> |
+| `frequencyStrategyKey` | `string`                                                                                                     | no        | A hash of the request URL and the request body                                       | <p>Used to uniquely identify the endpoint call for the purpose of frequency strategy handling.</p><p>**Guidance:** It is advised to NOT provide the key and allow the hash to be generated; however, there may be scenarios where a client needs to take control over this key.</p>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| `frequencyStrategyTTL` | `number`                                                                                                     | no        | 250                                                                                  | <p>Defines the duration in milliseconds that endpoint calls will be ignored or cached when the same call has already been responded to within the respective timeframe. This setting is NOT applicable if _frequencyStrategy_ is set to `none`.</p>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+
+## EndpointInterpolateUrlOptions
+
+`EndpointInterpolateUrlOptions` is the object used to determine how the endpoint's URL is to be interpolated.
+
+| Property                                 | Type       | Required? | Default | Comments                                                                                                                                                                                                                                                                                                                                   |
+| ---------------------------------------- | ---------- | --------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `addUnusedStateToQueryString`            | `boolean`  | no        | `false` | If `true`, any state that is not used to interpolate the request URL will be automatically added to the query string.                                                                                                                                                                                                                      |
+| `discardOrphanedQueryStringPlaceholders` | `boolean`  | no        | `false` | If `true`, any query string placeholders that are not used to interpolate the URL will be removed from the path.                                                                                                                                                                                                                           |
+| `preEncodeQueryStringValuesForKeys`      | `string[]` | no        | `[]`    | <p>The querystring values for all keys provided will be pre-encoded, which in effect applies double-encoding.</p><p>**Guidance:** Typically, you should never need to double-encode interpolated querstring values, but in rare cases such as passing file path values in the URL, double-encoding may be required by the backend API.</p> |
+
+## EndpointRequestOptions
+
+`EndpointRequestOptions` is the object used to configure various request options for the endpoint.
+
+| Property                  | Type                                                                                                                                 | Required?                                                                          | Default  | Comments                                                                                                                                                                                      |
+| ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------- | -------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `autoCreateBodyFromState` | `boolean`                                                                                                                            | no                                                                                 | `true`   | If `true` and the call is _not_ a GET request, then all state that remains after path interpolation will be automatically converted to a JSON string and set as the request body.             |
+| `body`                    | `BodyInit`                                                                                                                           | no                                                                                 | -        | The request body to be sent with the endpoint call. See [fetch.body](https://developer.mozilla.org/en-US/docs/Web/API/fetch#body) for more info.                                              |
+| `errorOn404`              | `boolean`                                                                                                                            | no                                                                                 | `false`  | If `true`, the endpoint call will be rejected with an error if the response status is `404`. Set to `true` if the application considers it an error when the requested resource is not found. |
+| `formEncodingType`        | pick one: <ul><li>`'multipart'`</li><li>`'url'`</li></ul>                                                                            | no                                                                                 | `'url'`  | The encoding type to be used when sending form data (i.e. when _requestType_ is `'form'`).                                                                                                    |
+| `method`                  | pick one: <ul><li>`'GET'`</li><li>`'POST'`</li><li>`'PUT'`</li><li>`'PATCH'`</li><li>`'DELETE'`</li></ul>                            | no                                                                                 | `'GET'`  | The HTTP method to be used when making the endpoint call.                                                                                                                                     |
+| `mode`                    | pick one: <ul><li>`'cors'`</li><li>`'no-cors'`</li><li>`'same-origin'`</li></ul>                                                     | no                                                                                 | `'cors'` | The mode of the request. See [fetch.mode](https://developer.mozilla.org/en-US/docs/Web/API/fetch#mode) for more info.                                                                         |
+| `pageToken`               | `string`                                                                                                                             | no                                                                                 | `''`     | Token used to fetch a page of results for an endpoint's GET request when the _requestType_ is _json_. The backend API must support this feature via a querystring param.                      |
+| `recordLimit`             | `number`                                                                                                                             | no                                                                                 | `100`    | The maximum number of records to be returned by an endpoint's GET request. The backend API must support this feature via a querystring param.                                                 |
+| `recordSkip`              | `number`                                                                                                                             | no                                                                                 | `0`      | The number of records to skip when fetching a page of results for an endpoint's GET request. The backend API must support this feature via a querystring param.                               |
+| `requestType`             | pick one: <ul><li>`'form'`</li><li>`'json'`</li><li>`'text'`</li><li>`'void'`</li></ul>                                              | no                                                                                 | `'json'` | <p>The request body type being submitted.</p><p>Note that the _Content-Type_ header will be automatically set based on this setting.</p>                                                      |
+| `responseType`            | pick one: <ul><li>`'arrayBuffer'`</li><li>`'blob'`</li><li>`'formData'`</li><li>`'json'`</li><li>`'text'`</li><li>`'void'`</li></ul> | no                                                                                 | `'json'` | The response body type to be expected from the endpoint call.                                                                                                                                 |
+| `signal`                  | `AbortSignal`                                                                                                                        | no                                                                                 | -        | An object that allows you to communicate with a fetch request and abort it if desired. See [fetch.signal](https://developer.mozilla.org/en-US/docs/Web/API/fetch#signal) for more info.       |
+| `url`                     | `string`                                                                                                                             | yes, if not directly passed as first argument into [`callEndpoint`](#callendpoint) | -        | The request URL to be used for the endpoint call.                                                                                                                                             |
+
+## EndpointServerModelOptions
+
+`EndpointServerModelOptions` is the object used to configure server-side model/interface mapping options for the endpoint.
+
+| Property                       | Type     | Required? | Default               | Comments                                                                                                                                                                                                                                                                                                                                                               |
+| ------------------------------ | -------- | --------- | --------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `jsonDataDotPath`              | `string` | no        | `''`                  | <p>The dot path for the response body that will be used for the root data property when the _responseType_ is _json_.</p><p>For example, if the response.json() is `{ "myData": [{ "foo1": "bar1" }, { "foo2": "bar2" }] }` then it would make sense to set the `jsonDataDotPath` to `myData`.</p>                                                                     |
+| `jsonErrorDotPath`             | `string` | no        | `''`                  | <p>The dot path for the response body that will be used for the root error property when the _responseType_ is _json_.</p><p>For example, if the response.json() is `{ "myError": "Something went wrong" }` then it would make sense to set the `jsonErrorDotPath` to `myError`.</p>                                                                                   |
+| `jsonNextPageTokenDotPath`     | `string` | no        | `'nextPageToken'`     | <p>When the GET endpoint supports token-based pagination, the dot path for the response body that will be used for the next page token property when the _responseType_ is _json_.</p><p>For example, if the response.json() is `{ "nextPageToken": "abc123" }` then it would make sense to set the `jsonNextPageTokenDotPath` to `nextPageToken`.</p>                 |
+| `jsonPreviousPageTokenDotPath` | `string` | no        | `'previousPageToken'` | <p>When the GET endpoint supports token-based pagination, the dot path for the response body that will be used for the previous page token property when the _responseType_ is _json_.</p><p>For example, if the response.json() is `{ "previousPageToken": "abc123" }` then it would make sense to set the `jsonPreviousPageTokenDotPath` to `previousPageToken`.</p> |
+| `jsonTotalDotPath`             | `string` | no        | `'total'`             | <p>When the GET endpoint supports total record count, the dot path for the response body that will be used for the total record count property when the _responseType_ is _json_.</p><p>For example, if the response.json() is `{ "total": 100 }` then it would make sense to set the `jsonTotalDotPath` to `total`.</p>                                               |
+| `pageTokenQueryParamName`      | `string` | no        | `'pageToken'`         | <p>When the GET endpoint supports token-based pagination, the query parameter name used to fetch a page of results.</p>                                                                                                                                                                                                                                                |
+| `recordLimitQueryParamName`    | `string` | no        | `'limit'`             | <p>When the GET endpoint supports record limit, the query parameter name used to limit the number of records returned.</p>                                                                                                                                                                                                                                             |
+| `recordSkipQueryParamName`     | `string` | no        | `'skip'`              | <p>When the GET endpoint supports skip-based pagination, the query parameter name used to skip a number of records when fetching a page of results.</p>                                                                                                                                                                                                                |
+
+## EndpointResult
+
+`EndpointResult<D, E>` is the homogeneous, unchangeable result envelope resolved from the `Promise` that is returned by the `callEndpoint` function.
+
+| Property            | Type     | Required? | Default     | Comments                                                          |
+| ------------------- | -------- | --------- | ----------- | ----------------------------------------------------------------- |
+| `data`              | `D`      | no        | `undefined` | The data returned from the endpoint request.                      |
+| `error`             | `E`      | no        | `undefined` | The error returned from the endpoint request.                     |
+| `nextPageToken`     | `string` | no        | `undefined` | The token that can be used to fetch the next page of results.     |
+| `previousPageToken` | `string` | no        | `undefined` | The token that can be used to fetch the previous page of results. |
+| `total`             | `number` | no        | `undefined` | The total number of records available for the endpoint request.   |

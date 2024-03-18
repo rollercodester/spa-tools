@@ -1,0 +1,49 @@
+---
+title: addForwardSlash
+pagination_label: 'URL Utilities: addForwardSlash'
+pagination_next: utilities/urls/interpolate-url
+pagination_prev: utilities/type-helpers/inline-switch
+sidebar_label: addForwardSlash
+slug: /utilities/urls/add-forward-slash
+---
+
+import { PackageCaption } from '@site/src/components';
+
+<PackageCaption packageName='@spa-tools/utilities' />
+
+# addForwardSlash()
+
+The `addForwardSlash()` function simply adds a forward slash to a string (if not already present) at the start, end, or both.
+
+### Usage
+
+```ts
+import { addForwardSlash } from '@spa-tools/utilities';
+
+const str1 = '/path/to/something';
+const path1 = addForwardSlash(str1);
+// --> '/path/to/something/'
+
+const str2 = 'path/to/something';
+const path2 = addForwardSlash(str2, 'start');
+// --> '/path/to/something'
+
+const str3 = 'path/to/something';
+const path3 = addForwardSlash(str3, 'end');
+// --> 'path/to/something/'
+
+const str4 = 'path/to/something';
+const path4 = addForwardSlash(str4, 'both');
+// --> '/path/to/something/'
+```
+
+### Arguments
+
+| Name        | Type                         | Required? | Default | Description                         |
+| ----------- | ---------------------------- | --------- | ------- | ----------------------------------- |
+| `str`       | `string`                     | yes       | -       | The value to add forward slash to   |
+| `placement` | `'start' \| 'end' \| 'both'` | no        | `'end'` | The placement for the forward slash |
+
+### Returns
+
+Returns a `string`.

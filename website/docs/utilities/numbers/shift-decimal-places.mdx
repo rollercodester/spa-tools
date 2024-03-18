@@ -1,0 +1,53 @@
+---
+title: shiftDecimalPlaces
+pagination_label: 'Number Utilities: shiftDecimalPlaces'
+pagination_next: utilities/strings/add-forward-slash
+pagination_prev: utilities/numbers/round-to-nearest
+sidebar_label: shiftDecimalPlaces
+slug: /utilities/numbers/shift-to-decimal-places
+---
+
+import { PackageCaption } from '@site/src/components';
+
+<PackageCaption packageName='@spa-tools/utilities' />
+
+# shiftDecimalPlaces()
+
+If you've ever worked with financial systems APIs, you may have experienced how extreme numeric
+precision is sometimes handled by the backend by storing integers for a float value, along with
+the number of decimal places to shift when needing to convert back to a float.
+
+Should you encounter having to deal with this on the frontend, the `shiftDecimalPlaces()` will be
+a good friend by handling this logic for you.
+
+### Usage
+
+```ts
+import { shiftDecimalPlaces } from '@spa-tools/utilities';
+
+const num1 = 1234567890123456;
+
+const shifted1 = shiftDecimalPlaces(num1, 5);
+console.log(shifted1);
+// --> 12345678901.23456
+
+const shifted2 = shiftDecimalPlaces(num1, 10);
+console.log(shifted2);
+// --> 123456.7890123456
+
+const shifted3 = shiftDecimalPlaces(num1, 5, 3);
+console.log(shifted3);
+// --> 12345678901.235
+```
+
+### Arguments
+
+| Name                   | Type     | Required? | Default | Description                            |
+| ---------------------- | -------- | --------- | ------- | -------------------------------------- |
+| `wholeNumber`          | `number` | no        | `0`     | The integer number to convert to float |
+| `placesToShift`        | `number` | no        | `0`     | The number of decimal places to shift  |
+| `resultFloatPrecision` | `number` | no        | `0`     | The decimal places to round float to   |
+
+### Returns
+
+Returns a `number`.

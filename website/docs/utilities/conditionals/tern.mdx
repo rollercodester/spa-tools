@@ -1,0 +1,65 @@
+---
+title: tern
+pagination_label: 'Conditional Utilities: tern'
+pagination_next: utilities/data/base64-to-bytes
+pagination_prev: utilities/conditionals/looks-like-base64
+sidebar_label: tern
+slug: /utilities/conditionals/tern
+---
+
+import { PackageCaption } from '@site/src/components';
+
+<PackageCaption packageName='@spa-tools/utilities' />
+
+# tern()
+
+The native conditional ternary operator `?` is awesome, but have you ever needed to
+execute a separate logic path for `null`/`undefined` values versus actual boolean values?
+
+This is what the `tern<T, F, U>()` function is for. It's a simple utility that allows you to pass
+in a condition with three separate execution paths for `true`, `false`, and `null`/`undefined`.
+
+- The generic `T` type is used to define the value type returned when `true`.
+- The generic `F` type is used to define the value type returned when `false`.
+- The generic `U` type is used to define the value type returned when `null` or `undefined`.
+
+### Usage
+
+```ts
+import { tern } from '@spa-tools/utilities';
+
+// contrived function to get a random
+// vote of either true, false, or null
+function getRandomVote(): boolean | null {
+  const randomNum = Math.random();
+  if (randomNum < 0.33) {
+    return true;
+  } else if (randomNum < 0.66) {
+    return false;
+  } else {
+    return null;
+  }
+}
+
+const vote = getRandomVote();
+
+console.log(
+  'And the vote is:',
+  // here the tern function decides which path to take
+  // with the three possible branches based on vote value
+  tern(vote, 'Yea!', 'Nay!', 'Abstained')
+);
+```
+
+### Arguments
+
+| Name        | Type                           | Description                                                                |
+| ----------- | ------------------------------ | -------------------------------------------------------------------------- |
+| `value`     | `boolean \| null \| undefined` | The expression/value to evaluate                                           |
+| `whenTrue`  | `T`                            | The value to return when the expression evaluates to `true`                |
+| `whenFalse` | `F`                            | The value to return when the expression evaluates to `false`               |
+| `whenNull`  | `U`                            | The value to return when the expression evaluates to `null` or `undefined` |
+
+### Returns
+
+Returns either `T`, `F`, `U`, accordingly.

@@ -1,0 +1,23 @@
+.layoutContainer {
+  background-color: #281027;
+  height: 100%;
+  min-height: 100vh;
+}
+
+.homeContainer {
+  align-items: center;
+  background: url(/img/spatools-home-bg.png), linear-gradient(to top, #ffffff, #fbf3ff, #e8d9ed);
+  background-color: #310731;
+  background-position:
+    bottom,
+    bottom right;
+  background-repeat: no-repeat, no-repeat;
+  background-size:
+    100% 20%,
+    cover;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: calc(100vh - var(--ifm-navbar-height));
+  width: 100%;
+}

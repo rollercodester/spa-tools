@@ -1,0 +1,51 @@
+---
+title: useIsOverflowed
+pagination_label: 'Interaction Hooks: useIsOverflowed'
+pagination_next: interaction-hooks/use-query-state
+pagination_prev: interaction-hooks/use-is-hovered
+sidebar_label: useIsOverflowed
+slug: /interaction-hooks/use-is-overflowed
+---
+
+import { PackageCaption } from '@site/src/components';
+
+<PackageCaption packageName='@spa-tools/interaction-hooks' />
+
+# useIsOverflowed()
+
+Even seemingly simple UX requirements can sometimes push us to search for ways of implementing behaviors while keeping
+code DRY and succinct. The `useIsOverflowed` hook solves exactly one of those use cases by detecting when content of
+an element is overflowed.
+
+### Usage
+
+```tsx
+import { useRef } from 'react';
+import { useIsOverflowed } from '@spa-tools/interaction-hooks';
+
+function UseIsOverflowedExample() {
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const isVerticallyOverflowed = useIsOverflowed(sectionRef);
+
+  return (
+    <div ref={sectionRef} style={{ height: '100vh', overflowY: 'auto' }}>
+      <div style={{ height: '200vh' }}>
+        <h1>Scroll me</h1>
+        <h2>{isVerticallyOverflowed ? 'Overflowed vertically' : 'Not overflowed vertically'}</h2>
+      </div>
+    </div>
+  );
+}
+```
+
+### Parameters
+
+| Name            | Type                           | Required? | Default      | Description                                                                                                                                     |
+| --------------- | ------------------------------ | --------- | ------------ | ----------------------------------------------------------------------------------------------------------------------------------------------- |
+| `elem`          | `React.RefObject`              | yes       | -            | Holds a ref to the target element we want to watch for overflow                                                                                 |
+| `direction`     | `'vertical'` \| `'horizontal'` | no        | `'vertical'` | The direction we want to watch for overflow                                                                                                     |
+| `triggerOffset` | `number`                       | no        | `0`          | The offset in pixels of the target element that will trigger overflow detection (_top offset_ for `vertical` or _left offset_ for `horizontal`) |
+
+### Returns
+
+Returns `boolean` that will be `true` when the respective target element is being overflowed.

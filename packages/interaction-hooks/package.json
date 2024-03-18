@@ -1,0 +1,60 @@
+{
+  "name": "@spa-tools/interaction-hooks",
+  "version": "1.0.0-rc.1",
+  "type": "module",
+  "description": "Small package of specialized hooks meant to solve interaction scenarios in modern React applications.",
+  "author": {
+    "name": "Ryan Howard",
+    "email": "rollercodester@live.com",
+    "url": "https://rollercodester.github.io/resume"
+  },
+  "homepage": "https://rollercodester.github.io/spa-tools/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rollercodester/spa-tools",
+    "directory": "packages/interaction-hooks"
+  },
+  "bugs": {
+    "url": "https://github.com/rollercodester/spa-tools/issues/new?labels=interaction-hooks&template=bug_report.md"
+  },
+  "keywords": [
+    "react",
+    "hooks",
+    "typescript",
+    "interaction",
+    "call once",
+    "detect key press",
+    "infinite scroll",
+    "hovered",
+    "overflowed",
+    "query state",
+    "query string"
+  ],
+  "license": "MIT",
+  "browser": "dist/index.cjs",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "test:dev": "vitest --ui --coverage",
+    "test:cicd": "vitest --run --silent --coverage.enabled --coverage.clean --coverage.thresholds.100"
+  },
+  "prettier": "prettier-config-spatools",
+  "devDependencies": {
+    "@types/eslint": "^8.44.7",
+    "@types/node": "^17.0.12",
+    "@types/react": "^18.2.43",
+    "eslint-config-spatools": "workspace:*",
+    "prettier-config-spatools": "workspace:*",
+    "typescript-config-spatools": "workspace:*"
+  },
+  "peerDependencies": {
+    "react": "^18.2.0",
+    "tsup": "^8.0.1",
+    "typescript": "~5.2.2",
+    "vitest": "^1.0.4"
+  }
+}

@@ -1,0 +1,48 @@
+---
+title: addWeeks
+pagination_label: 'Date Utilities: addWeeks'
+pagination_next: utilities/dates/add-years
+pagination_prev: utilities/dates/add-seconds
+sidebar_label: addWeeks
+slug: /utilities/dates/add-weeks
+---
+
+import { PackageCaption } from '@site/src/components';
+
+<PackageCaption packageName='@spa-tools/utilities' />
+
+# addWeeks()
+
+The `addWeeks()` function adds a number of weeks to a given date object,
+timestamp integer, or date string.
+
+### Usage
+
+```ts
+import { addWeeks } from '@spa-tools/utilities';
+
+const date = new Date('2021-01-01');
+
+const newDate1 = addWeeks(date, 5);
+console.log(newDate1.toLocaleDateString('en-US'));
+// --> '02/05/2021'
+
+const newDate2 = addWeeks(date.getTime(), 6);
+console.log(newDate2.toLocaleDateString('en-US'));
+// --> '02/12/2021'
+
+const newDate3 = addWeeks('2021-01-01', 7);
+console.log(newDate3.toLocaleDateString('en-US'));
+// --> '02/19/2021'
+```
+
+### Arguments
+
+| Name    | Type                       | Required? | Description                                                                             |
+| ------- | -------------------------- | --------- | --------------------------------------------------------------------------------------- |
+| `date`  | `string \| number \| Date` | yes       | The date value to add weeks to as either date string, timestamp integer, or date object |
+| `weeks` | `number`                   | yes       | The number of weeks to add                                                              |
+
+### Returns
+
+`Date` - The new date object with the added weeks.

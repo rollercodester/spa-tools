@@ -1,0 +1,39 @@
+---
+title: isPast
+pagination_label: 'Conditional Utilities: isPast'
+pagination_next: utilities/conditionals/is-promise
+pagination_prev: utilities/conditionals/is-not-empty-record
+sidebar_label: isPast
+slug: /utilities/conditionals/is-past
+---
+
+import { PackageCaption } from '@site/src/components';
+
+<PackageCaption packageName='@spa-tools/utilities' />
+
+# isPast()
+
+The `isPast()` function checks if a date value equates to a date that is in the past.
+
+### Usage
+
+```ts
+import { isPast } from '@spa-tools/utilities';
+
+const pastDate = new Date('2022-01-01');
+console.log(isPast(pastDate));
+// --> true
+
+console.log(isPast('2080-12-31'));
+// --> false
+```
+
+### Arguments
+
+| Name   | Type                       | Required? | Description                                                                      |
+| ------ | -------------------------- | --------- | -------------------------------------------------------------------------------- |
+| `date` | `string \| number \| Date` | yes       | The date value to check as either date string, timestamp integer, or date object |
+
+### Returns
+
+`boolean` - If value of `date` equates to a date in the past then returns `true` else returns `false`.

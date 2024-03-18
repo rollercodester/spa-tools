@@ -1,0 +1,20 @@
+# Publish Package to NPM when a release is released having a tag in following format:
+# <semver>:<package-name>
+# e.g. v1.0.0-rc.1:api-client
+name: Publish Package to NPM
+on:
+  release:
+    types: [released]
+jobs:
+  build-and-publish:
+    name: Test and Build and Publish Package
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Publish package on NPM
+        uses: ./.github/actions/publish-package-action
+        with:
+          npm-token: ${{ secrets.NPM_TOKEN }}

@@ -1,0 +1,65 @@
+---
+title: areDatesEqual
+pagination_label: 'Conditional Utilities: areDatesEqual'
+pagination_next: utilities/conditionals/inline-switch
+pagination_prev: utilities/colors/tone
+sidebar_label: areDatesEqual
+slug: /utilities/conditionals/are-dates-equal
+---
+
+import { PackageCaption } from '@site/src/components';
+
+<PackageCaption packageName='@spa-tools/utilities' />
+
+# areDatesEqual()
+
+The `areDatesEqual()` function checks if two date values are equal at given level
+of precision where values can be date object, timestamp integer, or date string.
+
+### Usage
+
+```ts
+import { areDatesEqual } from '@spa-tools/utilities';
+
+const date1 = new Date('2021-01-01');
+const date2 = new Date('2021-01-01');
+
+const result = areDatesEqual(date1, date2);
+console.log(result); // true
+
+const result2 = areDatesEqual(date1, '2021-01-01');
+console.log(result2); // true
+
+const result3 = areDatesEqual(date1, 1609459200000);
+console.log(result3); // true
+
+const result4 = areDatesEqual('2021-01-01', 1609459200000);
+console.log(result4); // true
+
+const result5 = areDatesEqual('2021-01-01', '2021-01-01');
+console.log(result5); // true
+
+const result6 = areDatesEqual('2021-01-01', '2021-01-02');
+console.log(result6); // false
+
+const result7 = areDatesEqual('2021-01-01', '2021-01-01', 'minute');
+console.log(result7); // true
+
+const result8 = areDatesEqual('2021-01-01 12:30:00 PM', '2021-01-01 12:32:00 PM', 'hour');
+console.log(result8); // true
+
+const result8 = areDatesEqual('2021-01-01 12:30:00 PM', '2021-01-01 12:32:00 PM', 'minute');
+console.log(result8); // false
+```
+
+### Arguments
+
+| Name        | Type                                              | Required? | Default         | Description                                            |
+| ----------- | ------------------------------------------------- | --------- | --------------- | ------------------------------------------------------ |
+| `date1`     | `string \| number \| Date`                        | yes       | -               | The first date value to compare                        |
+| `date2`     | `string \| number \| Date`                        | yes       | -               | The second date value to compare                       |
+| `precision` | `'hour' \| 'minute' \| 'second' \| 'millisecond'` | no        | `'millisecond'` | The smallest precision to use when comparing the dates |
+
+### Returns
+
+`boolean` - If both date values are equal, considering given `precision` then returns `true` else returns `false`.

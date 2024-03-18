@@ -1,0 +1,50 @@
+---
+title: addMilliseconds
+pagination_label: 'Date Utilities: addMilliseconds'
+pagination_next: utilities/dates/add-minutes
+pagination_prev: utilities/dates/add-hours
+sidebar_label: addMilliseconds
+slug: /utilities/dates/add-milliseconds
+---
+
+import { PackageCaption } from '@site/src/components';
+
+<PackageCaption packageName='@spa-tools/utilities' />
+
+# addMilliseconds()
+
+The `addMilliseconds()` function adds a number of milliseconds to a given date object,
+timestamp integer, or date string.
+
+### Usage
+
+```ts
+import { addMilliseconds } from '@spa-tools/utilities';
+
+const date = new Date('2021-01-01');
+console.log(date.toISOString());
+// --> '2021-01-01T00:00:00.000Z'
+
+const newDate1 = addMilliseconds(date, 50);
+console.log(newDate1.toISOString());
+// --> '2021-01-01T00:00:00.050Z'
+
+const newDate2 = addMilliseconds(date, 1000);
+console.log(newDate2.toISOString());
+// --> '2021-01-01T00:00:01.000Z'
+
+const newDate3 = addMilliseconds(date, 10000);
+console.log(newDate3.toISOString());
+// --> '2021-01-01T00:00:10.000Z'
+```
+
+### Arguments
+
+| Name           | Type                       | Required? | Description                                                                                    |
+| -------------- | -------------------------- | --------- | ---------------------------------------------------------------------------------------------- |
+| `date`         | `string \| number \| Date` | yes       | The date value to add milliseconds to as either date string, timestamp integer, or date object |
+| `milliseconds` | `number`                   | yes       | The number of milliseconds to add                                                              |
+
+### Returns
+
+`Date` - The new date object with the added milliseconds.

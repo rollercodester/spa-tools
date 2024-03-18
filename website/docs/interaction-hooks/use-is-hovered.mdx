@@ -1,0 +1,106 @@
+---
+title: useIsHovered
+pagination_label: 'Interaction Hooks: useIsHovered'
+pagination_next: interaction-hooks/use-is-overflowed
+pagination_prev: interaction-hooks/use-infinite-scroll
+sidebar_label: useIsHovered
+slug: /interaction-hooks/use-is-hovered
+---
+
+import { PackageCaption } from '@site/src/components';
+
+<PackageCaption packageName='@spa-tools/interaction-hooks' />
+
+# useIsHovered()
+
+As much as we strive to use pure CSS for native UI state detection, sometimes we find ourselves in situations where CSS can't quite get us there, and so we have to lean on JavaScript to interact with DOM events.
+
+In that vain, if you find yourself dealing with complex hover interactions, the `useIsHovered` hook will most certainly make the task much, much eaiser.
+
+### Usage
+
+```tsx
+import { useRef } from 'react';
+import { useIsHovered } from '@spa-tools/interaction-hooks';
+
+function UseIsHoveredExample() {
+  // here we simply setup refs to all elements we want
+  // to track hover state for
+  const buttonRef = useRef<HTMLButtonElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const spanRef = useRef<HTMLSpanElement>(null);
+  // yes, you can also track hover state for multiple elements at once!
+  const buttonClusterRef1 = useRef<HTMLButtonElement>(null);
+  const buttonClusterRef2 = useRef<HTMLButtonElement>(null);
+  const buttonClusterRef3 = useRef<HTMLButtonElement>(null);
+  const buttonClusterRef4 = useRef<HTMLButtonElement>(null);
+  const buttonClusterRef5 = useRef<HTMLButtonElement>(null);
+  const buttonClusterRef6 = useRef<HTMLButtonElement>(null);
+
+  // then we use different hook instances to track the
+  // hover state for the above element refs
+  const isButtonHovered = useIsHovered(buttonRef);
+  const isInputHovered = useIsHovered(inputRef);
+  const isSpanHovered = useIsHovered(spanRef);
+  const isButtonClusterHovered = useIsHovered([
+    buttonClusterRef1,
+    buttonClusterRef2,
+    buttonClusterRef3,
+    buttonClusterRef4,
+    buttonClusterRef5,
+    buttonClusterRef6,
+  ]);
+
+  const getHoverStateText = () => {
+    if (isButtonHovered) {
+      return 'Very first button is hovered!';
+    }
+    if (isInputHovered) {
+      return 'Input is hovered!';
+    }
+    if (isSpanHovered) {
+      return 'Text is hovered!';
+    }
+    if (isButtonClusterHovered) {
+      return 'One of the six buttons from cluster is hovered!';
+    }
+
+    return 'Nothing is hovered!';
+  };
+
+  return (
+    <div>
+      <div>
+        <button ref={buttonRef}>Hover me!</button>
+        <input ref={inputRef} value='No, hover over me!' />
+        <div>
+          Don&apos;t listen to them, hover over{' '}
+          <span ref={spanRef} style={{ color: 'purple', cursor: 'pointer', fontWeight: 800 }}>
+            this text
+          </span>{' '}
+          instead!
+        </div>
+      </div>
+      <div>
+        <button ref={buttonClusterRef1}/>Hover</button>
+        <button ref={buttonClusterRef2}/>Over</button>
+        <button ref={buttonClusterRef3}/>Any</button>
+        <button ref={buttonClusterRef4}/>One</button>
+        <button ref={buttonClusterRef5}/>Of</button>
+        <button ref={buttonClusterRef6}/>Us</button>
+      </div>
+      <h2>{getHoverStateText()}</h2>
+    </div>
+  );
+}
+```
+
+### Parameters
+
+| Name   | Type                                   | Required? | Default | Description                                              |
+| ------ | -------------------------------------- | --------- | ------- | -------------------------------------------------------- |
+| `elem` | `React.RefObject \| React.RefObject[]` | yes       | -       | One or more refs of target element(s) to watch for hover |
+
+### Returns
+
+Returns `boolean` that will be `true` when the respective target element(s) is(are) hovered.

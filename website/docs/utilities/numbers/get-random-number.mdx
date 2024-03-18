@@ -1,0 +1,41 @@
+---
+title: getRandomNumber
+pagination_label: 'Number Utilities: getRandomNumber'
+pagination_next: utilities/numbers/humanize-hrs
+pagination_prev: utilities/numbers/format-quotient
+sidebar_label: getRandomNumber
+slug: /utilities/numbers/get-random-number
+---
+
+import { PackageCaption } from '@site/src/components';
+
+<PackageCaption packageName='@spa-tools/utilities' />
+
+# getRandomNumber()
+
+The `getRandomNumber()` function returns a random number between provided
+`min` (inclusive) and `max` (exclusive by default).
+
+### Usage
+
+```ts
+import { getRandomNumber } from '@spa-tools/utilities';
+
+// random number between 1 and 10, excluding 10
+const randomNumber1 = getRandomNumber(1, 10);
+
+// random number between 1 and 10, including both 1 and 10
+const randomNumber2 = getRandomNumber(1, 10, true);
+```
+
+### Arguments
+
+| Name         | Type      | Description                                              |
+| ------------ | --------- | -------------------------------------------------------- |
+| `min`        | `number`  | The lower range of random number (inclusive)             |
+| `max`        | `number`  | The upper range of randome number (exclusive by default) |
+| `includeMax` | `boolean` | Whether to include `max` in the random number            |
+
+### Returns
+
+Returns the randomly generated number.

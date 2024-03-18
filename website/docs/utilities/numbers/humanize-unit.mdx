@@ -1,0 +1,76 @@
+---
+title: humanizeUnit
+pagination_label: 'Number Utilities: humanizeUnit'
+pagination_next: utilities/numbers/round-to-nearest
+pagination_prev: utilities/numbers/humanize-ms
+sidebar_label: humanizeUnit
+slug: /utilities/numbers/humanize-unit
+---
+
+import { PackageCaption } from '@site/src/components';
+
+<PackageCaption packageName='@spa-tools/utilities' />
+
+# humanizeUnit()
+
+The `humanizeUnit()` function humanizes a number utilizing a square-basis unit, returning a
+tuple of formatted number with requested decimal places in first position and then respective
+human-readable unit in second position.
+
+By default, it will use the following units: `K`, `M`, `B`, `T` and a basis of `1000` with one
+decimal place, respectively representing `thousand`, `million`, `billion` and `trillion`.
+
+### Usage
+
+```ts
+import { humanizeUnit } from '@spa-tools/utilities';
+
+const humanizeUnit1 = humanizeUnit(1000000);
+console.log(humanizeUnit1);
+// --> ['1.00', 'M']
+
+const humanizeUnit2 = humanizeUnit(1234567, { basis: 1024, decimalPlaces: 2, units: ['KB', 'MB', 'GB', 'TB'] });
+console.log(humanizeUnit2);
+// --> ['1.18', 'MB']
+
+const humanizeUnit3 = humanizeUnit(1234567, {
+  basis: 1024,
+  decimalPlaces: 1,
+  units: ['KB', 'MB', 'GB', 'TB'],
+  useGrouping: false,
+});
+console.log(humanizeUnit3);
+// --> ['1.2', 'MB']
+
+const humanizeUnit4 = humanizeUnit(824, {
+  basis: 10,
+  decimalPlaces: 1,
+  units: ['decades', 'centuries', 'millennium', 'megayears', 'gigayears'],
+  useGrouping: false,
+});
+console.log(humanizeUnit4);
+// --> ['8.2', 'centuries']
+```
+
+### Arguments
+
+| Name       | Type                                          | Required? | Default                                           | Description                            |
+| ---------- | --------------------------------------------- | --------- | ------------------------------------------------- | -------------------------------------- |
+| `dividend` | `number`                                      | yes       | -                                                 | The dividend to use calculate the unit |
+| `options`  | [`HumanizeUnitOptions`](#humanizeunitoptions) | no        | see [`HumanizeUnitOptions`](#humanizeunitoptions) | The options for formatting the unit    |
+
+### Returns
+
+Returns humanized value as `string`.
+
+## HumanizeUnitOptions
+
+The options object for the `humanizeUnit()` function.
+
+### Properties
+
+| Name            | Type       | Required? | Default                | Description                              |
+| --------------- | ---------- | --------- | ---------------------- | ---------------------------------------- |
+| `basis`         | `number`   | false     | `1000`                 | The basis to use to calculate the unit   |
+| `decimalPlaces` | `number`   | false     | `0`                    | The number of decimal places to round to |
+| `units`         | `string[]` | false     | `['K', 'M', 'B', 'T']` | The square-based units to use            |

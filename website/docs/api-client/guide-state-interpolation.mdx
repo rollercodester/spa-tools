@@ -1,0 +1,74 @@
+---
+title: State Interpolation
+pagination_label: 'API Client Guide: State Interpolation'
+pagination_next: api-client/guide-result-mapping
+pagination_prev: api-client/guide-caching
+sidebar_label: State Interpolation
+slug: /api-client/guides/state-interpolation
+---
+
+import { PackageCaption } from '@site/src/components';
+
+<PackageCaption packageName='@spa-tools/api-client' />
+
+# State Interpolation
+
+You may be wondering what the heck state interpolation even is. In the context of this guide, it's the ability to inject model state into API endpoint requests at runtime.
+
+The `@spa-tools/api-client` utilizes a simple approach of matching variable names to automate state interpolation.
+
+```js
+import { callEndpoint } from '@spa-tools/api-client';
+
+async function getUserTodos(userId, completed) {
+  const result = await callEndpoint(
+    'https://jsonplaceholder.typicode.com/users/:userId/todos',
+    {
+      interpolateUrlOptions: {
+        // here we request that all unused state be auto-interpolated
+        // into the query string
+        //
+        // so in this example since we only have one path param (:userId),
+        // any other state we pass into callEndpoint will be auto-interpolated
+        // into the query string (e.g. ?completed=true/false)
+        addUnusedStateToQueryString: true,
+      },
+    },
+    // the state we want to interpolate
+    { userId, completed }
+  );
+
+  console.log(result?.data);
+}
+
+async function updateTodoCompletion(todoId, completed) {
+  const result = await callEndpoint(
+    'https://jsonplaceholder.typicode.com/todos/:todoId',
+    { requestOptions: { method: 'PATCH' } },
+    // with all HTTP fetch operations that require a request body (like PATCH)
+    // any state that cannot be used for path params will be auto-interpolated
+    // into the request body; note that this is the default behavior but can be
+    // overridden by setting addUnusedStateToRequestBody in requestOptions to false.
+    //
+    // so in this example since we only have one path param (:todoId),
+    // any other state we pass into callEndpoint will be auto-interpolated
+    // into the request body (e.g. { completed: true/false } )
+    { todoId, completed }
+  );
+
+  console.log(`Updated todo with ID "${todoId}":`);
+  console.log(result?.data);
+}
+
+await getUserTodos({ userId: 3 });
+// --> GET https://jsonplaceholder.typicode.com/users/3/todos
+
+await getUserTodos({ completed: true, userId: 3 });
+// --> GET https://jsonplaceholder.typicode.com/users/3/todos?completed=true
+
+await getUserTodos({ completed: false, userId: 3 });
+// --> GET https://jsonplaceholder.typicode.com/users/3/todos?completed=false
+
+await updateTodoCompletion(10, true);
+// --> PATCH https://jsonplaceholder.typicode.com/todos/10 with request body { completed: true }
+```

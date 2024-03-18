@@ -1,0 +1,41 @@
+---
+title: tint
+pagination_label: 'Color Utilities: tint'
+pagination_next: utilities/colors/tone
+pagination_prev: utilities/colors/shade
+sidebar_label: tint
+slug: /utilities/colors/tint
+---
+
+import { PackageCaption } from '@site/src/components';
+
+<PackageCaption packageName='@spa-tools/utilities' />
+
+# tint
+
+The `tint` function adds white to a color.
+
+### Usage
+
+```ts
+import { tint } from '@spa-tools/utilities';
+
+const redTintedExponentially = tint('#FF0000', 0.2);
+console.log(redTintedExponentially.toHex());
+// --> #ff7272
+const redTintedLinearly = tint('#FF0000', 0.2, true);
+console.log(redTintedLinearly.toHex());
+// --> #ff3333
+```
+
+### Arguments
+
+| Name             | Type      | Required? | Default | Description                                                                                          |
+| ---------------- | --------- | --------- | ------- | ---------------------------------------------------------------------------------------------------- |
+| `rgbOrRgbaOrHex` | `string`  | yes       | -       | RGB\(A\) or hex color string                                                                         |
+| `ratio`          | `number`  | yes       | -       | Interpolation ratio between `0` and `1`                                                              |
+| `linear`         | `boolean` | no        | `false` | If `true` uses a linear interpolation algorithm; otherwise, `exponential` interpolation will be used |
+
+### Returns
+
+[`ColorObject`](color-object) object.

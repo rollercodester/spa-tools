@@ -1,0 +1,60 @@
+---
+title: useCallOnce
+pagination_label: 'Interaction Hooks: useCallOnce'
+pagination_next: interaction-hooks/use-detect-keydown
+pagination_prev: interaction-hooks/getting-started
+sidebar_label: useCallOnce
+slug: /interaction-hooks/use-call-once
+---
+
+import { PackageCaption } from '@site/src/components';
+
+<PackageCaption packageName='@spa-tools/interaction-hooks' />
+
+# useCallOnce()
+
+If you've ever tried to run a block of code only once in a React function component, then you know how tricky it can be. Even using proper dependencies with a `useEffect` hook can come back to bite you.
+
+A good way to do this in React is via an initialization (aka use-once) pattern using a `useRef` hook. To keep things DRY and minimize code, we've wrapped this pattern in the `useCallOnce` hook.
+
+### Usage
+
+```tsx
+import { useEffect, useState } from 'react';
+import { useCallOnce } from '@spa-tools/interaction-hooks';
+
+// this is the function we want to call only once
+function logOnce(message: string) {
+  console.log('This will only log once:', message);
+}
+
+export function UseCallOnceHookExample() {
+  const [time, setTime] = useState(new Date());
+
+  // here we setup some code to force a re-render every second
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTime(new Date());
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  // here we use the hook to call the function
+  // so that it's guaranteed to only execute once
+  useCallOnce(logOnce, 'Hello, world!');
+
+  return <p>Current time: {time.toLocaleTimeString()}</p>;
+}
+```
+
+### Parameters
+
+| Name   | Type        | Required? | Description                             |
+| ------ | ----------- | --------- | --------------------------------------- |
+| `func` | `Function`  | yes       | The function you want to call only once |
+| `args` | `unknown[]` | no        | The arguments to pass to the function   |
+
+### Returns
+
+Returns `void`.

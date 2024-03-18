@@ -1,0 +1,43 @@
+name: Deploy Website Build
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - website/**
+
+jobs:
+  build-and-deploy:
+    name: Test and Build and Deploy Website
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Test and Build Monorepo
+        uses: ./.github/actions/test-and-build-monorepo-action
+        with:
+          run-build: true
+      - name: Build Website
+        run: pnpm build:website
+        working-directory: website
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./website/build
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+      - name: Set output
+        run: echo "page_url=${{ steps.deployment.outputs.page_url }}" >> $GITHUB_ENV
