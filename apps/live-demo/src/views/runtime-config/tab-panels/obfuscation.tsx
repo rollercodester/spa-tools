@@ -71,7 +71,7 @@ export function ObfuscationTabPanel() {
 //
 //
 
-const DEMO_CODE = `import { browserDeobfuscateConfig, browserObfuscateConfig } from '@spa-tools/runtime-config';
+const DEMO_CODE = `import { RuntimeConfig } from '@spa-tools/runtime-config';
 import localObfuscatedConfig from './myapp-config-obf.txt?raw';
 
 /********************************************

@@ -5,6 +5,8 @@ import { BaseConfigSettings, DomainConfig, Environment, RuntimeConfigOptions, Ru
 export const DEFAULT_LOCALHOST_IP_ADDRESS = '127.0.0.1';
 export const RUNTIME_HOSTNAME_ERROR =
   'Runtime hostname could not be determined. If you are running outside of a browser then be sure that the `manualActiveHostname` option is being set.';
+export const OBF_STRING_ERROR = 'Obfuscated domain-config string detected. Use `initializeObf` method instead.';
+export const NON_OBF_STRING_ERROR = 'Non-obfuscated string detected. Use `initialize` method instead.';
 
 export class RuntimeConfig<S extends BaseConfigSettings<E>, E = Environment> {
   private readonly localhostIpAddress: string;
@@ -25,7 +27,7 @@ export class RuntimeConfig<S extends BaseConfigSettings<E>, E = Environment> {
 
     if (typeof domainConfig === 'string') {
       if (looksLikeBase64(domainConfig)) {
-        throw new Error('Obfuscated domain-config string detected. Use `initializeObf` method instead.');
+        throw new Error(OBF_STRING_ERROR);
       }
 
       normDc = JSON.parse(domainConfig) as DomainConfig<S>;
@@ -40,7 +42,7 @@ export class RuntimeConfig<S extends BaseConfigSettings<E>, E = Environment> {
     options?: RuntimeConfigOptions
   ) {
     if (!looksLikeBase64(obfuscatedConfig)) {
-      throw new Error('Non-obfuscated string detected. Use `initialize` method instead.');
+      throw new Error(NON_OBF_STRING_ERROR);
     }
     const domainConfig = await browserDeobfuscateConfig<S>(obfuscatedConfig);
     const runtimeConfig = new RuntimeConfig<S, E>(domainConfig, options);

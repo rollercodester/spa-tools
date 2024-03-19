@@ -15,15 +15,10 @@ export function nodejsDeobfuscateConfig<S>(obfuscatedConfig: string, outputPath?
   const decodedConfig = JSON.parse(encodedConfig);
 
   if (outputPath) {
-    fs.writeFileSync(outputPath, encodedConfig);
+    fs.writeFileSync(outputPath, JSON.stringify(decodedConfig, null, 2));
   }
 
   return decodedConfig as DomainConfig<S>;
-}
-
-export function nodejsExportConfig<S>(domainConfig: DomainConfig<S>, outputPath: string) {
-  const encodedConfig = jsonStringify(domainConfig);
-  fs.writeFileSync(outputPath, encodedConfig);
 }
 
 export function nodejsObfuscateConfig<S>(domainConfig: DomainConfig<S>, outputPath?: string) {

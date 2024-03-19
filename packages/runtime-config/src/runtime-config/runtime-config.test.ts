@@ -1,7 +1,12 @@
+import fs from 'fs';
+import path from 'path';
 import { mockWindowLocation, restoreWindowLocation } from '../../../../mocks';
 import { nodejsObfuscateConfig } from '../nodejs-obfuscation';
 import { BaseConfigSettings, DomainConfig } from '../types';
-import { RuntimeConfig, getNoRuntimeConfigError } from './runtime-config';
+import { NON_OBF_STRING_ERROR, OBF_STRING_ERROR, RuntimeConfig, getNoRuntimeConfigError } from './runtime-config';
+
+const obfInputFile = path.resolve(__dirname, '../obfuscator/test-obf.txt');
+const obfInputFileContents = fs.readFileSync(obfInputFile, 'utf-8');
 
 const testConfig1: DomainConfig<TestConfigSettings1> = {
   localhost: {
@@ -58,134 +63,141 @@ describe('RuntimeConfig', () => {
   afterAll(() => {
     restoreWindowLocation();
   });
-  describe('config', () => {
-    test('should return the correct config for valid hostnames', async () => {
-      const runtimeConfig1 = RuntimeConfig.initialize(testConfig1);
 
-      mockWindowLocation('https://localhost');
-      expect(runtimeConfig1.settings).toEqual(testConfig1['localhost']);
+  test('should return the correct config for valid hostnames', () => {
+    const runtimeConfig1 = RuntimeConfig.initialize(testConfig1);
 
-      mockWindowLocation('https://myapp.development.com');
-      expect(runtimeConfig1.settings).toEqual(testConfig1['myapp.development.com']);
+    mockWindowLocation('https://localhost');
+    expect(runtimeConfig1.settings).toEqual(testConfig1['localhost']);
 
-      mockWindowLocation('https://myapp.test.com');
-      expect(runtimeConfig1.settings).toEqual(testConfig1['myapp.test.com']);
+    mockWindowLocation('https://myapp.development.com');
+    expect(runtimeConfig1.settings).toEqual(testConfig1['myapp.development.com']);
 
-      mockWindowLocation('https://myapp.com');
-      expect(runtimeConfig1.settings).toEqual(testConfig1['myapp.com']);
+    mockWindowLocation('https://myapp.test.com');
+    expect(runtimeConfig1.settings).toEqual(testConfig1['myapp.test.com']);
 
-      const runtimeConfig2 = RuntimeConfig.initialize<TestConfigSettings2, TestEnvionment2>(testConfig2);
+    mockWindowLocation('https://myapp.com');
+    expect(runtimeConfig1.settings).toEqual(testConfig1['myapp.com']);
 
-      mockWindowLocation('https://myapp.dev.com');
-      expect(runtimeConfig2.settings).toEqual(testConfig2['myapp.dev.com']);
+    const runtimeConfig2 = RuntimeConfig.initialize<TestConfigSettings2, TestEnvionment2>(testConfig2);
 
-      mockWindowLocation('https://myapp.stg.com');
-      expect(runtimeConfig2.settings).toEqual(testConfig2['myapp.stg.com']);
+    mockWindowLocation('https://myapp.dev.com');
+    expect(runtimeConfig2.settings).toEqual(testConfig2['myapp.dev.com']);
 
-      mockWindowLocation('https://myapp.com');
-      expect(runtimeConfig2.settings).toEqual(testConfig2['myapp.com']);
-    });
+    mockWindowLocation('https://myapp.stg.com');
+    expect(runtimeConfig2.settings).toEqual(testConfig2['myapp.stg.com']);
 
-    test('should set isRunningLocal to true if running local', async () => {
-      const runtimeConfig = RuntimeConfig.initialize(testConfig1);
+    mockWindowLocation('https://myapp.com');
+    expect(runtimeConfig2.settings).toEqual(testConfig2['myapp.com']);
+  });
 
-      mockWindowLocation('https://localhost');
-      expect(runtimeConfig.isRunningLocal).toBe(true);
+  test('should set isRunningLocal to true if running local', () => {
+    const runtimeConfig = RuntimeConfig.initialize(testConfig1);
 
-      mockWindowLocation('https://127.0.0.1');
-      expect(runtimeConfig.isRunningLocal).toBe(true);
-    });
+    mockWindowLocation('https://localhost');
+    expect(runtimeConfig.isRunningLocal).toBe(true);
 
-    test('should set isRunningLocal to false if NOT running local', async () => {
-      const runtimeConfig = RuntimeConfig.initialize(testConfig1);
+    mockWindowLocation('https://127.0.0.1');
+    expect(runtimeConfig.isRunningLocal).toBe(true);
+  });
 
-      mockWindowLocation('https://myapp.dev.com');
-      expect(runtimeConfig.isRunningLocal).toBe(false);
-    });
+  test('should set isRunningLocal to false if NOT running local', () => {
+    const runtimeConfig = RuntimeConfig.initialize(testConfig1);
 
-    test('should throw an error if location hostname not recognized', async () => {
-      const runtimeConfig = RuntimeConfig.initialize(testConfig1);
+    mockWindowLocation('https://myapp.dev.com');
+    expect(runtimeConfig.isRunningLocal).toBe(false);
+  });
 
-      mockWindowLocation('https://not-recognized.com');
-      expect(() => runtimeConfig.settings).toThrowError(getNoRuntimeConfigError('not-recognized.com'));
-    });
+  test('should throw an error if location hostname not recognized', () => {
+    const runtimeConfig = RuntimeConfig.initialize(testConfig1);
 
-    test('should allow localhost IP address to be configured', async () => {
-      const runtimeConfig = RuntimeConfig.initialize(testConfig1, { localhostIpAddress: '0.0.0.0' });
+    mockWindowLocation('https://not-recognized.com');
+    expect(() => runtimeConfig.settings).toThrowError(getNoRuntimeConfigError('not-recognized.com'));
+  });
 
-      mockWindowLocation('https://127.0.0.1');
-      expect(() => runtimeConfig.settings).toThrowError(getNoRuntimeConfigError('127.0.0.1'));
+  test('should allow localhost IP address to be configured', () => {
+    const runtimeConfig = RuntimeConfig.initialize(testConfig1, { localhostIpAddress: '0.0.0.0' });
 
-      mockWindowLocation('https://0.0.0.0');
-      expect(runtimeConfig.isRunningLocal).toBe(true);
-    });
+    mockWindowLocation('https://127.0.0.1');
+    expect(() => runtimeConfig.settings).toThrowError(getNoRuntimeConfigError('127.0.0.1'));
 
-    test('should use manualActiveHostname when running outside of a browser environment', async () => {
-      // restore window location with flag so location is set to null
-      restoreWindowLocation(true);
+    mockWindowLocation('https://0.0.0.0');
+    expect(runtimeConfig.isRunningLocal).toBe(true);
+  });
 
-      const runtimeConfig = RuntimeConfig.initialize(testConfig1, { manualActiveHostname: 'myapp.com' });
+  test('should use manualActiveHostname when running outside of a browser environment', () => {
+    // restore window location with flag so location is set to null
+    restoreWindowLocation(true);
 
-      expect(runtimeConfig.settings).toEqual(testConfig1['myapp.com']);
-    });
+    const runtimeConfig = RuntimeConfig.initialize(testConfig1, { manualActiveHostname: 'myapp.com' });
 
-    test('should deobfuscate an obfuscated config', async () => {
-      const obfuscatedConfig = nodejsObfuscateConfig(testConfig1);
-      const runtimeConfig = await RuntimeConfig.initializeObf(obfuscatedConfig);
+    expect(runtimeConfig.settings).toEqual(testConfig1['myapp.com']);
+  });
 
-      mockWindowLocation('https://localhost');
-      expect(runtimeConfig.settings).toEqual(testConfig1['localhost']);
+  test('should deobfuscate an obfuscated config', async () => {
+    const obfuscatedConfig = nodejsObfuscateConfig(testConfig1);
+    const runtimeConfig = await RuntimeConfig.initializeObf(obfuscatedConfig);
 
-      mockWindowLocation('https://myapp.development.com');
-      expect(runtimeConfig.settings).toEqual(testConfig1['myapp.development.com']);
+    mockWindowLocation('https://localhost');
+    expect(runtimeConfig.settings).toEqual(testConfig1['localhost']);
 
-      mockWindowLocation('https://myapp.test.com');
-      expect(runtimeConfig.settings).toEqual(testConfig1['myapp.test.com']);
+    mockWindowLocation('https://myapp.development.com');
+    expect(runtimeConfig.settings).toEqual(testConfig1['myapp.development.com']);
 
-      mockWindowLocation('https://myapp.com');
-      expect(runtimeConfig.settings).toEqual(testConfig1['myapp.com']);
+    mockWindowLocation('https://myapp.test.com');
+    expect(runtimeConfig.settings).toEqual(testConfig1['myapp.test.com']);
 
-      const runtimeConfig2 = RuntimeConfig.initialize<TestConfigSettings2, TestEnvionment2>(testConfig2);
+    mockWindowLocation('https://myapp.com');
+    expect(runtimeConfig.settings).toEqual(testConfig1['myapp.com']);
 
-      mockWindowLocation('https://myapp.dev.com');
-      expect(runtimeConfig2.settings).toEqual(testConfig2['myapp.dev.com']);
+    const runtimeConfig2 = RuntimeConfig.initialize<TestConfigSettings2, TestEnvionment2>(testConfig2);
 
-      mockWindowLocation('https://myapp.stg.com');
-      expect(runtimeConfig2.settings).toEqual(testConfig2['myapp.stg.com']);
+    mockWindowLocation('https://myapp.dev.com');
+    expect(runtimeConfig2.settings).toEqual(testConfig2['myapp.dev.com']);
 
-      mockWindowLocation('https://myapp.com');
-      expect(runtimeConfig2.settings).toEqual(testConfig2['myapp.com']);
-    });
+    mockWindowLocation('https://myapp.stg.com');
+    expect(runtimeConfig2.settings).toEqual(testConfig2['myapp.stg.com']);
 
-    test('should load an encoded config', async () => {
-      const encodedConfig = JSON.stringify(testConfig1);
-      const runtimeConfig = RuntimeConfig.initialize(encodedConfig);
+    mockWindowLocation('https://myapp.com');
+    expect(runtimeConfig2.settings).toEqual(testConfig2['myapp.com']);
+  });
 
-      await new Promise((resolve) => setTimeout(resolve, 300));
+  test('should load an encoded config', async () => {
+    const encodedConfig = JSON.stringify(testConfig1);
+    const runtimeConfig = RuntimeConfig.initialize(encodedConfig);
 
-      mockWindowLocation('https://localhost');
-      expect(runtimeConfig.settings).toEqual(testConfig1['localhost']);
+    await new Promise((resolve) => setTimeout(resolve, 300));
 
-      mockWindowLocation('https://myapp.development.com');
-      expect(runtimeConfig.settings).toEqual(testConfig1['myapp.development.com']);
+    mockWindowLocation('https://localhost');
+    expect(runtimeConfig.settings).toEqual(testConfig1['localhost']);
 
-      mockWindowLocation('https://myapp.test.com');
-      expect(runtimeConfig.settings).toEqual(testConfig1['myapp.test.com']);
+    mockWindowLocation('https://myapp.development.com');
+    expect(runtimeConfig.settings).toEqual(testConfig1['myapp.development.com']);
 
-      mockWindowLocation('https://myapp.com');
-      expect(runtimeConfig.settings).toEqual(testConfig1['myapp.com']);
+    mockWindowLocation('https://myapp.test.com');
+    expect(runtimeConfig.settings).toEqual(testConfig1['myapp.test.com']);
 
-      const runtimeConfig2 = RuntimeConfig.initialize<TestConfigSettings2, TestEnvionment2>(testConfig2);
+    mockWindowLocation('https://myapp.com');
+    expect(runtimeConfig.settings).toEqual(testConfig1['myapp.com']);
 
-      mockWindowLocation('https://myapp.dev.com');
-      expect(runtimeConfig2.settings).toEqual(testConfig2['myapp.dev.com']);
+    const runtimeConfig2 = RuntimeConfig.initialize<TestConfigSettings2, TestEnvionment2>(testConfig2);
 
-      mockWindowLocation('https://myapp.stg.com');
-      expect(runtimeConfig2.settings).toEqual(testConfig2['myapp.stg.com']);
+    mockWindowLocation('https://myapp.dev.com');
+    expect(runtimeConfig2.settings).toEqual(testConfig2['myapp.dev.com']);
 
-      mockWindowLocation('https://myapp.com');
-      expect(runtimeConfig2.settings).toEqual(testConfig2['myapp.com']);
-    });
+    mockWindowLocation('https://myapp.stg.com');
+    expect(runtimeConfig2.settings).toEqual(testConfig2['myapp.stg.com']);
+
+    mockWindowLocation('https://myapp.com');
+    expect(runtimeConfig2.settings).toEqual(testConfig2['myapp.com']);
+  });
+
+  test('should throw an error if an obfuscated string passed into initialize', () => {
+    expect(() => RuntimeConfig.initialize(obfInputFileContents)).toThrowError(OBF_STRING_ERROR);
+  });
+
+  test('should throw an error if a non-obfuscated string passed into initializeObf', () => {
+    expect(() => RuntimeConfig.initializeObf('blah blah blah')).rejects.toThrowError(NON_OBF_STRING_ERROR);
   });
 });
 

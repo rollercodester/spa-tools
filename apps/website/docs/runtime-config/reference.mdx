@@ -263,28 +263,3 @@ import { nodejsDeobfuscateConfig } from '@spa-tools/runtime-config';
 const deobfuscatedConfig = nodejsDeobfuscateConfig(obfuscatedConfig, './path/to/static-config.json');
 console.log('Deobfuscated config:', deobfuscatedConfig);
 ```
-
-## Obfuscation (Browser)
-
-This browser-obfuscation reference is for information only. There should never be a reason to use these functions in a real-world SPA because:
-
-- Obfuscation only makes sense during build time and not at runtime
-- Deobfuscation is handled automatically at runtime in your SPA by the `RuntimeConfig` class
-
-Regardless, these functions are exported (for use in the Live Demo) and thus are covered here.
-
-### browserObfuscateConfig()
-
-The `browserObfuscateConfig` function is used to obfuscate a domain-config within a browser environment; it returns the obfuscated config as a string.
-
-| Parameter      | Type                            | Required? | Default | Comments                      |
-| -------------- | ------------------------------- | --------- | ------- | ----------------------------- |
-| `domainConfig` | [`DomainConfig`](#domainconfig) | yes       | -       | A RuntimeConfig domain-config |
-
-### browserDeobfuscateConfig()
-
-The `browserDeobfuscateConfig` function is used to deobfuscate a domain-config within a browser environment; it returns the deobfuscated config as a [`DomainConfig`](#domainconfig).
-
-| Parameter          | Type     | Required? | Default | Comments                     |
-| ------------------ | -------- | --------- | ------- | ---------------------------- |
-| `obfuscatedConfig` | `string` | yes       | -       | The obfuscated config string |
