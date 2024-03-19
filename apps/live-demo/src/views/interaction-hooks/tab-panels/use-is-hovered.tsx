@@ -40,11 +40,24 @@ function DemoWidget() {
   const buttonRef = useRef<HTMLButtonElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const spanRef = useRef<HTMLSpanElement>(null);
-  const arrayRef = useRef<HTMLButtonElement[]>([]);
+  const buttonClusterRef1 = useRef<HTMLButtonElement>(null);
+  const buttonClusterRef2 = useRef<HTMLButtonElement>(null);
+  const buttonClusterRef3 = useRef<HTMLButtonElement>(null);
+  const buttonClusterRef4 = useRef<HTMLButtonElement>(null);
+  const buttonClusterRef5 = useRef<HTMLButtonElement>(null);
+  const buttonClusterRef6 = useRef<HTMLButtonElement>(null);
+
   const isButtonHovered = useIsHovered(buttonRef);
   const isInputHovered = useIsHovered(inputRef);
   const isSpanHovered = useIsHovered(spanRef);
-  const isButtonArrayHovered = useIsHovered(arrayRef);
+  const isButtonClusterHovered = useIsHovered([
+    buttonClusterRef1,
+    buttonClusterRef2,
+    buttonClusterRef3,
+    buttonClusterRef4,
+    buttonClusterRef5,
+    buttonClusterRef6,
+  ]);
 
   const getHoverStateText = () => {
     if (isButtonHovered) {
@@ -56,7 +69,7 @@ function DemoWidget() {
     if (isSpanHovered) {
       return 'Text is hovered!';
     }
-    if (isButtonArrayHovered) {
+    if (isButtonClusterHovered) {
       return 'One of the six buttons from cluster is hovered!';
     }
 
@@ -77,16 +90,12 @@ function DemoWidget() {
         </Text>
       </Wrap>
       <Wrap align='center' spacing='1rem'>
-        <DemoButton
-          onClick={() => undefined}
-          ref={(el: HTMLButtonElement) => (arrayRef.current[0] = el)}
-          text='Hover'
-        />
-        <DemoButton onClick={() => undefined} ref={(el: HTMLButtonElement) => (arrayRef.current[1] = el)} text='Over' />
-        <DemoButton onClick={() => undefined} ref={(el: HTMLButtonElement) => (arrayRef.current[2] = el)} text='Any' />
-        <DemoButton onClick={() => undefined} ref={(el: HTMLButtonElement) => (arrayRef.current[3] = el)} text='One' />
-        <DemoButton onClick={() => undefined} ref={(el: HTMLButtonElement) => (arrayRef.current[4] = el)} text='Of' />
-        <DemoButton onClick={() => undefined} ref={(el: HTMLButtonElement) => (arrayRef.current[5] = el)} text='Us' />
+        <DemoButton onClick={() => undefined} ref={buttonClusterRef1} text='Hover' />
+        <DemoButton onClick={() => undefined} ref={buttonClusterRef2} text='Over' />
+        <DemoButton onClick={() => undefined} ref={buttonClusterRef3} text='Any' />
+        <DemoButton onClick={() => undefined} ref={buttonClusterRef4} text='One' />
+        <DemoButton onClick={() => undefined} ref={buttonClusterRef5} text='Of' />
+        <DemoButton onClick={() => undefined} ref={buttonClusterRef6} text='Us' />
       </Wrap>
       <Heading sx={{ color: 'whiteAlpha.800' }}>{getHoverStateText()}</Heading>
     </VStack>
@@ -108,15 +117,27 @@ function UseIsHoveredDemo() {
   const buttonRef = useRef<HTMLButtonElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const spanRef = useRef<HTMLSpanElement>(null);
-  // yes! you can also track hover state for an array of elements
-  const arrayRef = useRef<HTMLButtonElement[]>([]);
+  // yes, you can also track hover state for multiple elements at once!
+  const buttonClusterRef1 = useRef<HTMLButtonElement>(null);
+  const buttonClusterRef2 = useRef<HTMLButtonElement>(null);
+  const buttonClusterRef3 = useRef<HTMLButtonElement>(null);
+  const buttonClusterRef4 = useRef<HTMLButtonElement>(null);
+  const buttonClusterRef5 = useRef<HTMLButtonElement>(null);
+  const buttonClusterRef6 = useRef<HTMLButtonElement>(null);
 
   // then we use different hook instances to track the
   // hover state for the above element refs
   const isButtonHovered = useIsHovered(buttonRef);
   const isInputHovered = useIsHovered(inputRef);
   const isSpanHovered = useIsHovered(spanRef);
-  const isButtonArrayHovered = useIsHovered(arrayRef);
+  const isButtonClusterHovered = useIsHovered([
+    buttonClusterRef1,
+    buttonClusterRef2,
+    buttonClusterRef3,
+    buttonClusterRef4,
+    buttonClusterRef5,
+    buttonClusterRef6,
+  ]);
 
   const getHoverStateText = () => {
     if (isButtonHovered) {
@@ -128,7 +149,7 @@ function UseIsHoveredDemo() {
     if (isSpanHovered) {
       return 'Text is hovered!';
     }
-    if (isButtonArrayHovered) {
+    if (isButtonClusterHovered) {
       return 'One of the six buttons from cluster is hovered!';
     }
 
@@ -149,12 +170,12 @@ function UseIsHoveredDemo() {
         </div>
       </div>
       <div>
-        <button ref={(el: HTMLButtonElement) => (arrayRef.current[0] = el)}/>Hover</button>
-        <button ref={(el: HTMLButtonElement) => (arrayRef.current[1] = el)}/>Over</button>
-        <button ref={(el: HTMLButtonElement) => (arrayRef.current[2] = el)}/>Any</button>
-        <button ref={(el: HTMLButtonElement) => (arrayRef.current[3] = el)}/>One</button>
-        <button ref={(el: HTMLButtonElement) => (arrayRef.current[4] = el)}/>Of</button>
-        <button ref={(el: HTMLButtonElement) => (arrayRef.current[5] = el)}/>Us</button>
+        <button ref={buttonClusterRef1}/>Hover</button>
+        <button ref={buttonClusterRef2}/>Over</button>
+        <button ref={buttonClusterRef3}/>Any</button>
+        <button ref={buttonClusterRef4}/>One</button>
+        <button ref={buttonClusterRef5}/>Of</button>
+        <button ref={buttonClusterRef6}/>Us</button>
       </div>
       <h2>{getHoverStateText()}</h2>
     </div>

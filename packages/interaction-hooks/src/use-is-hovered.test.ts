@@ -20,6 +20,18 @@ describe('useIsHovered', () => {
     expect(result.current).toBe(true);
   });
 
+  test('should return true when mouse enters one of an array of elements', () => {
+    const ref1 = { current: document.createElement('div') };
+    const ref2 = { current: document.createElement('div') };
+    const { result } = renderHook(() => useIsHovered([ref1, ref2]));
+
+    act(() => {
+      ref2.current.dispatchEvent(new MouseEvent('mouseenter'));
+    });
+
+    expect(result.current).toBe(true);
+  });
+
   test('should return false when mouse leaves the element', () => {
     const ref = { current: document.createElement('div') };
     const { result } = renderHook(() => useIsHovered(ref));

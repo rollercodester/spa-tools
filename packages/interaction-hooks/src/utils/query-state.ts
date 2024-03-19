@@ -1,10 +1,6 @@
 import { isNotEmptyRecord } from '../../../utilities/src';
 
 export function parseQueryState<S = Record<string, unknown>>(useLocalStorage = false) {
-  if (typeof window === 'undefined') {
-    return null;
-  }
-
   let cacheState: Record<string, unknown> = {};
 
   if (useLocalStorage) {
@@ -59,10 +55,6 @@ export function pushQueryState<S = Record<string, unknown>>(
   newQueryState: S | null,
   useLocalStorage = false
 ): S | null {
-  if (typeof window === 'undefined') {
-    return null;
-  }
-
   const newUrl = new URL(window.location.href);
 
   // clear previous search

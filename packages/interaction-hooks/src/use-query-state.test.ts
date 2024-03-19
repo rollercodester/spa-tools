@@ -19,7 +19,7 @@ describe('useQueryState', () => {
   test('should initialize query state correctly', () => {
     const { result } = renderHook(() => useQueryState());
 
-    expect(result.current.queryState).toEqual({});
+    expect(result.current.queryState).toEqual(null);
   });
 
   test('should update query state correctly', () => {

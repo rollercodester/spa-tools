@@ -3,7 +3,7 @@ import { RefObject, useEffect, useState } from 'react';
 /**
  * React hook that detects when an element or array of elements is hovered.
  */
-export function useIsHovered(elem: RefObject<HTMLElement | HTMLElement[]>) {
+export function useIsHovered(elem: RefObject<HTMLElement> | RefObject<HTMLElement>[]) {
   const [isHovered, setIsHovered] = useState(false);
 
   const handleMouseEnter = () => {
@@ -15,17 +15,17 @@ export function useIsHovered(elem: RefObject<HTMLElement | HTMLElement[]>) {
   };
 
   useEffect(() => {
-    const normElements = Array.isArray(elem.current) ? elem.current : [elem.current];
+    const normElementRefs = Array.isArray(elem) ? elem : [elem];
 
-    normElements.forEach((el) => {
-      el?.addEventListener('mouseenter', handleMouseEnter);
-      el?.addEventListener('mouseleave', handleMouseLeave);
+    normElementRefs.forEach((elRef) => {
+      elRef.current?.addEventListener('mouseenter', handleMouseEnter);
+      elRef.current?.addEventListener('mouseleave', handleMouseLeave);
     });
 
     return () => {
-      normElements.forEach((el) => {
-        el?.removeEventListener('mouseenter', handleMouseEnter);
-        el?.removeEventListener('mouseleave', handleMouseLeave);
+      normElementRefs.forEach((el) => {
+        el.current?.removeEventListener('mouseenter', handleMouseEnter);
+        el.current?.removeEventListener('mouseleave', handleMouseLeave);
       });
     };
   }, [elem]);

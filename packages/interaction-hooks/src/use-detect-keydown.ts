@@ -1,4 +1,4 @@
-import { KeyboardEvent, KeyboardEventHandler, ModifierKey, RefObject, useEffect, useState } from 'react';
+import { KeyboardEvent, KeyboardEventHandler, ModifierKey, RefObject, useState } from 'react';
 
 export type DetectKeyDownTuple = [KeyboardEventHandler, boolean];
 
@@ -23,8 +23,6 @@ export function useDetectKeyDown(
   elementToAutoClickRef?: RefObject<HTMLElement>
 ): DetectKeyDownTuple {
   const [keyDownDetected, setKeyDownDetected] = useState(false);
-
-  useEffect(() => {}, [elementToAutoClickRef, modifierKeysOrElemRef]);
 
   const onKeyDown = (evt: KeyboardEvent) => {
     const keyDownDetected = evt.key === key;
