@@ -10,67 +10,17 @@ on:
     branches:
       - main
     paths:
-      - "apps/website/**"
+      - apps/website/**
 
 jobs:
-  lint-and-test:
-    name: Lint and Test Website
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Setup PNPM
-        uses: pnpm/action-setup@v3
-        with:
-          version: latest
-
-      - name: Setup NodeJS
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: pnpm
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-
-      - name: Lint monorepo
-        run: pnpm lint
-
-      - name: Test monorepo
-        run: pnpm test:cicd
-
-  deploy-build:
+  build-and-deploy:
     name: Build and Deploy Website
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
-    needs: lint-and-test
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - name: Build Monorepo
+        uses: ./.github/actions/build-monorepo.yml
         with:
-          fetch-depth: 0
-
-      - name: Setup PNPM
-        uses: pnpm/action-setup@v3
-        with:
-          version: latest
-
-      - name: Setup NodeJS
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: pnpm
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-
-      - name: Build monorepo
-        run: pnpm build
+          ref: ${{ github.ref }}
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
@@ -83,3 +33,6 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+      - name: Set output
+        run: echo "page_url=${{ steps.deployment.outputs.page_url }}" >> $GITHUB_ENV

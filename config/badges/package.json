@@ -1,0 +1,19 @@
+{
+  "name": "badges",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": {
+    "name": "Ryan Howard",
+    "email": "rollercodester@live.com",
+    "url": "https://rollercodester.github.io/resume"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "badges": "^4.40.0"
+  }
+}

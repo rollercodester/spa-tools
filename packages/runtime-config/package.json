@@ -14,6 +14,9 @@
     "url": "https://github.com/rollercodester/spa-tools",
     "directory": "packages/runtime-config"
   },
+  "bugs": {
+    "url": "https://github.com/rollercodester/spa-tools/issues/new?labels=runtime-config&template=bug_report.md"
+  },
   "keywords": [
     "spa",
     "tools",
@@ -29,7 +32,7 @@
   "bin": {
     "@spa-tools/runtime-config-obf": "./dist/cli.cjs"
   },
-  "main": "dist/index.cjs",
+  "browser": "dist/index.cjs",
   "module": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
@@ -37,9 +40,8 @@
   ],
   "scripts": {
     "build": "tsup",
-    "test": "vitest run",
-    "test:dev": "vitest --ui --coverage",
     "cli": "node dist/cli.cjs",
+    "test:dev": "vitest --ui --coverage",
     "test:cicd": "vitest --run --silent --coverage.enabled --coverage.clean --coverage.thresholds.100"
   },
   "prettier": "prettier-config-spatools",

@@ -1,0 +1,23 @@
+name: Build Monorepo
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - packages/**
+    paths-ignore:
+      - packages/**/coverage-badge.svg
+
+jobs:
+  test-build:
+    name: Build Monorepo
+    runs-on: ubuntu-latest
+    steps:
+      - name: Test Monorepo
+        uses: ./.github/actions/test-monorepo.yml
+        with:
+          ref: ${{ github.ref }}
+
+      - name: Build monorepo
+        run: pnpm build

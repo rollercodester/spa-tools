@@ -1,0 +1,96 @@
+name: Test Monorepo
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test-build:
+    name: Test Monorepo
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup PNPM
+        uses: pnpm/action-setup@v3
+        with:
+          version: latest
+
+      - name: Setup NodeJS
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Lint monorepo
+        run: pnpm lint
+
+      - name: Test monorepo
+        run: pnpm test:cicd
+
+      - name: "Coverage Badge: api-client"
+        uses: wjervis7/vitest-badge-action@v1.0.0
+        if: success()
+        with:
+          badge-path: packages/api-client/coverage-badge.svg
+          badge-text: Code Coverage
+          result-type: branches
+          summary-path: packages/api-client/coverage/coverage-summary.json
+          upload-badge: false
+          vitest-config-path: vite.config.mts
+
+      - name: "Coverage Badge: core-router"
+        uses: wjervis7/vitest-badge-action@v1.0.0
+        if: success()
+        with:
+          badge-path: packages/core-router/coverage-badge.svg
+          badge-text: Code Coverage
+          result-type: branches
+          summary-path: packages/core-router/coverage/coverage-summary.json
+          upload-badge: false
+          vitest-config-path: vite.config.mts
+
+      - name: "Coverage Badge: interaction-hooks"
+        uses: wjervis7/vitest-badge-action@v1.0.0
+        if: success()
+        with:
+          badge-path: packages/interaction-hooks/coverage-badge.svg
+          badge-text: Code Coverage
+          result-type: branches
+          summary-path: packages/interaction-hooks/coverage/coverage-summary.json
+          upload-badge: false
+          vitest-config-path: vite.config.mts
+
+      - name: "Coverage Badge: runtime-config"
+        uses: wjervis7/vitest-badge-action@v1.0.0
+        if: success()
+        with:
+          badge-path: packages/runtime-config/coverage-badge.svg
+          badge-text: Code Coverage
+          result-type: branches
+          summary-path: packages/runtime-config/coverage/coverage-summary.json
+          upload-badge: false
+          vitest-config-path: vite.config.mts
+
+      - name: "Coverage Badge: utilities"
+        uses: wjervis7/vitest-badge-action@v1.0.0
+        if: success()
+        with:
+          badge-path: packages/utilities/coverage-badge.svg
+          badge-text: Code Coverage
+          result-type: branches
+          summary-path: packages/utilities/coverage/coverage-summary.json
+          upload-badge: false
+          vitest-config-path: vite.config.mts
+
+      - name: Commit Coverage Badge Changes
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          file_pattern: packages/**/coverage-badge.svg

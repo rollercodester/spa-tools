@@ -3,6 +3,10 @@
 
 # Utilities
 
+<span class="badge-npmversion"><a href="https://npmjs.org/package/@spa-tools/utilities" title="View this project on NPM"><img src="https://img.shields.io/npm/v/@spa-tools/utilities.svg" alt="NPM version" /></a></span>
+<span class="badge-githubworkflow"><a href="https://github.com/rollercodester/spa-tools/actions?query=workflow%3Abuild-monorepo.yml" title="View the status of this project's GitHub Workflow: build-monorepo.yml"><img src="https://github.com/rollercodester/spa-tools/workflows/build-monorepo.yml/badge.svg" alt="Status of the GitHub Workflow: build-monorepo.yml" /></a></span>
+<span class="badge-badge"><img src="./coverage-badge.svg" alt="Code Coverage" /></span>
+
 The `@spa-tools/utilities` package contains a specialized utilities, succinctly written in TypeScript with a focus on being requirements-driven.
 
 Feature highlights include:

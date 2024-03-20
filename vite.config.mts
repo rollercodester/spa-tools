@@ -12,6 +12,8 @@ export default defineConfig({
         "**/types.ts",
         "**/*-cli.ts",
       ],
+      reportOnFailure: true,
+      reporter: ["json-summary"],
     },
     environment: "jsdom",
     globals: true,

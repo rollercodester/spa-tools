@@ -34,6 +34,30 @@ All packages in @spa-tools require 100% unit test coverage. This is a condition 
 The only exception is when native code is being wrapped and coverage is either not possible or redundant, which can be discussed on a case-by-case basis
 during the approval process.
 
+#### To run CI/CD tests for all packages
+
+```bash
+pnpm test:cicd
+```
+
+#### To run CI/CD tests for a single package
+
+```bash
+pnpm test:cicd --filter=api-client
+```
+
+#### To run DEV tests locally in watch mode with test UI
+
+```bash
+pnpm test:dev
+```
+
+#### To run DEV tests locally for a single package
+
+```bash
+pnpm test:dev --filter=api-client
+```
+
 ## Bugs
 
 Found a bug? We'd super appreciate you reporting it by [creating a new bug report](https://github.com/rollercodester/spa-tools/issues/new?assignees=&labels=&projects=&template=bug_report.md&title=).

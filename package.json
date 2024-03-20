@@ -19,13 +19,12 @@
     "dev": "turbo dev",
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "test": "turbo test",
-    "test:dev": "turbo test:dev",
-    "test:cicd": "turbo test:cicd",
     "publish:one:ga": "pnpm publish --access public --filter",
     "publish:one:dryrun": "pnpm publish --access public --dry-run --filter",
     "publish:one:next:dryrun": "pnpm publish --tag next --access public --dry-run --filter",
-    "publish:one:next": "pnpm publish --tag next --access public --filter"
+    "publish:one:next": "pnpm publish --tag next --access public --filter",
+    "test:dev": "turbo test:dev",
+    "test:cicd": "turbo test:cicd"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^6.1.5",

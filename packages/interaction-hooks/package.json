@@ -14,6 +14,9 @@
     "url": "https://github.com/rollercodester/spa-tools",
     "directory": "packages/interaction-hooks"
   },
+  "bugs": {
+    "url": "https://github.com/rollercodester/spa-tools/issues/new?labels=interaction-hooks&template=bug_report.md"
+  },
   "keywords": [
     "react",
     "hooks",
@@ -28,7 +31,7 @@
     "query string"
   ],
   "license": "MIT",
-  "main": "dist/index.cjs",
+  "browser": "dist/index.cjs",
   "module": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
@@ -36,7 +39,6 @@
   ],
   "scripts": {
     "build": "tsup",
-    "test": "vitest run",
     "test:dev": "vitest --ui --coverage",
     "test:cicd": "vitest --run --silent --coverage.enabled --coverage.clean --coverage.thresholds.100"
   },
