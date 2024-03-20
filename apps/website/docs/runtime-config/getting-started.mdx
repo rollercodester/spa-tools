@@ -64,7 +64,11 @@ at runtime, which is how the coy name "runtime-config" came about :-).
       icon: <FaCreativeCommonsZero fontSize='1.75rem' />,
     },
     {
-      title: '4KB Unpacked',
+      title: (
+        <>
+          2 kB <span style={{ fontWeight: 500 }}>cjs</span> → 7 kB <span style={{ fontWeight: 500 }}>pkg</span>
+        </>
+      ),
       icon: <LuPackageOpen fontSize='1.75rem' />,
     },
     {
