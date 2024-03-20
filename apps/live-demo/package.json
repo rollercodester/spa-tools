@@ -1,7 +1,7 @@
 {
   "name": "@spa-tools/live-demo",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
   "description": "This is a live demo of goodies from the open-source @spa-tools package.",
   "keywords": [
