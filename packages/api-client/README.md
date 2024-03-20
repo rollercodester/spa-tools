@@ -20,7 +20,7 @@ Feature highlights include:
 
 ## Quickstart
 
-#### It's highly advised to first checkout the [@spa-tools documentation site](https://spa-tools.github.io) for a complete list of features, usage scenarios, guidance, and reference.
+#### It's highly advised to first checkout the [@spa-tools documentation site](https://rollercodester.github.io/spa-tools/) for a complete list of features, usage scenarios, guidance, and reference.
 
 ### Installation
 
@@ -82,7 +82,7 @@ if (result.data) {
 
 ## Docsite
 
-View the [@spa-tools documentation site](https://spa-tools.github.io) for complete reference.
+View the [@spa-tools documentation site](https://rollercodester.github.io/spa-tools/) for complete reference.
 
 
 ## Contributing
