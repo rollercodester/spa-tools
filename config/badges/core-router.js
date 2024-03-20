@@ -14,7 +14,7 @@ const list = [
 const config = {
   githubSlug: "rollercodester/spa-tools",
   githubUsername: "rollercodester",
-  githubWorkflow: "build-monorepo.yml",
+  githubWorkflow: "test-and-build-on-push.yml",
   homepage: "https://rollercodester.github.io/spa-tools/",
   nodeicoQueryString: { compact: true, downloads: false, height: 2 },
   npmPackageName: "@spa-tools/core-router",

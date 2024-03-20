@@ -1,0 +1,16 @@
+name: Test On Pull Request
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - packages/**
+
+jobs:
+  test:
+    name: Test Monorepo
+    runs-on: ubuntu-latest
+    steps:
+      - name: Test Monorepo
+        uses: ./.github/actions/test-and-build-monorepo-action.yml

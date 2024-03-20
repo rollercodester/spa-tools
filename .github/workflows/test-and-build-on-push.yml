@@ -1,0 +1,21 @@
+name: Test and Build on Push
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - packages/**
+    paths-ignore:
+      - packages/**/coverage-badge.svg
+
+jobs:
+  test-build:
+    name: Test and Build Monorepo
+    runs-on: ubuntu-latest
+    steps:
+      - name: Test and Build Monorepo
+        uses: ./.github/actions/test-and-build-monorepo-action.yml
+        with:
+          generate-coverage-badges: true
+          run-build: true

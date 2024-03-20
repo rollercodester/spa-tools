@@ -14,13 +14,13 @@ on:
 
 jobs:
   build-and-deploy:
-    name: Build and Deploy Website
+    name: Test and Build and Deploy Website
     runs-on: ubuntu-latest
     steps:
-      - name: Build Monorepo
-        uses: ./.github/actions/build-monorepo.yml
+      - name: Test and Build Monorepo
+        uses: ./.github/actions/test-and-build-monorepo-action.yml
         with:
-          ref: ${{ github.ref }}
+          run-build: true
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
