@@ -13,4 +13,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Test Monorepo
-        uses: ./.github/actions/test-and-build-monorepo-action.yml
+        uses: ./.github/actions/test-and-build-monorepo-action
