@@ -5,9 +5,8 @@ on:
     branches:
       - main
     paths:
-      - packages/**
-    paths-ignore:
-      - packages/**/coverage-badge.svg
+      - "packages/**"
+      - "!packages/**/coverage-badge.svg"
 
 jobs:
   test-build:
