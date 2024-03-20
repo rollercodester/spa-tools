@@ -14,7 +14,7 @@ on:
 
 jobs:
   lint-and-test:
-    name: Lint and Test
+    name: Lint and Test Website
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -43,7 +43,7 @@ jobs:
         run: pnpm test:cicd
 
   deploy-build:
-    name: Deploy Website Build
+    name: Build and Deploy Website
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}

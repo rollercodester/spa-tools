@@ -3,15 +3,7 @@
   "globalDependencies": ["**/.env.*local"],
   "globalEnv": ["APP_HOSTNAME"],
   "pipeline": {
-    "dev": {
-      "cache": false,
-      "persistent": true
-    },
-    "lint": {},
-    "build": {
-      "outputs": ["dist/**"]
-    },
-    "test": {
+    "lint": {
       "inputs": ["src/**/*.tsx", "src/**/*.ts"]
     },
     "test:dev": {
@@ -19,8 +11,11 @@
       "inputs": ["src/**/*.tsx", "src/**/*.ts"]
     },
     "test:cicd": {
-      "cache": false,
       "inputs": ["src/**/*.tsx", "src/**/*.ts"]
+    },
+    "build": {
+      "inputs": ["src/**/*.tsx", "src/**/*.ts"],
+      "outputs": ["dist/**"]
     }
   }
 }
