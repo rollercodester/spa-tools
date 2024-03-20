@@ -1,7 +1,19 @@
 {
   "name": "@spa-tools/runtime-config",
+  "version": "1.0.0-rc.0",
   "type": "module",
   "description": "Modern, hands-off alternative to the old approach of using .env config approach.",
+  "author": {
+    "name": "Ryan Howard",
+    "email": "rollercodester@live.com",
+    "url": "https://rollercodester.github.io/resume"
+  },
+  "homepage": "https://rollercodester.github.io/spa-tools/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rollercodester/spa-tools",
+    "directory": "packages/runtime-config"
+  },
   "keywords": [
     "spa",
     "tools",
@@ -13,9 +25,7 @@
     "runtime-config",
     "domain config"
   ],
-  "author": "Ryan Howard <rollercodester@live.com>",
   "license": "MIT",
-  "version": "1.0.0",
   "bin": {
     "@spa-tools/runtime-config-obf": "./dist/cli.cjs"
   },

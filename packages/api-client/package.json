@@ -1,7 +1,19 @@
 {
   "name": "@spa-tools/api-client",
+  "version": "1.0.0-rc.0",
   "type": "module",
   "description": "Excels in calling HTTP API endpoints with features specifically designed for modern, data-driven web applications.",
+  "author": {
+    "name": "Ryan Howard",
+    "email": "rollercodester@live.com",
+    "url": "https://rollercodester.github.io/resume"
+  },
+  "homepage": "https://rollercodester.github.io/spa-tools/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rollercodester/spa-tools",
+    "directory": "packages/api-client"
+  },
   "keywords": [
     "api",
     "client",
@@ -13,9 +25,7 @@
     "spa",
     "tools"
   ],
-  "author": "Ryan Howard <rollercodester@live.com>",
   "license": "MIT",
-  "version": "1.0.0",
   "main": "dist/index.cjs",
   "module": "dist/index.js",
   "types": "dist/index.d.ts",

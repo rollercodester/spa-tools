@@ -12,7 +12,9 @@
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "test": "turbo test",
     "test:dev": "turbo test:dev",
-    "test:cicd": "turbo test:cicd"
+    "test:cicd": "turbo test:cicd",
+    "publish:dryrun": "pnpm publish --tag next --access public --dry-run --filter",
+    "publish": "pnpm publish --tag next --access public --filter"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^6.1.5",
