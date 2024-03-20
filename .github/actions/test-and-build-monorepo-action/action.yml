@@ -23,12 +23,15 @@ runs:
         cache: pnpm
 
     - name: Install dependencies
+      shell: bash
       run: pnpm install --frozen-lockfile
 
     - name: Lint monorepo
+      shell: bash
       run: pnpm lint
 
     - name: Test monorepo
+      shell: bash
       run: pnpm test:cicd
 
     - name: "Coverage Badge: api-client"
@@ -93,5 +96,6 @@ runs:
         file_pattern: packages/**/coverage-badge.svg
 
     - name: Build monorepo
+      shell: bash
       if: ${{ inputs.run-build }}
       run: pnpm build
