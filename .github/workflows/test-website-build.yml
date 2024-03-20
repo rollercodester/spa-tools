@@ -31,5 +31,11 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Lint monorepo
+        run: pnpm lint
+
+      - name: Test monorepo
+        run: pnpm test:cicd
+
       - name: Build monorepo
         run: pnpm build

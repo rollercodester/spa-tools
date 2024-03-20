@@ -11,7 +11,8 @@
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "test": "turbo test",
-    "test:dev": "turbo test:dev"
+    "test:dev": "turbo test:dev",
+    "test:cicd": "turbo test:cicd"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^6.1.5",
