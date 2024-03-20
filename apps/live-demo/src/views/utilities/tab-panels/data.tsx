@@ -10,7 +10,6 @@ import {
   omit,
   pick,
 } from '@spa-tools/utilities';
-import { log } from 'console';
 import { BsClipboardData } from 'react-icons/bs';
 import { DemoViewport, FeatureList, logCode, logComment, logLabel, logTip } from 'showcase/widgets';
 

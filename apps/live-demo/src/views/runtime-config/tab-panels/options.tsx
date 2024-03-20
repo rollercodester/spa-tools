@@ -33,7 +33,7 @@ export function OptionsTabPanel() {
       }
       initialOutputMessage='Click the "Run Options Demo" button to execute the demo...'
       language='ts'
-      onClickCtaButton={async () => {
+      onClickCtaButton={() => {
         const myAppRuntimeConfig = RuntimeConfig.initialize<MyAppConfigSettings, MyAppEnvironments>(myAppConfigSet, {
           localhostIpAddress: '127.0.1.1',
           manualActiveHostname: 'myapp.com',
