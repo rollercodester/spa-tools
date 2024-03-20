@@ -2,7 +2,16 @@
   "name": "spatools",
   "private": true,
   "type": "commonjs",
-  "author": "Ryan Howard <rollercodester@live.com>",
+  "author": {
+    "name": "Ryan Howard",
+    "email": "rollercodester@live.com",
+    "url": "https://rollercodester.github.io/resume"
+  },
+  "homepage": "https://rollercodester.github.io/spa-tools/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rollercodester/spa-tools"
+  },
   "license": "MIT",
   "version": "1.0.0",
   "scripts": {
