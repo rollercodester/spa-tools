@@ -23,7 +23,7 @@
     "test:dev": "turbo test:dev",
     "test:cicd": "turbo test:cicd",
     "publish:dryrun": "pnpm publish --tag next --access public --dry-run --filter",
-    "publish": "pnpm publish --tag next --access public --filter"
+    "publish:one": "pnpm publish --tag next --access public --filter"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^6.1.5",
