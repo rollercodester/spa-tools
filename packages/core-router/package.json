@@ -30,7 +30,7 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsup --minify",
+    "build": "tsup",
     "test": "vitest run",
     "test:dev": "vitest --ui --coverage",
     "test:cicd": "vitest --run --silent --coverage.enabled --coverage.clean --coverage.thresholds.100"

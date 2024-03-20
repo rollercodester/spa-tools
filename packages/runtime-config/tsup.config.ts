@@ -10,5 +10,5 @@ export default defineConfig({
   format: ['esm', 'cjs'],
   minify: true,
   outDir: 'dist',
-  sourcemap: true,
+  sourcemap: false,
 });
