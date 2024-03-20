@@ -10,6 +10,7 @@ import {
   omit,
   pick,
 } from '@spa-tools/utilities';
+import { log } from 'console';
 import { BsClipboardData } from 'react-icons/bs';
 import { DemoViewport, FeatureList, logCode, logComment, logLabel, logTip } from 'showcase/widgets';
 
@@ -131,7 +132,7 @@ obj1.foo.bar.baz = 74;`);
         );
 
         logTip('jsonStringify');
-        logLabel('A graceful version of JSON.stringify that handles circular references and other edge cases.');
+        logLabel('A graceful version of JSON.stringify that handles circular references and BitInt values.');
         logComment([
           'The first argument is the value to stringify and the second argument is the',
           'space (number or string) to use for indentation when stringifying the value',
@@ -143,8 +144,27 @@ obj1.foo.bar.baz = 74;`);
 )`,
           `${jsonStringify({ foo: { bar: { baz: 103 } } }, 2)}`
         );
-        logComment('the window object is a good example of a circular reference');
-        logCode(`jsonStringify(window).substring(0, 20)`, `${jsonStringify(window).substring(0, 20)}...`);
+        const objWithCircularRef: Record<string, unknown> = {
+          a: 1,
+          b: '2',
+        };
+        objWithCircularRef.c = objWithCircularRef;
+        logComment('circular reference example');
+        logCode(
+          `const objWithCircularRef = {
+  a: 1,
+  b: '2',
+};
+objWithCircularRef.c = objWithCircularRef;
+console.log(jsonStringify(objWithCircularRef));
+// --> {"a":1,"b":"2","c":"[Circular Reference]"}`,
+          `${jsonStringify(objWithCircularRef)}`
+        );
+        logComment('BigInt example');
+        logCode(
+          `jsonStringify({ age: 30, bigInt: BigInt(12345678901234567890n), name: 'John' })`,
+          `${jsonStringify({ age: 30, bigInt: BigInt(12345678901234567890n), name: 'John' })}`
+        );
 
         logTip('downloadFile');
         logLabel(
@@ -278,7 +298,7 @@ const picked = pick(
 //
 // -----------------------------------------
 
-const gracefullyStringified = jsonStringify(
+const obj1 = jsonStringify(
   { foo: { bar: { baz: 103 } } },
   // here we request that 2 spaces be used for indentation
   2
@@ -291,8 +311,18 @@ const gracefullyStringified = jsonStringify(
    }
  }' */
 
-// the window object is a good example of a circular reference
-const gracefullyStringifiedWindow = jsonStringify(window).substring(0, 20); // => '{"window":{"window":{'
+// circular references are handled gracefully
+const obj2 = {
+  a: 1,
+  b: '2',
+};
+obj2.c = obj2;
+const obj2 = jsonStringify(obj2);
+// => '{"a":1,"b":"2","c":"[Circular Reference]"}'
+
+// BigInt values are handled, too!
+const obj3 = jsonStringify({ age: 30, bigInt: BigInt(12345678901234567890n), name: 'John' });
+// => '{"age":30,"bigInt":"12345678901234567890","name":"John"}'
 
 // -----------------------------------------
 //

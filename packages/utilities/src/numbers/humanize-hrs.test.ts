@@ -9,6 +9,14 @@ describe('humanizeHrs', () => {
     expect(result).toEqual([1, 'year']);
   });
 
+  it('should return fractional years', () => {
+    const hours = 8860; //
+
+    const result = humanizeHrs(hours, 2);
+
+    expect(result).toEqual([1.01, 'years']);
+  });
+
   it('should return months and months unit if hours is greater than or equal to HOURS_IN_MONTH', () => {
     const hours = 730; // 1 month
 
@@ -23,6 +31,14 @@ describe('humanizeHrs', () => {
     const result = humanizeHrs(hours, 0);
 
     expect(result).toEqual([1, 'week']);
+  });
+
+  it('should return fractional weeks', () => {
+    const hours = 172;
+
+    const result = humanizeHrs(hours, 2);
+
+    expect(result).toEqual([1.02, 'weeks']);
   });
 
   it('should return days and days unit if hours is less than HOURS_IN_WEEK', () => {
@@ -54,7 +70,7 @@ describe('humanizeHrs', () => {
 
     const result = humanizeHrs(hours);
 
-    expect(result).toEqual(['0.0', 'days']);
+    expect(result).toEqual([0, 'days']);
   });
 
   it('should return correct decimal places', () => {
@@ -62,6 +78,6 @@ describe('humanizeHrs', () => {
 
     const result = humanizeHrs(hours, 3);
 
-    expect(result).toEqual(['1.216', 'months']);
+    expect(result).toEqual([1.216, 'months']);
   });
 });

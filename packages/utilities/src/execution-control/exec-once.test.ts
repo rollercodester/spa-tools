@@ -39,4 +39,11 @@ describe('ExecOnce', () => {
 
     expect(execCount).toBe(1);
   });
+
+  it('should set hasExecuted property', async () => {
+    const once = new ExecOnce(() => 1);
+    await once.exec();
+
+    expect(once.hasExecuted).toBe(true);
+  });
 });

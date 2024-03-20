@@ -14,9 +14,7 @@ import { PackageCaption } from '@site/src/components';
 # humanizeHrs()
 
 The `humanizeHrs()` function converts a number of hours into the largest applicable
-unit of either year, month, week, or day by returning a tuple of resulting number
-with requested decimal places in first position and respective human-readable unit
-in second position.
+unit of either year, month, week, or day.
 
 ### Usage
 
@@ -25,23 +23,23 @@ import { humanizeHrs } from '@spa-tools/utilities';
 
 const humanizeHrs1 = humanizeHrs(8760, 0);
 console.log(humanizeHrs1);
-// --> ['1', 'year']
+// --> [1, 'year']
 
 const humanizeHrs2 = humanizeHrs(730);
 console.log(humanizeHrs2);
-// --> ['1.0', 'month']
+// --> [1, 'month']
 
 const humanizeHrs3 = humanizeHrs(168, 0);
 console.log(humanizeHrs3);
-// --> ['1', 'week']
+// --> [1, 'week']
 
 const humanizeHrs4 = humanizeHrs(24);
 console.log(humanizeHrs4);
-// --> ['1.0', 'day']
+// --> [1, 'day']
 
 const humanizeHrs5 = humanizeHrs(123456, 2);
 console.log(humanizeHrs5);
-// --> ['14.09', 'years']
+// --> [14.09, 'years']
 ```
 
 ### Arguments
@@ -53,4 +51,7 @@ console.log(humanizeHrs5);
 
 ### Returns
 
-Returns humanized hours as `string`.
+Returns two-element tuple as follows:
+
+- element 1 at index 0 = `number` representing the converted-to value with requested decimal places
+- element 2 at index 1 = `string` representing the converted-to unit

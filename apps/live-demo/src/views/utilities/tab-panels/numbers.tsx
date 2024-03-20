@@ -187,16 +187,16 @@ humanizeUnit(
 //
 // humanizeHrs examples
 //
-humanizeHrs(36400); // ['4.2', 'years']
-humanizeHrs(2325, 0); // ['3', 'months']
-humanizeHrs(1643343, 3); // ['187.596', 'years']
-humanizeHrs(23, 2); // ['0.96', 'days']
+humanizeHrs(36400); // [4.2, 'years']
+humanizeHrs(2325, 0); // [3, 'months']
+humanizeHrs(1643343, 3); // [187.596, 'years']
+humanizeHrs(23, 2); // [0.96, 'days']
 
 //
 // humanizeMs examples
 //
-humanizeMs(27513000000); // ['10.6', 'months']
-humanizeMs(2722000, 2); // ['45.37', 'minutes']
-humanizeMs(688400000, 3); // ['1.138', 'weeks']
-humanizeMs(86400000, 0); // ['1', 'day']
+humanizeMs(27513000000); // [10.6, 'months']
+humanizeMs(2722000, 2); // [45.37, 'minutes']
+humanizeMs(688400000, 3); // [1.138, 'weeks']
+humanizeMs(86400000, 0); // [1, 'day']
 `;

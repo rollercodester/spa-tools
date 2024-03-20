@@ -14,9 +14,7 @@ import { PackageCaption } from '@site/src/components';
 # humanizeMs()
 
 The `humanizeMs()` function converts a number of milliseconds into the largest applicable
-unit of either year, month, week, day, minute, or second by returning a tuple of resulting
-number with requested decimal places in first position and respective human-readable unit
-in second position.
+unit of either year, month, week, day, minute, or second.
 
 ### Usage
 
@@ -25,15 +23,15 @@ import { humanizeMs } from '@spa-tools/utilities';
 
 const humanizedMs1 = humanizeMs(1000);
 console.log(humanizedMs1);
-// --> ['1.0', 'second']
+// --> [1, 'second']
 
 const humanizedMs2 = humanizeMs(1000 * 60 * 60);
 console.log(humanizedMs2);
-// --> ['1.0', 'hour']
+// --> [1, 'hour']
 
 const humanizedMs3 = humanizeMs(1000 * 60 * 60 * 24 * 365);
 console.log(humanizedMs3);
-// --> ['1.0', 'year']
+// --> [1, 'year']
 ```
 
 ### Arguments
@@ -45,4 +43,7 @@ console.log(humanizedMs3);
 
 ### Returns
 
-Returns humanized milliseconds as `string`.
+Returns two-element tuple as follows:
+
+- element 1 at index 0 = `number` representing the converted-to value with requested decimal places
+- element 2 at index 1 = `string` representing the converted-to unit

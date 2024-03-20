@@ -11,7 +11,7 @@ export function getNestedValue<T = unknown>(data: unknown, dataDotPath: string, 
   for (let idx = 0; idx < dataParts.length; idx++) {
     const nextProp = dataParts[idx];
 
-    if (typeof nextProp !== 'string') {
+    if (!nextProp) {
       return defaultValue;
     }
 
@@ -30,5 +30,6 @@ export function getNestedValue<T = unknown>(data: unknown, dataDotPath: string, 
     } else {
       return defaultValue;
     }
+    /* v8 ignore start - ignore coverage for closing bracket as logic prevents it from ever being reached */
   }
 }

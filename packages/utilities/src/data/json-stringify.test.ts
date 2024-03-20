@@ -3,34 +3,15 @@ import { jsonStringify } from './json-stringify';
 describe('jsonStringify', () => {
   it('should stringify a simple object', () => {
     const obj = { age: 30, name: 'John' };
-    const expected = '{"name":"John","age":30}';
+    const expected = '{"age":30,"name":"John"}';
     const result = jsonStringify(obj);
     expect(result).toEqual(expected);
   });
 
-  it('should handle circular references', () => {
-    const obj: Record<string, unknown> = { name: 'John' };
-    obj.self = obj;
-    const expected = '{"name":"John"}';
+  it('should stringify an object containing a BigInt', () => {
+    const obj = { age: 30, bigInt: BigInt(12345678901234567890n), name: 'John' };
+    const expected = '{"age":30,"bigInt":"12345678901234567890","name":"John"}';
     const result = jsonStringify(obj);
-    expect(result).toEqual(expected);
-  });
-
-  it('should handle nested objects with circular references', () => {
-    const obj1: Record<string, unknown> = { name: 'John' };
-    const obj2: Record<string, unknown> = { name: 'Jane' };
-    obj1.spouse = obj2;
-    obj2.spouse = obj1;
-    const expected = '{"name":"John","spouse":{"name":"Jane"}}';
-    const result = jsonStringify(obj1);
-    expect(result).toEqual(expected);
-  });
-
-  it('should handle arrays with circular references', () => {
-    const arr: unknown[] = [];
-    arr.push(arr);
-    const expected = '[null]';
-    const result = jsonStringify(arr);
     expect(result).toEqual(expected);
   });
 
@@ -41,9 +22,21 @@ describe('jsonStringify', () => {
     obj1.spouse = obj2;
     obj2.spouse = obj1;
     obj3.friends = [obj1, obj2];
-    const expected =
-      '{"name":"John","spouse":{"name":"Jane"},"friends":[{"name":"John","spouse":{"name":"Jane"}},{"name":"Jane","spouse":{"name":"John"}}]}';
-    const result = jsonStringify(obj3);
-    expect(result).toEqual(expected);
+    obj1.friends = [obj3];
+    obj2.friends = [obj3];
+
+    const result1 = jsonStringify(obj1);
+    const result2 = jsonStringify(obj2);
+    const result3 = jsonStringify(obj3);
+
+    expect(result1).toEqual(
+      '{"name":"John","spouse":{"name":"Jane","spouse":"[Circular Reference]","friends":[{"name":"Alice","friends":["[Circular Reference]","[Circular Reference]"]}]},"friends":[{"name":"Alice","friends":["[Circular Reference]",{"name":"Jane","spouse":"[Circular Reference]","friends":["[Circular Reference]"]}]}]}'
+    );
+    expect(result2).toEqual(
+      '{"name":"Jane","spouse":{"name":"John","spouse":"[Circular Reference]","friends":[{"name":"Alice","friends":["[Circular Reference]","[Circular Reference]"]}]},"friends":[{"name":"Alice","friends":[{"name":"John","spouse":"[Circular Reference]","friends":["[Circular Reference]"]},"[Circular Reference]"]}]}'
+    );
+    expect(result3).toEqual(
+      '{"name":"Alice","friends":[{"name":"John","spouse":{"name":"Jane","spouse":"[Circular Reference]","friends":["[Circular Reference]"]},"friends":["[Circular Reference]"]},{"name":"Jane","spouse":{"name":"John","spouse":"[Circular Reference]","friends":["[Circular Reference]"]},"friends":["[Circular Reference]"]}]}'
+    );
   });
 });
