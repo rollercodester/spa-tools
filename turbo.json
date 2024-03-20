@@ -9,7 +9,6 @@
     },
     "lint": {},
     "build": {
-      "dependsOn": ["^build"],
       "outputs": ["dist/**"]
     },
     "test": {
@@ -17,7 +16,10 @@
     },
     "test:dev": {
       "cache": false,
-      "dependsOn": ["^test"],
+      "inputs": ["src/**/*.tsx", "src/**/*.ts"]
+    },
+    "test:cicd": {
+      "cache": false,
       "inputs": ["src/**/*.tsx", "src/**/*.ts"]
     }
   }
