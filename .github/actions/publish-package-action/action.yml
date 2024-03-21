@@ -1,0 +1,27 @@
+name: "publish-package-action"
+description: "This action runs linting, tests, and builds the @spa-tools monorepo and then publishes the provided package"
+author: "Ryan Howard (rollercodester)"
+inputs:
+  package-to-publish:
+    description: "The package to publish"
+    required: true
+  tag:
+    description: "The npm-tag to publish the package with"
+    required: true
+    default: latest
+  version-bump-type:
+    description: "The type of version bump to apply to the package"
+    allowed-values: ["major", "minor", "patch"]
+    required: true
+    default: patch
+runs:
+  using: "composite"
+  steps:
+    - name: Version Bump
+      run: pnpm version ${{ inputs.version-bump-type }} --no-git-tag-version
+    - name: Test and Build Monorepo
+      uses: ./.github/actions/test-and-build-monorepo-action
+      with:
+        run-build: true
+    - name: Publish Package
+        run: pnpm publish --tag ${{ inputs.tag }} --access public --filter ${{ inputs.package-to-publish }}

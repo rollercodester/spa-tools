@@ -23,7 +23,15 @@ const list = [
       url: "https://github.com/rollercodester/spa-tools/actions/workflows/test-and-build-packages.yml",
     },
   ],
-  ["badge", { alt: "Code Coverage", image: "./coverage-badge.svg" }],
+  [
+    "badge",
+    {
+      alt: "Code Coverage",
+      image: "./coverage-badge.svg",
+      title: "Code Coverage",
+      url: `https://github.com/rollercodester/spa-tools/tree/main/packages/${args[0]}`,
+    },
+  ],
 ];
 
 // Configuration for the badges

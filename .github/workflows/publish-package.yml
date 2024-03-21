@@ -1,0 +1,21 @@
+name: Publish Package to NPM
+on:
+  release:
+    types: [created]
+jobs:
+  build-and-publish:
+    name: Test and Build and Publish Package
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Test and Build Monorepo
+        uses: ./.github/actions/test-and-build-monorepo-action
+        with:
+          run-build: true
+      - name: Publish package on NPM
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

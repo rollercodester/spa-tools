@@ -6,7 +6,7 @@
 <!-- Auto-generated Badges Start -->
 <span class="badge-npmversion"><a href="https://npmjs.org/package/@spa-tools/core-router" title="View this project on NPM"><img src="https://img.shields.io/npm/v/@spa-tools/core-router.svg" alt="NPM version" /></a></span>
 <span class="badge-badge"><a href="https://github.com/rollercodester/spa-tools/actions/workflows/test-and-build-packages.yml" title="Test and Build"><img src="https://github.com/rollercodester/spa-tools/actions/workflows/test-and-build-packages.yml/badge.svg?branch=main" alt="Test and Build" /></a></span>
-<span class="badge-badge"><img src="./coverage-badge.svg" alt="Code Coverage" /></span>
+<span class="badge-badge"><a href="https://github.com/rollercodester/spa-tools/tree/main/packages/core-router" title="Code Coverage"><img src="./coverage-badge.svg" alt="Code Coverage" /></a></span>
 <!-- Auto-generated Badges End -->
 
 The `@spa-tools/core-router` package simplifies modern-day SPA routing, shedding all excess baggage without compromising functionality.

@@ -1,5 +1,6 @@
 {
   "name": "spatools",
+  "description": "A collection of tools for building single page applications.",
   "private": true,
   "type": "commonjs",
   "author": {

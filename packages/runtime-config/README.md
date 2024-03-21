@@ -6,7 +6,7 @@
 <!-- Auto-generated Badges Start -->
 <span class="badge-npmversion"><a href="https://npmjs.org/package/@spa-tools/runtime-config" title="View this project on NPM"><img src="https://img.shields.io/npm/v/@spa-tools/runtime-config.svg" alt="NPM version" /></a></span>
 <span class="badge-badge"><a href="https://github.com/rollercodester/spa-tools/actions/workflows/test-and-build-packages.yml" title="Test and Build"><img src="https://github.com/rollercodester/spa-tools/actions/workflows/test-and-build-packages.yml/badge.svg?branch=main" alt="Test and Build" /></a></span>
-<span class="badge-badge"><img src="./coverage-badge.svg" alt="Code Coverage" /></span>
+<span class="badge-badge"><a href="https://github.com/rollercodester/spa-tools/tree/main/packages/runtime-config" title="Code Coverage"><img src="./coverage-badge.svg" alt="Code Coverage" /></a></span>
 <!-- Auto-generated Badges End -->
 
 The `@spa-tools/runtime-config` package is a modern, hands-off alternative to the old approach of using .env files. With the Runtime Config you don't have to worry about devops scripts because the correct environment config is automatically available at runtime, which is how the coy name "runtime-config" came about :-).
