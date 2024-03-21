@@ -16,3 +16,5 @@ jobs:
           fetch-depth: 0
       - name: Publish package on NPM
         uses: ./.github/actions/publish-package-action
+        with:
+          npm-token: ${{ secrets.NPM_TOKEN }}
