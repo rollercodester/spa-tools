@@ -16,10 +16,6 @@
     "build": {
       "inputs": ["src/**/*.tsx", "src/**/*.ts"],
       "outputs": ["dist/**"]
-    },
-    "build:website": {
-      "inputs": ["src/**/*.tsx", "src/**/*.ts"],
-      "outputs": ["build/**"]
     }
   }
 }
