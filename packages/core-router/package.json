@@ -1,6 +1,6 @@
 {
   "name": "@spa-tools/core-router",
-  "version": "1.0.0-rc.0",
+  "version": "1.0.0-rc.1",
   "type": "module",
   "description": "Simplifies modern-day SPA routing, shedding all excess baggage without compromising functionality.",
   "author": {
