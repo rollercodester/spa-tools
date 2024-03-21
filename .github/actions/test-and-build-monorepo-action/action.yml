@@ -35,7 +35,7 @@ runs:
       with:
         badge-path: packages/api-client/coverage-badge.svg
         badge-text: Code Coverage
-        result-type: branches
+        result-type: lines
         summary-path: packages/api-client/coverage/coverage-summary.json
         upload-badge: false
         vitest-config-path: vite.config.mts
@@ -45,7 +45,7 @@ runs:
       with:
         badge-path: packages/core-router/coverage-badge.svg
         badge-text: Code Coverage
-        result-type: branches
+        result-type: lines
         summary-path: packages/core-router/coverage/coverage-summary.json
         upload-badge: false
         vitest-config-path: vite.config.mts
@@ -55,7 +55,7 @@ runs:
       with:
         badge-path: packages/interaction-hooks/coverage-badge.svg
         badge-text: Code Coverage
-        result-type: branches
+        result-type: lines
         summary-path: packages/interaction-hooks/coverage/coverage-summary.json
         upload-badge: false
         vitest-config-path: vite.config.mts
@@ -65,7 +65,7 @@ runs:
       with:
         badge-path: packages/runtime-config/coverage-badge.svg
         badge-text: Code Coverage
-        result-type: branches
+        result-type: lines
         summary-path: packages/runtime-config/coverage/coverage-summary.json
         upload-badge: false
         vitest-config-path: vite.config.mts
@@ -75,7 +75,7 @@ runs:
       with:
         badge-path: packages/utilities/coverage-badge.svg
         badge-text: Code Coverage
-        result-type: branches
+        result-type: lines
         summary-path: packages/utilities/coverage/coverage-summary.json
         upload-badge: false
         vitest-config-path: vite.config.mts
