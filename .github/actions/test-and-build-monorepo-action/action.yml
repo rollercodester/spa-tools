@@ -15,25 +15,20 @@ runs:
       uses: pnpm/action-setup@v3
       with:
         version: latest
-
     - name: Setup NodeJS
       uses: actions/setup-node@v4
       with:
         node-version: 20
         cache: pnpm
-
     - name: Install dependencies
       shell: bash
       run: pnpm install --frozen-lockfile
-
     - name: Lint monorepo
       shell: bash
       run: pnpm lint
-
     - name: Test monorepo
       shell: bash
       run: pnpm test:cicd
-
     - name: "Coverage Badge: api-client"
       uses: wjervis7/vitest-badge-action@v1.0.0
       if: success() && ${{ inputs.generate-coverage-badges }}
@@ -44,7 +39,6 @@ runs:
         summary-path: packages/api-client/coverage/coverage-summary.json
         upload-badge: false
         vitest-config-path: vite.config.mts
-
     - name: "Coverage Badge: core-router"
       uses: wjervis7/vitest-badge-action@v1.0.0
       if: success() && ${{ inputs.generate-coverage-badges }}
@@ -55,7 +49,6 @@ runs:
         summary-path: packages/core-router/coverage/coverage-summary.json
         upload-badge: false
         vitest-config-path: vite.config.mts
-
     - name: "Coverage Badge: interaction-hooks"
       uses: wjervis7/vitest-badge-action@v1.0.0
       if: success() && ${{ inputs.generate-coverage-badges }}
@@ -66,7 +59,6 @@ runs:
         summary-path: packages/interaction-hooks/coverage/coverage-summary.json
         upload-badge: false
         vitest-config-path: vite.config.mts
-
     - name: "Coverage Badge: runtime-config"
       uses: wjervis7/vitest-badge-action@v1.0.0
       if: success() && ${{ inputs.generate-coverage-badges }}
@@ -77,7 +69,6 @@ runs:
         summary-path: packages/runtime-config/coverage/coverage-summary.json
         upload-badge: false
         vitest-config-path: vite.config.mts
-
     - name: "Coverage Badge: utilities"
       uses: wjervis7/vitest-badge-action@v1.0.0
       if: success() && ${{ inputs.generate-coverage-badges }}
@@ -88,13 +79,11 @@ runs:
         summary-path: packages/utilities/coverage/coverage-summary.json
         upload-badge: false
         vitest-config-path: vite.config.mts
-
     - name: Commit Coverage Badge Changes
       uses: stefanzweifel/git-auto-commit-action@v4
       if: success() && ${{ inputs.generate-coverage-badges }}
       with:
         file_pattern: packages/**/coverage-badge.svg
-
     - name: Build monorepo
       shell: bash
       if: ${{ inputs.run-build }}
