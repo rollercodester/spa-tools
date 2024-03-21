@@ -1,15 +1,11 @@
 name: "publish-package-action"
-description: "This action runs linting, tests, and builds the @spa-tools monorepo and then publishes the package that is parsed from the tag of the release"
+description: "This action runs linting, tests, and builds the @spa-tools monorepo and then publishes the package that is parsed from the tag of the release when the tag is in the format of '<semver>_<package-name>'"
 author: "Ryan Howard (rollercodester)"
 inputs:
   npm-publish-tag:
     description: "The npm-tag to publish the package with"
     required: false
     default: latest
-  tag-separator:
-    description: "The separator to use for the tag that separates the semver from the package name e.g. this uses : as separator v1.0.0-rc.0:my-cool-package"
-    required: false
-    default: ":"
 runs:
   using: "composite"
   steps:
@@ -23,8 +19,8 @@ runs:
       uses: actions-ecosystem/action-regex-match@v2
       with:
         text: ${{ steps.get_version.outputs.version }}
-        # This regex matches a semver version and a package name separated by a ${{ inputs.tag-separator }}
-        regex: '^(\d+\.\d+\.\d+(-[A-Za-z\d.]+)?)${{ inputs.tag-separator }}([A-Za-z\d-]+)$'
+        # This regex matches a semver version and a package name separated by a _
+        regex: '^(\d+\.\d+\.\d+(-[A-Za-z\d.]+)?)_([A-Za-z\d-]+)$'
     - name: Test and Build Monorepo
       if: ${{ steps.parsed-semver-package.outputs.matched != '' }}
       uses: ./.github/actions/test-and-build-monorepo-action
