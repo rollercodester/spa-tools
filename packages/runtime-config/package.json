@@ -30,7 +30,7 @@
   ],
   "license": "MIT",
   "bin": {
-    "@spa-tools/runtime-config-obf": "./dist/cli.cjs"
+    "@spa-tools/runtime-config-obf": "./dist/cli.js"
   },
   "browser": "dist/index.cjs",
   "module": "dist/index.js",

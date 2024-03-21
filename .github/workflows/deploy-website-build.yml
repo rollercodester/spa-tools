@@ -5,7 +5,7 @@ on:
     branches:
       - main
     paths:
-      - apps/website/**
+      - website/**
 
 jobs:
   build-and-deploy:
@@ -29,13 +29,13 @@ jobs:
           run-build: true
       - name: Build Website
         run: pnpm build:website
-        working-directory: apps/website
+        working-directory: website
       - name: Setup Pages
         uses: actions/configure-pages@v4
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./apps/website/build
+          path: ./website/build
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4

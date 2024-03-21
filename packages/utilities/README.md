@@ -1,4 +1,4 @@
-<img alt="@spa-tools" height="150" src="../../apps/website/static/img/logo.svg?raw=true">
+<img alt="@spa-tools" height="150" src="../../website/static/img/logo.svg?raw=true">
 <div style='font-size: 2rem'>@spa-tools</div>
 
 # Utilities

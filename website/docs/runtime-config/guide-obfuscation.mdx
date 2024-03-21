@@ -1,0 +1,128 @@
+---
+title: Obfuscation
+pagination_label: 'Runtime Config Guide: Obfuscation'
+pagination_next: runtime-config/guide-ssr
+pagination_prev: runtime-config/getting-started
+sidebar_label: Obfuscation
+slug: /runtime-config/guides/obfuscation
+---
+
+import { PackageCaption, SectionText } from '@site/src/components';
+
+<PackageCaption packageName='@spa-tools/runtime-config' />
+
+# Obfuscation
+
+The Runtime Config bundles all of your environment config-sets into your build, which
+has an advantage over other .env approaches of keeping your transipiled bits unchanged and
+the same between build environments. However, a potential downside to this is that all
+environment configs get leaked to every environment you deploy to.
+
+### Leakage mitigation
+
+Of course the optimal, secure solution to address this leakage concern is to protect your
+non-prod, lower API environments via VPC, VPN, WAF, etc., which is the best guidance any security-minded
+professional could give on the topic.
+
+Nonetheless, the Runtime Config provides a means to
+_softly_ address this concern via an obfuscation utility that accepts an encoded config
+and outputs it as an encrypted static asset. This encrypted _asset_ can then be used
+to initialize the Runtime Config, which in turn will be automatically decrypted+decoded
+at runtime.
+
+### Is the obfuscation feature 100% secure?
+
+While the encryption algo used is very strong (256-bit), the answer still has to be "NO".
+Any serious hacker could eventually figure out how to decrypt your config. But it does add
+a layer of "obfuscation" that makes it more difficult for a casual hacker to access your
+environment configs. **AND since you should NEVER include anything truly private in your SPA
+build**, it shouldn't be worth a hacker's time to do so. Moverover, it makes your config
+unfriendly to the human eye, thus mitigating a curious search for raw endpoint URLs in the
+bundled source code.
+
+### So should I obfuscate my config?
+
+At the end of the day, it's really up to you but for guidance sake...
+
+- If your lower API environments are locked down, then obfuscation would be overkill and frankly an unwarranted
+  effort/maintenance tax
+
+- Likewise, if your lower API environments are wide-open BUT leaking non-active environment
+  config is NOT a big deal to you, then by all means keep it simple and forego
+
+- However, if you do care AND your lower API environments are all public and wide-open,
+  then it's seriously a good idea to obfuscate your config-sets
+
+## @ Run-time in your SPA
+
+### Using a static, obfuscated config-file
+
+```js
+// depending on your build setup, you may need to import the file differently
+import obfuscatedConfigStr from './myapp-config-obf.txt?raw';
+
+// let's initialize a new runtime config straight from the obfuscated string
+const myAppRuntimeConfig = await RuntimeConfig.initializeObf(obfuscatedConfigStr);
+
+console.log('The config settings are automatically deobfuscated:');
+console.log(myAppRuntimeConfig.settings);
+```
+
+## @ Build-time via NodeJS
+
+### Obfuscating a domain-config
+
+```js
+import { nodejsObfuscateConfig } from '@spa-tools/runtime-config';
+// let's assume we've already created a domain-config in code
+// that we're importing here (see Getting Started for more info)
+import { myAppConfigSet } from './myapp-config';
+
+// here simply we pass in our domain-config along with an output filepath
+const obfuscatedConfig = nodejsObfuscateConfig(myAppConfigSet, 'obfuscated-config.txt');
+// the obfuscated domain-config has now been saved to the file system
+console.log('Here is the obfuscated string:');
+console.log(obfuscatedConfig);
+```
+
+### Deobfuscating a domain-config
+
+```js
+import { nodejsDeobfuscateConfig } from '@spa-tools/runtime-config';
+
+const deobfuscatedConfig = nodejsDeobfuscateConfig(obfuscatedConfig, 'deobfuscated-config.txt');
+// the deobfuscated domain-config has now been saved to the file system
+console.log('Here is the deobfuscated string:');
+console.log(deobfuscatedConfig);
+```
+
+### Exporting a domain-config
+
+```js
+import { nodejsExportConfig } from '@spa-tools/runtime-config';
+
+// here simply we pass in our domain-config along with an output filepath
+nodejsExportConfig(myAppConfigSet, 'myapp-config.json');
+// the domain-config has now been saved to the file system (unobfuscated)
+```
+
+## @ Build-time via CLI
+
+### Obfuscating a domain-config file
+
+Call the obfuscate command with the `@spa-tools/runtime-config-obf` utility using
+the domain-config input file path and the obfuscated output file path.
+
+```bash
+@spa-tools/runtime-config-obf obf myapp-config.json myapp-config-obf.txt
+```
+
+### Deobfuscating a domain-config file
+
+If by remote chance you lose your domain-config file and all you have is the obfuscated
+file, you can call the deobfuscate command with the `@spa-tools/runtime-config-obf`
+utility to recreate it.
+
+```bash
+@spa-tools/runtime-config-obf deobf myapp-config-obf.txt myapp-config.json
+```
