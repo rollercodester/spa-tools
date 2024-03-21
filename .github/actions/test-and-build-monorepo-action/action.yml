@@ -32,7 +32,7 @@ runs:
       run: pnpm test:cicd
     - name: "Coverage Badge: api-client"
       uses: wjervis7/vitest-badge-action@v1.0.0
-      if: success() && ${{ inputs.generate-coverage-badges }}
+      if: ${{ inputs.generate-coverage-badges }}
       with:
         badge-path: packages/api-client/coverage-badge.svg
         badge-text: Code Coverage
@@ -42,7 +42,7 @@ runs:
         vitest-config-path: vite.config.mts
     - name: "Coverage Badge: core-router"
       uses: wjervis7/vitest-badge-action@v1.0.0
-      if: success() && ${{ inputs.generate-coverage-badges }}
+      if: ${{ inputs.generate-coverage-badges }}
       with:
         badge-path: packages/core-router/coverage-badge.svg
         badge-text: Code Coverage
@@ -52,7 +52,7 @@ runs:
         vitest-config-path: vite.config.mts
     - name: "Coverage Badge: interaction-hooks"
       uses: wjervis7/vitest-badge-action@v1.0.0
-      if: success() && ${{ inputs.generate-coverage-badges }}
+      if: ${{ inputs.generate-coverage-badges }}
       with:
         badge-path: packages/interaction-hooks/coverage-badge.svg
         badge-text: Code Coverage
@@ -62,7 +62,7 @@ runs:
         vitest-config-path: vite.config.mts
     - name: "Coverage Badge: runtime-config"
       uses: wjervis7/vitest-badge-action@v1.0.0
-      if: success() && ${{ inputs.generate-coverage-badges }}
+      if: ${{ inputs.generate-coverage-badges }}
       with:
         badge-path: packages/runtime-config/coverage-badge.svg
         badge-text: Code Coverage
@@ -72,7 +72,7 @@ runs:
         vitest-config-path: vite.config.mts
     - name: "Coverage Badge: utilities"
       uses: wjervis7/vitest-badge-action@v1.0.0
-      if: success() && ${{ inputs.generate-coverage-badges }}
+      if: ${{ inputs.generate-coverage-badges }}
       with:
         badge-path: packages/utilities/coverage-badge.svg
         badge-text: Code Coverage
@@ -82,7 +82,7 @@ runs:
         vitest-config-path: vite.config.mts
     - name: Commit Coverage Badge Changes
       uses: stefanzweifel/git-auto-commit-action@v4
-      if: success() && ${{ inputs.generate-coverage-badges }}
+      if: ${{ inputs.generate-coverage-badges }}
       with:
         file_pattern: packages/**/coverage-badge.svg
     - name: Build monorepo

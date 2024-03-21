@@ -1,27 +1,46 @@
 name: "publish-package-action"
-description: "This action runs linting, tests, and builds the @spa-tools monorepo and then publishes the provided package"
+description: "This action runs linting, tests, and builds the @spa-tools monorepo and then publishes the package that is parsed from the tag of the release"
 author: "Ryan Howard (rollercodester)"
 inputs:
-  package-to-publish:
-    description: "The package to publish"
-    required: true
-  tag:
+  npm-publish-tag:
     description: "The npm-tag to publish the package with"
-    required: true
+    required: false
     default: latest
-  version-bump-type:
-    description: "The type of version bump to apply to the package"
-    allowed-values: ["major", "minor", "patch"]
-    required: true
-    default: patch
+  tag-separator:
+    description: "The separator to use for the tag that separates the semver from the package name e.g. this uses : as separator v1.0.0-rc.0:my-cool-package"
+    required: false
+    default: ":"
 runs:
   using: "composite"
   steps:
-    - name: Version Bump
-      run: pnpm version ${{ inputs.version-bump-type }} --no-git-tag-version
+    - id: get_version
+      name: Get version
+      # this action gets the version from the tag and
+      # automatically removes leading 'v', if present
+      uses: jannemattila/get-version-from-tag@v3
+    - id: parsed-semver-package
+      name: Parse Semver and Package
+      uses: actions-ecosystem/action-regex-match@v2
+      with:
+        text: ${{ steps.get_version.outputs.version }}
+        # This regex matches a semver version and a package name separated by a ${{ inputs.tag-separator }}
+        regex: '^(\d+\.\d+\.\d+(-[A-Za-z\d.]+)?)${{ inputs.tag-separator }}([A-Za-z\d-]+)$'
     - name: Test and Build Monorepo
+      if: ${{ steps.parsed-semver-package.outputs.matched != '' }}
       uses: ./.github/actions/test-and-build-monorepo-action
       with:
         run-build: true
+    - name: Version Update
+      if: ${{ steps.parsed-semver-package.outputs.matched != '' }}
+      run: pnpm version ${{ steps.parsed-semver-package.outputs.group1 }}
+      working-directory: packages/${{ steps.parsed-semver-package.outputs.group3 }}
+    - name: Commit Updated Version
+      if: ${{ steps.parsed-semver-package.outputs.matched != '' }}
+      uses: stefanzweifel/git-auto-commit-action@v4
+      with:
+        file_pattern: packages/${{ steps.parsed-semver-package.outputs.group3 }}/package.json
     - name: Publish Package
-        run: pnpm publish --tag ${{ inputs.tag }} --access public --filter ${{ inputs.package-to-publish }}
+      if: ${{ steps.parsed-semver-package.outputs.matched != '' }}
+      run: pnpm publish --tag ${{ inputs.npm-publish-tag }} --access public --filter ${{ steps.parsed-semver-package.outputs.group3 }}
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

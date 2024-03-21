@@ -6,7 +6,12 @@ on:
       - main
     paths:
       - "packages/**"
+      # don't trigger for coverage-badge changes because they are committed
+      # as part of the CI/CD pipeline for automatic code coverage report
       - "!packages/**/coverage-badge.svg"
+      # don't trigger for package.json changes because they are committed as
+      # part of the CI/CD pipeline for automatic version bump
+      - "!packages/**/package.json"
 
 jobs:
   test-build:
