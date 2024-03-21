@@ -24,27 +24,23 @@ runs:
         text: ${{ steps.get_version.outputs.version }}
         # This regex matches a semver version and a package name separated by a _
         regex: '^(\d+\.\d+\.\d+(-[A-Za-z\d.]+)?)_([A-Za-z\d-]+)$'
-    - name: Echo Parsed Semver and Package
-      run: |
-        echo "Release tag matches: ${{ steps.parsed-semver-package.outputs.matched }} Group1: ${{ steps.parsed-semver-package.outputs.group1 }} Group2: ${{ steps.parsed-semver-package.outputs.group2 }} Group3: ${{ steps.parsed-semver-package.outputs.group3 }}"
-      shell: bash
     - name: Test and Build Monorepo
-      if: ${{ steps.parsed-semver-package.outputs.matched != '' }}
+      if: ${{ steps.parsed-semver-package.outputs.group1 != '' && steps.parsed-semver-package.outputs.group3 != '' }}
       uses: ./.github/actions/test-and-build-monorepo-action
       with:
         run-build: true
     - name: Version Update
-      if: ${{ steps.parsed-semver-package.outputs.matched != '' }}
+      if: ${{ steps.parsed-semver-package.outputs.group1 != '' && steps.parsed-semver-package.outputs.group3 != '' }}
       run: pnpm version ${{ steps.parsed-semver-package.outputs.group1 }}
       shell: bash
       working-directory: packages/${{ steps.parsed-semver-package.outputs.group3 }}
     - name: Commit Updated Version
-      if: ${{ steps.parsed-semver-package.outputs.matched != '' }}
+      if: ${{ steps.parsed-semver-package.outputs.group1 != '' && steps.parsed-semver-package.outputs.group3 != '' }}
       uses: stefanzweifel/git-auto-commit-action@v4
       with:
         file_pattern: packages/${{ steps.parsed-semver-package.outputs.group3 }}/package.json
     - name: Publish Package
-      if: ${{ steps.parsed-semver-package.outputs.matched != '' }}
+      if: ${{ steps.parsed-semver-package.outputs.group1 != '' && steps.parsed-semver-package.outputs.group3 != '' }}
       run: pnpm publish --tag ${{ inputs.npm-publish-tag }} --access public --filter ${{ steps.parsed-semver-package.outputs.group3 }}
       shell: bash
       env:
