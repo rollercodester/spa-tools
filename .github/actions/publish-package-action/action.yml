@@ -24,6 +24,8 @@ runs:
         text: ${{ steps.get_version.outputs.version }}
         # This regex matches a semver version and a package name separated by a _
         regex: '^(\d+\.\d+\.\d+(-[A-Za-z\d.]+)?)_([A-Za-z\d-]+)$'
+      run: echo "Release tag matches: ${{ steps.parsed-semver-package.outputs.matched }} Group1: ${{ steps.parsed-semver-package.outputs.group1 }} Group2: ${{ steps.parsed-semver-package.outputs.group2 }} Group3: ${{ steps.parsed-semver-package.outputs.group3 }}"
+      shell: bash
     - name: Test and Build Monorepo
       if: ${{ steps.parsed-semver-package.outputs.matched != '' }}
       uses: ./.github/actions/test-and-build-monorepo-action
