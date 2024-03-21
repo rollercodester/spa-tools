@@ -19,7 +19,7 @@ runs:
       uses: jannemattila/get-version-from-tag@v3
     - id: parsed-semver-package
       name: Parse Semver and Package
-      uses: actions-ecosystem/action-regex-match@v2
+      uses: kaisugi/action-regex-match@v1.0.1
       with:
         text: ${{ steps.get_version.outputs.version }}
         # This regex matches a semver version and a package name separated by a _
