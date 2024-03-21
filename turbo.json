@@ -18,7 +18,7 @@
       "outputs": ["dist/**"]
     },
     "build:website": {
-      "inputs": ["src/apps/website/**/*.tsx", "src/apps/website/**/*.ts"],
+      "inputs": ["src/**/*.tsx", "src/**/*.ts"],
       "outputs": ["build/**"]
     }
   }
