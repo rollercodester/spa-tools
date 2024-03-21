@@ -39,6 +39,7 @@ runs:
       uses: stefanzweifel/git-auto-commit-action@v4
       with:
         file_pattern: packages/${{ steps.parsed-semver-package.outputs.group3 }}/package.json
+        branch: main
     - name: Publish Package
       if: ${{ steps.parsed-semver-package.outputs.group1 != '' && steps.parsed-semver-package.outputs.group3 != '' }}
       run: pnpm publish --tag ${{ inputs.npm-publish-tag }} --access public --filter ${{ steps.parsed-semver-package.outputs.group3 }}
