@@ -40,6 +40,7 @@ runs:
       with:
         file_pattern: packages/${{ steps.parsed-semver-package.outputs.group3 }}/package.json
         branch: main
+        commit_message: Auto-committed package.json version update to ${{ steps.parsed-semver-package.outputs.group1 }} for @spa-tools/${{ steps.parsed-semver-package.outputs.group3 }}
     - name: Publish Package
       if: ${{ steps.parsed-semver-package.outputs.group1 != '' && steps.parsed-semver-package.outputs.group3 != '' }}
       run: pnpm publish --tag ${{ inputs.npm-publish-tag }} --access public --filter ${{ steps.parsed-semver-package.outputs.group3 }}
