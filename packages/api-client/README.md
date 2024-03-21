@@ -5,7 +5,7 @@
 
 <!-- Auto-generated Badges Start -->
 <span class="badge-npmversion"><a href="https://npmjs.org/package/@spa-tools/api-client" title="View this project on NPM"><img src="https://img.shields.io/npm/v/@spa-tools/api-client.svg" alt="NPM version" /></a></span>
-<span class="badge-badge"><a href="https://github.com/rollercodester/spa-tools/actions/workflows/test-and-build-packages.yml" title="Test and Build"><img src="https://github.com/rollercodester/spa-tools/actions/workflows/test-and-build-packages.yml/badge.svg" alt="Test and Build" /></a></span>
+<span class="badge-badge"><a href="https://github.com/rollercodester/spa-tools/actions/workflows/test-and-build-packages.yml" title="Test and Build"><img src="https://github.com/rollercodester/spa-tools/actions/workflows/test-and-build-packages.yml/badge.svg?branch=main" alt="Test and Build" /></a></span>
 <span class="badge-badge"><img src="./coverage-badge.svg" alt="Code Coverage" /></span>
 <!-- Auto-generated Badges End -->
 

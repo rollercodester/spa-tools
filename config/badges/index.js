@@ -18,7 +18,7 @@ const list = [
     {
       alt: "Test and Build",
       image:
-        "https://github.com/rollercodester/spa-tools/actions/workflows/test-and-build-packages.yml/badge.svg",
+        "https://github.com/rollercodester/spa-tools/actions/workflows/test-and-build-packages.yml/badge.svg?branch=main",
       title: "Test and Build",
       url: "https://github.com/rollercodester/spa-tools/actions/workflows/test-and-build-packages.yml",
     },
