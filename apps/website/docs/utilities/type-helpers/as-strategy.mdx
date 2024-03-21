@@ -13,12 +13,13 @@ import { PackageCaption } from '@site/src/components';
 
 # asStrategy()
 
-The `asStrategy<P>()` is a TypeScript utility returns a function, which accepts
-a `Record` type and returns it as to enable intellisense on the respective record's
-keys in the IDE, similar to behavior of a class instance (or static).
+The `asStrategy<P>()` TypeScript utility takes a `Record` type and returns it
+with some special sauce as to enable intellisense on the respective record.
+Think of this as enabling your Record to behave like a static/instance class
+in the IDE but with neither the perf hit nor the verbose code.
 
-This becomes useful if you have a complex object that you want to use in a `Record`
-and use it in many places so getting intellisense on the record's keys really helps.
+This becomes useful if you have a complex object and you use it in many places,
+so gaining intellisense on the record's keys can really help with productivity.
 
 The generic `P` defines the type (or unioned types) returned from the strategy `Record` values.
 
