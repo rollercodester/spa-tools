@@ -11,7 +11,7 @@
 
 The `@spa-tools/core-router` package simplifies modern-day SPA routing, shedding all excess baggage without compromising functionality.
 
-Feature highlights include:
+#### Feature highlights include:
 
 - Dev-Defined Route Shape
 - Dead-Simple Navigation
@@ -129,19 +129,14 @@ function navigateToFinanicals() {
 
 View the [@spa-tools documentation site](https://rollercodester.github.io/spa-tools/) for complete reference.
 
-
 ## Contributing
 
 If you're interested in contributing to @spa-tools, please first create an issue on the [@spa-tools monorepo in GitHub](https://github.com/rollercodester/spa-tools)
 or comment on an already open issue. From there we can discuss the feature or bugfix you're interested in and how best to approach it.
-In terms of workflow, we use the standard approach of forking the repo, creating a PR, and merging after tesing/approval.
 
 ### Unit Test Coverage
 
 All packages in @spa-tools require 100% unit test coverage. This is a condition for all PRs to be merged whether you're adding a new feature or fixing a bug.
-
-The only exception is when native code is being wrapped and coverage is either not possible or redundant, which can be discussed on a case-by-case basis
-during the approval process.
 
 ## License
 
