@@ -6,7 +6,7 @@
 
 .homeContainer {
   align-items: center;
-  background: url(/img/spatools-home-bg.png), linear-gradient(to top, #ffffff, #fbf3ff, #e8d9ed);
+  background: url(/img/spatools-home-bg.png), linear-gradient(to top, #f5eff6, #fbf3ff, #e8d9ed);
   background-color: #310731;
   background-position:
     bottom,
