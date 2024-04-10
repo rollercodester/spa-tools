@@ -133,6 +133,10 @@ export default {
               id: 'runtime-config/guide-ssr',
               type: 'doc',
             },
+            {
+              id: 'runtime-config/guide-path-driven',
+              type: 'doc',
+            },
           ],
           label: 'Guides',
           type: 'category',

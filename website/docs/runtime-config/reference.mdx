@@ -2,7 +2,7 @@
 title: Runtime Config Reference
 pagination_label: 'Runtime Config: Reference'
 pagination_next: interaction-hooks/getting-started
-pagination_prev: runtime-config/guide-ssr
+pagination_prev: runtime-config/guide-path-driven
 sidebar_label: Reference
 slug: /runtime-config/reference
 ---
@@ -191,10 +191,11 @@ The generic `S` is the shape of the configuration settings and must extend the
 
 `RuntimeConfigOptions` is an interface that defines the options for the runtime config initialization process.
 
-| Property               | Type     | Required? | Default       | Comments                                                                                                                                                             |
-| ---------------------- | -------- | --------- | ------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `locahostIpAddress`    | `string` | no        | `'127.0.0.1'` | The IP address to use to detect the local development environment.                                                                                                   |
-| `manualActiveHostname` | `string` | no        | `''`          | <p>The hostname to use to manually set the active config environment.</p><p>This only needs to be specified when running in a non-browser environment (i.e. SSR)</p> |
+| Property               | Type      | Required? | Default       | Comments                                                                                                                                                                                                                                               |
+| ---------------------- | --------- | --------- | ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `locahostIpAddress`    | `string`  | no        | `'127.0.0.1'` | The IP address to use to detect the local development environment.                                                                                                                                                                                     |
+| `manualActiveHostname` | `string`  | no        | `''`          | <p>The hostname to use to manually set the active config environment.</p><p>This only needs to be specified when running in a non-browser environment (i.e. SSR)</p>                                                                                   |
+| `startsWithMatching`   | `boolean` | no        | `false`       | <p>Whether to include path with the hostname and use a starts-with matching strategy.</p><p>By default, the hostname must match exactly; this option supports use cases where only one domain is used and the paths distinguish your environments.</p> |
 
 ## Obfuscation (CLI)
 
