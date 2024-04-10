@@ -11,12 +11,14 @@ export const NON_OBF_STRING_ERROR = 'Non-obfuscated string detected. Use `initia
 export class RuntimeConfig<S extends BaseConfigSettings<E>, E = Environment> {
   private readonly localhostIpAddress: string;
   private readonly manualActiveHostname: string;
+  private readonly startsWithMatching: boolean;
   private domainConfig: DomainConfig<S> = {} as DomainConfig<S>;
 
   private constructor(domainConfig: DomainConfig<S>, options?: RuntimeConfigOptions) {
     this.domainConfig = domainConfig;
     this.localhostIpAddress = options?.localhostIpAddress || DEFAULT_LOCALHOST_IP_ADDRESS;
     this.manualActiveHostname = options?.manualActiveHostname || '';
+    this.startsWithMatching = options?.startsWithMatching || false;
   }
 
   public static initialize<S extends BaseConfigSettings<E>, E = Environment>(
@@ -50,7 +52,25 @@ export class RuntimeConfig<S extends BaseConfigSettings<E>, E = Environment> {
   }
 
   public get settings(): S {
-    const normConfig = this.domainConfig[this.hostname];
+    let normConfig: S | undefined;
+
+    if (this.startsWithMatching) {
+      normConfig = Object.keys(this.domainConfig).reduce((acc: S | undefined, key: string) => {
+        if (key === this.hostname) {
+          // even though consumer elected to use startsWithMatching, we still want to prioritize
+          // exact matches on the hostname to support not using an env path for production
+          return this.domainConfig[key];
+        }
+
+        if (this.hostname.startsWith(key)) {
+          return this.domainConfig[key];
+        }
+
+        return acc;
+      }, undefined);
+    } else {
+      normConfig = this.domainConfig[this.hostname];
+    }
 
     if (!normConfig) {
       throw new Error(getNoRuntimeConfigError(this.hostname));
@@ -61,13 +81,19 @@ export class RuntimeConfig<S extends BaseConfigSettings<E>, E = Environment> {
 
   private get hostname(): RuntimeHostname {
     const normHostname =
-      typeof window !== 'undefined' && window.location ? window.location.hostname : this.manualActiveHostname;
+      typeof window !== 'undefined' && window.location
+        ? this.startsWithMatching
+          ? `${window.location.host}${window.location.pathname}`
+          : window.location.hostname
+        : this.manualActiveHostname;
 
     return normHostname;
   }
 
   public get isRunningLocal(): boolean {
-    return this.hostname === 'localhost' || this.hostname === this.localhostIpAddress;
+    return this.startsWithMatching
+      ? this.hostname.startsWith('localhost') || this.hostname.startsWith(this.localhostIpAddress)
+      : this.hostname === 'localhost' || this.hostname === this.localhostIpAddress;
   }
 }
 
@@ -78,5 +104,5 @@ export class RuntimeConfig<S extends BaseConfigSettings<E>, E = Environment> {
 //
 
 export function getNoRuntimeConfigError(hostname: string): string {
-  return `No runtime configuration found for hostname: ${hostname}. If you are running outside of a browser then be sure that the \`serverSideHostname\` option is being set.`;
+  return `No runtime configuration found matching: ${hostname}. If you are running outside of a browser then be sure that the \`serverSideHostname\` option is being set.`;
 }

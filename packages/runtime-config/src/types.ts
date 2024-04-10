@@ -15,4 +15,5 @@ export type DomainConfig<S> = Record<RuntimeHostname, S>;
 export interface RuntimeConfigOptions {
   localhostIpAddress?: string;
   manualActiveHostname?: string;
+  startsWithMatching?: boolean;
 }

@@ -1,0 +1,68 @@
+---
+title: Path-driven Environments
+pagination_label: 'Runtime Config Guide: Path-driven'
+pagination_next: runtime-config/reference
+pagination_prev: runtime-config/guide-ssr
+sidebar_label: Path-driven Environments
+slug: /runtime-config/guides/path-driven
+---
+
+import { PackageCaption } from '@site/src/components';
+
+<PackageCaption packageName='@spa-tools/runtime-config' />
+
+# Path Driven Environments
+
+By default, envrionment configurations are driven by the hostname of the running application. This is a good
+fit if you use subdomains to differentiate between environments. However, if you instead use a
+single domain and differentiate between environments using paths, then the Runtime Config still
+has you covered.
+
+To turn on the ability to differentiate environment configs by hostname AND path, simply set the
+`startsWithMatching` flag to `true` and then the path will be included in matching environment configs.
+
+Let's take a quick look at an example:
+
+```js
+import { BaseConfigSettings, DomainConfig, RuntimeConfig } from '@spa-tools/runtime-config';
+
+interface MyAppConfigSettings extends BaseConfigSettings {
+  authClientId: string;
+  myAppApiUrl: string;
+}
+
+const myAppConfigSet: DomainConfig<MyAppConfigSettings> = {
+  'myapp.com/dev': {
+    environment: 'development',
+    authClientId: 'auth-client-id-dev',
+    myAppApiUrl: 'https://api.dev.myapp.com',
+  },
+  'myapp.com/test': {
+    environment: 'test',
+    authClientId: 'auth-client-id-uat',
+    myAppApiUrl: 'https://api.uat.myapp.com',
+  },
+  // notice that we didn't have to use the path approach for the production environment
+  // because exact hostname matching takes priority; however, if you do this, know
+  // that any path that does not match a specific environment will default to matching
+  // your production config; if you want to avoid this, you can add a path for prod
+  // as well, but understandably, it's more desirable to not see any environment-specific
+  // indicator in the URL for production
+  'myapp.com': {
+    environment: 'production',
+    authClientId: 'auth-client-id-prod',
+    myAppApiUrl: 'https://api.myapp.com',
+  },
+  localhost: {
+    environment: 'dev',
+    authClientId: 'auth-client-id-dev',
+    myAppApiUrl: 'https://api.dev.myapp.com',
+  },
+};
+
+// here we initialize the runtime config for our app and use the startsWithMatching option
+export const myAppRuntimeConfig = RuntimeConfig.initialize<MyAppConfigSettings, MyAppEnvironments>(myAppConfigSet, { startsWithMatching: true });
+
+// now we can use the runtime config to get the current environment config that is based on
+// the hostname and path using a starts-with match
+```

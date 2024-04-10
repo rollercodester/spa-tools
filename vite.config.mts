@@ -13,7 +13,7 @@ export default defineConfig({
         "**/*-cli.ts",
       ],
       reportOnFailure: true,
-      reporter: ["json-summary"],
+      reporter: ["json-summary", "html"],
     },
     environment: "jsdom",
     globals: true,
