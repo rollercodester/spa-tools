@@ -1,6 +1,6 @@
 {
   "name": "@spa-tools/api-client",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "type": "module",
   "description": "Excels in calling HTTP API endpoints with features specifically designed for modern, data-driven web applications.",
   "author": {
