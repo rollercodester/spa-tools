@@ -36,7 +36,6 @@
   ],
   "license": "MIT",
   "browser": "dist/index.cjs",
-  "types": "dist/index.d.cts",
   "exports": {
     ".": {
       "import": {

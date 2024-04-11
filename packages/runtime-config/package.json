@@ -30,17 +30,28 @@
   ],
   "license": "MIT",
   "bin": {
-    "@spa-tools/runtime-config-obf": "./dist/cli.js"
+    "@spa-tools/runtime-config-obf": "./dist/obfuscator/obfuscator-cli.js"
   },
   "browser": "dist/index.cjs",
-  "module": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    }
+  },
+  "sideEffects": false,
   "files": [
     "dist"
   ],
   "scripts": {
     "build": "tsup",
-    "cli": "node dist/cli.cjs",
+    "cli": "node dist/obfuscator/obfuscator-cli.js",
     "test:dev": "vitest --ui --coverage",
     "test:cicd": "vitest --run --silent --coverage.enabled --coverage.clean --coverage.thresholds.100"
   },
