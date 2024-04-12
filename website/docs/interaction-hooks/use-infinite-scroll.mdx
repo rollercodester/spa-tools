@@ -86,11 +86,10 @@ function UseInfiniteScrollExample() {
 
 ### Parameters
 
-| Name                        | Type              | Required? | Default | Description                                                                                                                                                                                                                                                      |
-| --------------------------- | ----------------- | --------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `bottomTriggerElement`      | `React.RefObject` | yes       | -       | Holds a ref to an element that acts as sentinel for scroll intersection                                                                                                                                                                                          |
-| `disabled`                  | `boolean`         | no        | `false` | If set to `true`, the hook will stop detecting scroll                                                                                                                                                                                                            |
-| `bottomThresholdPercentage` | `number`          | no        | `40`    | <p>The distance (in percentage terms) from the bottom of the scroll target to its top which will act as intersection area that triggers the hook.</p> This only starts to have impact if the trigger element contains content that results in substantial height |
+| Name                   | Type              | Required? | Default | Description                                                             |
+| ---------------------- | ----------------- | --------- | ------- | ----------------------------------------------------------------------- |
+| `bottomTriggerElement` | `React.RefObject` | yes       | -       | Holds a ref to an element that acts as sentinel for scroll intersection |
+| `disabled`             | `boolean`         | no        | `false` | If set to `true`, the hook will stop detecting scroll                   |
 
 ### Returns
 

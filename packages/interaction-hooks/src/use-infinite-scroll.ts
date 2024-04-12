@@ -4,22 +4,29 @@ import { RefObject, useEffect, useState } from 'react';
 /**
  * React hook that detects when an element is scrolled to bottom. The primary usage scenario is to enable infinite scroll behavior.
  */
-export function useInfiniteScroll<T extends Element>(
-  bottomTriggerElement: RefObject<T>,
-  disabled?: boolean,
-  bottomThresholdPercentage = 40
-) {
+export function useInfiniteScroll<T extends Element>(bottomTriggerElement: RefObject<T>, disabled?: boolean) {
   const [isScrolling, setIsScrolling] = useState(false);
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          setIsScrolling(!disabled && entry.isIntersecting);
-        }
-      },
-      { rootMargin: `0px 0px ${bottomThresholdPercentage}% 0px` }
-    );
+    const observer = new IntersectionObserver((entries) => {
+      const entry = entries[0];
+
+      if (!entry) {
+        return;
+      }
+
+      const newIsScrolling = !disabled && entry.isIntersecting;
+
+      if (newIsScrolling) {
+        setTimeout(() => {
+          // reset scroll trigger after a brief delay to ensure
+          // that consumer does not overreact to scroll state
+          setIsScrolling(false);
+        }, 100);
+      }
+
+      setIsScrolling(newIsScrolling);
+    });
 
     const scrollTarget = bottomTriggerElement.current;
 
@@ -30,7 +37,7 @@ export function useInfiniteScroll<T extends Element>(
     return () => {
       observer.disconnect();
     };
-  }, [bottomThresholdPercentage, bottomTriggerElement, disabled]);
+  }, [bottomTriggerElement, disabled]);
 
   return isScrolling;
 }
