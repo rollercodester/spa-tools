@@ -1,6 +1,6 @@
 {
   "name": "@spa-tools/interaction-hooks",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "type": "module",
   "description": "Small package of specialized hooks meant to solve interaction scenarios in modern React applications.",
   "author": {
