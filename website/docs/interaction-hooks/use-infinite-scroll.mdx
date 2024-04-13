@@ -18,7 +18,7 @@ Stop time-warping your users back to the 1990's with antiquated pagination contr
 ### Usage
 
 ```tsx
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { useCallEndpoint } from '@spa-tools/api-client';
 import { useInfiniteScroll } from '@spa-tools/interaction-hooks';
 
@@ -40,33 +40,20 @@ function UseInfiniteScrollExample() {
   // this will hold the ref to our scroll target, which is just a div that we
   // place below our list of recipes to act as a sentinel for scroll intersection
   const scrollTargetRef = useRef<HTMLDivElement>(null);
-  const [total, setTotal] = useState(0);
-  const [count, setCount] = useState(0);
   const [getRecipes, recipesResult, isRecipesCallPending] = useGetRecipes();
 
   // anytime our scroll target is intersected for vertical scroll, the hook
   // will return true, which is how we know to fetch the next page of recipes
   const isScrolling = useInfiniteScroll(scrollTargetRef);
 
-  const handleGetRecipes = useCallback(() => {
-    const recordCount = recipesResult?.data?.length ?? -1;
-    const totalCount = recipesResult?.total ?? 0;
-
-    setCount(recordCount);
-    setTotal(totalCount);
-
-    if (!isRecipesCallPending && recordCount < totalCount) {
-      getRecipes();
-    }
-  }, [getRecipes, isRecipesCallPending, recipesResult?.data?.length, recipesResult?.total]);
+  const count = recipesResult?.data?.length ?? -1;
+  const total = recipesResult?.total ?? 0;
 
   useEffect(() => {
-    if (isScrolling) {
-      // if the infinite scroll says we're scrolling,
-      // then we retrieve the next page of recipes
-      handleGetRecipes();
+    if ((isScrolling && !isRecipesCallPending && count < total) || (!isRecipesCallPending && !recipesResult)) {
+      getRecipes();
     }
-  }, [handleGetRecipes, isScrolling]);
+  }, [count, getRecipes, isRecipesCallPending, isScrolling, recipesResult, total]);
 
   return (
     <div>
