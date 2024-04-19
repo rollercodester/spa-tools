@@ -71,16 +71,6 @@ module.exports = {
             pattern: "react",
             position: "before",
           },
-          {
-            group: "internal",
-            pattern: "@modernfi/**",
-            position: "before",
-          },
-          {
-            group: "internal",
-            pattern: "flagship/**",
-            position: "before",
-          },
         ],
         pathGroupsExcludedImportTypes: ["react"],
         warnOnUnassignedImports: true,
